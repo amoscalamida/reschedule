@@ -1,0 +1,63 @@
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<f:flashMessages />
+<f:render partial="Project/Properties" arguments="{project:project}" /><br>
+  <f:if condition="{project.changes}">
+      <f:then>
+    <f:if condition="{project.progress} == 0">
+        <f:then>
+        <f:link.action action="projectStatusAdjust" class="btn btn-success" arguments="{project : project, level : 'teacher'}">Für Lehrer freigeben</f:link.action><br><br>
+        </f:then>
+    </f:if>
+        <f:if condition="{project.progress} == 1">
+            <f:then>
+                <f:link.action action="projectStatusAdjust" class="btn btn-warning" arguments="{project : project, level : 'student'}">Zurückziehen</f:link.action>
+                <f:if condition="{allTeachersAgree}">
+                    <f:then>
+                        <f:link.action action="projectStatusAdjust" class="btn btn-success" arguments="{project : project, level : 'secretary'}">Für Sekretariat freigeben</f:link.action><br><br>
+                    </f:then>
+                    <f:else>
+                        <span class="btn btn-default" disabled="disabled" onclick="alert('Projekt kann noch nicht eingereicht werden\n\nEs sind entweder nicht alle Lehrer einverstanden oder es haben noch nicht alle geantwortet. \n\nBitte warte auf die Antworten bzw. lösche Verschiebungen welche vom Lehrer verweigert wurden um das Projekt einzureichen.')">Für Sekretariat freigeben</span><br><br>
+                    </f:else>
+                 </f:if>
+            </f:then>
+        </f:if>
+          <f:if condition="{project.progress} == 2">
+              <f:then>
+                <f:if condition="{secretaryDidNotTouch}">
+                 <f:then>
+                     <f:link.action action="projectStatusAdjust" class="btn btn-warning" arguments="{project : project, level : 'teacher'}">Zurückziehen</f:link.action><br><br>
+                 </f:then>
+                 <f:else>
+                     <p class="btn btn-default" disabled="disabled" onclick="alert('Projekt kann nicht mehr zurückgezogen werden\n\nEs wurden bereits Verschiebungen vom Sekretariat beantwortet. \n\nKontaktiere das Sekretariat bei Fragen direkt')">Zurückziehen</p><br><br>
+                 </f:else>
+
+                </f:if>
+              </f:then>
+              </f:if>
+    </f:then>
+  </f:if>
+  <h4>Verschiebungen in diesem Projekt</h4>
+
+        <table class="table table-hover">
+            <f:render partial="Project/ChangeList" arguments="{project:project}" />
+        </table>
+  <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
+    <span class="glyphicon-chevron-left glyphicon"></span> Zurück zur Liste
+  </f:link.action>
+    <f:if condition="{project.progress} < 2">
+        <f:then>
+            <f:link.action action="new" style="float:right" class="btn btn-success hidden-sm hidden-md hidden-lg" controller="Change" arguments="{project : project}">
+                <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
+            </f:link.action>
+        </f:then>
+        <f:else>
+            <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
+                <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
+            </span>
+        </f:else>
+    </f:if>
+</f:section>

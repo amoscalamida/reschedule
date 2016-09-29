@@ -1,0 +1,28 @@
+<?php
+
+namespace AmosCalamida\Kzoreschedule\ViewHelpers;
+
+class ArrayViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
+    /**
+     * @param string $object The array to resolve
+     * @param integer $key The array Key
+     * @param string $property The property to get
+     * @return string the Array/Key/Property Value
+     */
+    
+    public function render($object,$key,$property) {
+            if (array_key_exists($key, $object)) {
+                if ($property != 'none') {
+                    $propFunc = "get" . ucfirst($property);
+                    return $object[$key]->$propFunc();
+                } else {
+                    return $object[$key];
+                }
+            } else {
+                return NULL;
+            }
+    }
+}
+
+?>

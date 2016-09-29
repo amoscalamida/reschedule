@@ -1,0 +1,138 @@
+<f:switch expression="{progress}">
+
+    <f:case value="0">
+
+        <td class="text-info"><span>Warte auf Freigabe</span></td>
+
+    </f:case>
+
+    <f:case value="1">
+
+        <f:switch expression="{teacherAnswer}">
+
+            <f:case value="0">
+                <td class=" text-info">Warten</td>
+            </f:case>
+
+
+            <f:case value="1">
+                <td class=" text-danger">Keine angenommen</td>
+            </f:case>
+
+
+            <f:case value="2">
+                <td class=" text-success">Alle angenommen <f:link.action action="projectStatusAdjust" class="btn btn-xs text-success" arguments="{project:project, level: 'secretary'}"><span class="glyphicon glyphicon-hand-right" data-toggle="tooltip" data-placement="top" title="Für Sekretariat freigeben"></span></f:link.action></td>
+            </f:case>
+
+
+            <f:case value="3">
+                <td class=" text-primary">
+                    <span data-toggle="tooltip" data-placement="right" data-html="true" title="
+                            <f:for each='{project.changes}' as='change'>
+                                <p class='text-left'>
+                                    <b>{change.courseId}</b>:
+                                        <f:if condition='{change.teacherAnswer} == 1'>
+                                            <f:then>
+                                                Nein
+                                            </f:then>
+                                            <f:else>
+                                                Ja
+                                            </f:else>
+                                       </f:if>
+                                </p>
+                            </f:for>">
+                        Lehrer: Teilweise angenommen
+                </span>
+                </td>
+            </f:case>
+
+        </f:switch>
+
+    </f:case>
+
+    <f:case value="2">
+
+        <f:switch expression="{secretaryAnswer}">
+
+            <f:case value="0">
+                <td class=" text-info"><span>Warten</span> </td>
+            </f:case>
+
+
+            <f:case value="1">
+                <td class=" text-info"><span>In Bearbeitung</span> </td>
+            </f:case>
+
+
+            <f:case value="2">
+                <td class=" text-info"><span>In Bearbeitung</span> </td>
+            </f:case>
+
+
+            <f:case value="3">
+                <td class="text-primary"> <span data-toggle="tooltip" data-placement="right" data-html="true" title="
+                            <f:for each='{project.changes}' as='change'>
+                                <p class='text-left'>
+                                    <b>{change.courseId}</b>:
+                                        <f:if condition='{change.secretaryAnswer} == 1'>
+                                            <f:then>
+                                                Nein
+                                            </f:then>
+                                            <f:else>
+                                                Ja
+                                            </f:else>
+                                       </f:if>
+                                </p>
+                            </f:for>">
+                        Sekretariat: Teilweise bewilligt
+                </span></td>
+            </f:case>
+        </f:switch>
+
+    </f:case>
+
+    <f:case value="3">
+
+        <f:switch expression="{secretaryAnswer}">
+
+            <f:case value="0">
+                <td class=" text-info"> Fehler: Projekt ohne Antwort abgeschlossen</td>
+            </f:case>
+
+
+            <f:case value="1">
+                <td class=" text-danger">Wird nicht durchgeführt</td>
+            </f:case>
+
+
+            <f:case value="2">
+                <td class=" text-success">Wird durchgeführt</td>
+            </f:case>
+
+
+            <f:case value="3">
+                <td class=" text-primary">
+                    <span data-toggle="tooltip" data-placement="right" data-html="true" title="
+                            <f:for each='{project.changes}' as='change'>
+                                <p class='text-left'>
+                                    <b>{change.courseId}</b>:
+                                        <f:if condition='{change.secretaryAnswer} == 1'>
+                                            <f:then>
+                                                Nein
+                                            </f:then>
+                                            <f:else>
+                                                Ja
+                                            </f:else>
+                                       </f:if>
+                                </p>
+                            </f:for>">
+                       Teilweise bewilligt
+                </span>
+                </td>
+            </f:case>
+        </f:switch>
+
+    </f:case>
+
+
+</f:switch>

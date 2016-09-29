@@ -1,0 +1,77 @@
+
+<f:if condition="{project.changes}">
+    <f:then>
+        <tr>
+            <th></th>
+            <th><f:translate key="tx_kzoreschedule_domain_model_change.course_id" /></th>
+            <th><f:translate key="tx_kzoreschedule_domain_model_change.original_lesson" /></th>
+            <th><f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson" /> </th>
+            <th><f:translate key="tx_kzoreschedule_domain_model_change.teacher_answer" /></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <f:for each="{project.changes}" as="change">
+            <tr>
+                <!-- Set Color for Secretary Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
+                <f:render partial="Change/SecretaryAnswerColor" arguments="{change : change}"> </f:render>
+                <!-- End Secretary Answer -->
+                <td>{change.courseId}</td>
+                <td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                <!-- Set Color and Text for Teacher Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
+               <f:render partial="Change/TeacherAnswerText" arguments="{change : change, project : project, role: 'student'}"> </f:render>
+                <!-- End Teacher Answer -->
+
+                <!-- Show Button: Always visible -->
+                <td><f:link.action action="show" controller="Change" arguments="{change : change, project : project}"> <span data-toggle="tooltip" data-placement="top" title="Details" class="glyphicon glyphicon-eye-open" aria-hidden="true"></f:link.action></td>
+                <td>
+                 <!-- End Show Button -->
+
+                    <!-- Edit Button: Visible if neither the Teacher Answered nor the Secretary handles Project -->
+                    <f:if condition="{project.progress} < 2">
+                        <f:then>
+                            <f:if condition="{change.teacherAnswer} == 0">
+                                <f:then>
+                                    <f:link.action action="edit" controller="Change" arguments="{change : change, project : project}"><span data-toggle="tooltip" data-placement="top" title="Bearbeiten" class="glyphicon glyphicon-pencil"></span></f:link.action>
+                                </f:then>
+                                <f:else>
+                                    <span class="text-muted glyphicon glyphicon-pencil"></span>
+                                </f:else>
+                            </f:if>
+                        </f:then>
+                    <f:else>
+                        <span class="text-muted glyphicon glyphicon-pencil"></span>
+                    </f:else>
+                    </f:if></td>
+                <!-- End Edit Button -->
+                <!-- Delete Button: Visible if Project is Pre-Secretary Progress-->
+                <td>
+                    <f:if condition="{project.progress} < 2">
+                        <f:then>
+                            <f:link.action action="delete" controller="Change" arguments="{change : change, project : project}"><span data-toggle="tooltip" data-placement="top" title="Löschen" class="glyphicon glyphicon-trash"></span></f:link.action>
+                        </f:then>
+                        <f:else>
+                            <span class="text-muted glyphicon glyphicon-trash"></span>
+                        </f:else>
+                    </f:if></td>
+                <!-- End Delete Button -->
+            </tr>
+            <!-- Secretary Answer Block: Sets Color, Text and Room for Secretary Answer -->
+            <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}"> </f:render>
+        </f:for>
+    </f:then>
+    <f:else>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="well">
+                            <h5 class="text-center">Noch keine Verschiebungen in diesem Projekt</h5><br>
+                            <div class="text-center"><f:if condition="{project.progress} < 2"><f:then><f:link.action action="new" controller="Change" class="btn btn-success" arguments="{project : project}"><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung erstellen</f:link.action></f:then><f:else><span class="text-muted" class="btn" disabled="disabled"><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span></f:else></f:if>
+                            </div>
+                        </div>
+                    </div>
+
+    </f:else>
+</f:if>
+<tr class="hidden-xs"><td colspan="8" style="text-align: right;"><f:if condition="{project.progress} < 2"><f:then><f:link.action action="new" controller="Change" arguments="{project : project}"><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung</f:link.action></f:then><f:else><span class="text-muted" ><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span></f:else></f:if></td></tr>

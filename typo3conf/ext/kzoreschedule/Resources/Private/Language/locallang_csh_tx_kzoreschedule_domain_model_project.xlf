@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-07-30T14:19:30Z" product-name="kzoreschedule">
+		<header/>
+		<body>
+			<trans-unit id="user_id.description">
+				<source>userId</source>
+			</trans-unit>
+			<trans-unit id="title.description">
+				<source>title</source>
+			</trans-unit>
+			<trans-unit id="comment.description">
+				<source>comment</source>
+			</trans-unit>
+			<trans-unit id="progress.description">
+				<source>progress</source>
+			</trans-unit>
+			<trans-unit id="changes.description">
+				<source>changes</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
