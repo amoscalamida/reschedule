@@ -39,6 +39,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * changeRepository
      *
+     * injecting the changeRepository to create and manipulate changes
+     *
      * @var \AmosCalamida\Kzoreschedule\Domain\Repository\ChangeRepository
      * @inject
      */
@@ -47,18 +49,24 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * projectRepository
      *
+     * injecting the project repository to be able to attach new changes to a project on creation
+     *
      * @var \AmosCalamida\Kzoreschedule\Domain\Repository\ProjectRepository
      * @inject
      */
     protected $projectRepository = NULL;
 
-    
-    
+
+
     /**
      * action show
      *
-     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
+     * TODO: Maybe remove and use secretaryShow (rename to show) for both plugins
+     *
+     * renders the change detail view (for student) with assigned project and change
+     *
+     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project - the project the change belongs to
+     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change - the change to be viewed in detail
      * @return void
      *
      */
@@ -68,8 +76,11 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign('project', $project);
     }
 
+
     /**
      * action secretaryShow
+     *
+     * renders the change detail view (for secretary) with assigned project and change
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
@@ -85,17 +96,16 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action new
      *
-     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange
+     * prepares an empty change object for filling, passes the project information and renders the
+     * change creation form
+     *
+     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project - the project to add the change to
+     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange - the new change object
      * @return string
-     * @dontvalidate $newChange
+     * @dontvalidate $newChange - newChange is empty at the moment
      */
     public function newAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange = Null)
     {
-//        $includes = $this->includeJavaScript("https://code.jquery.com/","jquery-2.2.4.min.js",true);
-//        $includes .= $this->includeJavaScript("Resources/Public/js/","jquery.datetimepicker.min.js");
-//        $includes .= $this->includeStylesheet("Resources/Public/css/","jquery.datetimepicker.css");
-//        $GLOBALS['TSFE']->additionalHeaderData['kzoreschedule'] = $includes;
         $this->view->assign('project',$project);
         $this->view->assign('newChange', $newChange);
     }
@@ -103,6 +113,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * initialize create action
+     *
+     * sets "d.m.Y H:i" as standard date format instead of system standard "Y-m-d\TH:i:sP"
      *
      * @param void
      */
@@ -126,6 +138,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action create
      *
+     * attaches the new change to the project and stores both to the repository
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @return string
@@ -140,9 +154,10 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action edit
      *
+     * attaches a change and project to the view and renders the edit form
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @ignorevalidation $change
      * @return void
      */
     public function editAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
@@ -153,6 +168,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * initialize update action
+     *
+     * sets "d.m.Y H:i" as standard date format instead of system standard "Y-m-d\TH:i:sP"
      *
      * @param void
      */
@@ -176,6 +193,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action update
      *
+     * update the change object with the new values from the edit form
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return void
@@ -189,6 +208,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     
     /**
      * action delete
+     *
+     * remove the change object from repository
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
@@ -204,8 +225,11 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action secretaryProcess
      *
+     * assign the change and answer to the secretary processing form and renders it
+     * clears the room if change is denied again after being accepted before
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
-     * @param integer $answer Prefills the Answer (either approved [2] or denied [1])
+     * @param integer $answer - Prefills the Answer (either approved [2] or denied [1])
      * @return string
      */
     public function secretaryProcessAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, $answer)
@@ -224,6 +248,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action secretaryProcessCompletion
      *
+     * update the change with secretary answer, comment (and room if change got accepted)
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return void
      */
@@ -239,8 +265,10 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action teacherAnswer
      *
+     * assign the change and answer to the teacher answering form and renders it
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
-     * @param integer $answer Prefills the Answer (either approved [2] or denied [1])
+     * @param integer $answer - Prefills the Answer (either approved [2] or denied [1])
      * @return string
      */
     public function teacherAnswerAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, $answer)
@@ -253,6 +281,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * action teacherAnswerCompletion
+     *
+     * update the change with teacher answer and comment
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return void
@@ -267,6 +297,9 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * action findRoom
+     *
+     * handle the ajax request for the room finder (assign selected category to view)
+     * assign the change to the view and render it
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return string
