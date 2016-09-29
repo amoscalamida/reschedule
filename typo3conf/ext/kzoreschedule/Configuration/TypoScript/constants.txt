@@ -1,0 +1,60 @@
+
+plugin.tx_kzoreschedule_student {
+	view {
+		# cat=plugin.tx_kzoreschedule_student/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:kzoreschedule/Resources/Private/Templates/
+		# cat=plugin.tx_kzoreschedule_student/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:kzoreschedule/Resources/Private/Partials/
+		# cat=plugin.tx_kzoreschedule_student/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:kzoreschedule/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_kzoreschedule_student//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
+
+plugin.tx_kzoreschedule_teacher {
+	view {
+		# cat=plugin.tx_kzoreschedule_teacher/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:kzoreschedule/Resources/Private/Templates/
+		# cat=plugin.tx_kzoreschedule_teacher/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:kzoreschedule/Resources/Private/Partials/
+		# cat=plugin.tx_kzoreschedule_teacher/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:kzoreschedule/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_kzoreschedule_teacher//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
+
+plugin.tx_kzoreschedule_secretary {
+	view {
+		# cat=plugin.tx_kzoreschedule_secretary/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:kzoreschedule/Resources/Private/Templates/
+		# cat=plugin.tx_kzoreschedule_secretary/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:kzoreschedule/Resources/Private/Partials/
+		# cat=plugin.tx_kzoreschedule_secretary/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:kzoreschedule/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_kzoreschedule_secretary//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
+
+module.tx_kzoreschedule_admin {
+	view {
+		# cat=module.tx_kzoreschedule_admin/file; type=string; label=Path to template root (BE)
+		templateRootPath = EXT:kzoreschedule/Resources/Private/Backend/Templates/
+		# cat=module.tx_kzoreschedule_admin/file; type=string; label=Path to template partials (BE)
+		partialRootPath = EXT:kzoreschedule/Resources/Private/Backend/Partials/
+		# cat=module.tx_kzoreschedule_admin/file; type=string; label=Path to template layouts (BE)
+		layoutRootPath = EXT:kzoreschedule/Resources/Private/Backend/Layouts/
+	}
+	persistence {
+		# cat=module.tx_kzoreschedule_admin//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}

@@ -1,0 +1,20 @@
+
+<label for="courseId">
+	<f:translate key="tx_kzoreschedule_domain_model_change.course_id" /> <span class="required">(*)</span>
+</label><br />
+	<f:form.textfield class="form-control" property="courseId" /><br />
+</label><br />
+<div class="row">
+<div class="col-md-6">
+<label for="originalLesson">
+	<f:translate key="tx_kzoreschedule_domain_model_change.original_lesson" /> <span class="required">(*)</span>
+</label><br />
+	<f:form.textfield class="form-control datetime" property="originalLesson"  value="{change.originalLesson ->f:format.date(format: 'd.m.Y H:i')}" />
+</div>
+<div class="col-md-6">
+<label for="changedLesson">
+	<f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson" /> <span class="required">(*)</span>
+</label><br />
+	<f:form.textfield class="form-control datetime" property="changedLesson"  value="{change.changedLesson ->f:format.date(format: 'd.m.Y H:i')}" /><br />
+</div>
+</div><br />

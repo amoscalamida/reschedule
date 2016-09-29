@@ -1,0 +1,114 @@
+
+plugin.tx_kzoreschedule_student {
+	view {
+		templateRootPaths.0 = {$plugin.tx_kzoreschedule_student.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_kzoreschedule_student.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_kzoreschedule_student.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_kzoreschedule_student.persistence.storagePid}
+	}
+}
+
+plugin.tx_kzoreschedule_teacher {
+	view {
+		templateRootPaths.0 = {$plugin.tx_kzoreschedule_teacher.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_kzoreschedule_teacher.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_kzoreschedule_teacher.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_kzoreschedule_teacher.persistence.storagePid}
+	}
+}
+
+plugin.tx_kzoreschedule_secretary {
+	view {
+		templateRootPaths.0 = {$plugin.tx_kzoreschedule_secretary.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_kzoreschedule_secretary.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_kzoreschedule_secretary.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_kzoreschedule_secretary.persistence.storagePid}
+	}
+}
+
+plugin.tx_kzoreschedule._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-kzoreschedule table {
+		border-collapse:separate;
+	}
+
+	.tx-kzoreschedule table th {
+		font-weight:bold;
+	}
+
+	.tx-kzoreschedule table td {
+		vertical-align:top;
+	}
+
+	.typo3-messages .message-error {
+		color:red;
+	}
+
+	.typo3-messages .message-ok {
+		color:green;
+	}
+
+   .typo3-messages li {
+       list-style-type: none;
+		margin-left: -40px;
+   }
+
+  th, td {
+        padding: 5px;
+    }
+)
+
+page.includeJSFooter {
+	file1 = http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
+	file2 = http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js
+	file3 = EXT:kzoreschedule/Resources/Public/js/jquery.datetimepicker.js
+	file4 = EXT:kzoreschedule/Resources/Public/js/bootstrap_config.js
+
+}
+
+page.includeCSS {
+	file1 = http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
+	file2 = EXT:kzoreschedule/Resources/Public/css/boostrapStyle.css
+	file3 = EXT:kzoreschedule/Resources/Public/css/jquery.datetimepicker.css
+
+}
+
+ajaxCall = PAGE
+ajaxCall {
+	typeNum = 999
+	config.disableAllHeaderCode = 1
+	additionalHeaders = Content-type:application/html
+	xhtml_cleaning = 0
+	admPanel = 0
+	10 = COA
+	10 < tt_content.list.20.kzoreschedule_secretary
+}
+
+config.contentObjectExceptionHandler = 0
+
+# Module configuration
+module.tx_kzoreschedule_tools_kzorescheduleadmin {
+	persistence {
+		storagePid = {$module.tx_kzoreschedule_admin.persistence.storagePid}
+	}
+	view {
+		templateRootPaths.0 = {$module.tx_kzoreschedule_admin.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_kzoreschedule_admin.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_kzoreschedule_admin.view.layoutRootPath}
+	}
+}

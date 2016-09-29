@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="de" datatype="plaintext" original="messages" date="2016-07-30T14:19:30Z" product-name="kzoreschedule">
+		<header/>
+		<body>
+			<trans-unit id="tx_kzoreschedule_domain_model_project">
+				<source>Projekt</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.user_id">
+				<source>Benutzer ID</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.title">
+				<source>Titel</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.comment">
+				<source>Verschiebungsgrund</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.progress">
+				<source>Stadium</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.changes">
+				<source>Verschiebungen</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change">
+				<source>Verschiebung</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.course_id">
+				<source>Kurs ID</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.original_lesson">
+				<source>Ursprüngliche Lektion</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.changed_lesson">
+				<source>Verschobene Lektion</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.secretary_answer">
+				<source>Antwort vom Sekretariat</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.secretary_comment">
+				<source>Kommentar</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.room">
+				<source>Zimmer</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.room_category">
+            				<source>Kategorie</source>
+            </trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.teacher_answer">
+				<source>Antwort des Lehrers</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.teacher_comment">
+				<source>Kommentar</source>
+			</trans-unit>
+
+
+			<!-- Errors -->
+
+			<trans-unit id="error.1221560718">
+            				<source>Dieses Feld darf nicht leer sein</source>
+            </trans-unit>
+            <trans-unit id="error.1221560910">
+                        	<source>Dieses Feld darf nicht NULL sein</source>
+            </trans-unit>
+            <trans-unit id="error.1307719788">
+                            <source>Es ist ein Fehler bei der Datumswahl aufgetreten. Bitte versuche es erneut.</source>
+            </trans-unit>
+            <trans-unit id="error.1428504122">
+                        <source>Der eingegebene Text ist entweder zu kurz oder zu lang </source>
+            </trans-unit>
+
+
+
+		</body>
+	</file>
+</xliff>

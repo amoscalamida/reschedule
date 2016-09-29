@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-07-30T14:19:30Z" product-name="kzoreschedule">
+		<header/>
+		<body>
+			<trans-unit id="tx_kzoreschedule_domain_model_project">
+				<source>Project</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.user_id">
+				<source>User Id</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.comment">
+				<source>Comment</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.progress">
+				<source>Progress</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_project.changes">
+				<source>Changes</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change">
+				<source>Change</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.course_id">
+				<source>Course Id</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.original_lesson">
+				<source>Original Lesson</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.changed_lesson">
+				<source>Changed Lesson</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.secretary_answer">
+				<source>Secretary Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.secretary_comment">
+				<source>Secretary Comment</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.room">
+				<source>Room</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.teacher_answer">
+				<source>Teacher Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_kzoreschedule_domain_model_change.teacher_comment">
+				<source>Teacher Comment</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

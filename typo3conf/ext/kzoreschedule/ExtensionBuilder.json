@@ -1,0 +1,312 @@
+{
+    "modules": [
+        {
+            "config": {
+                "position": [
+                    99,
+                    76
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": true,
+                    "_default1_show": true,
+                    "_default2_new_create": true,
+                    "_default3_edit_update": true,
+                    "_default4_delete": true,
+                    "customActions": [
+                        "secretaryClose",
+                        "deleteAll",
+                        "studentList",
+                        "teacherList",
+                        "secretaryList"
+                    ]
+                },
+                "name": "Project",
+                "objectsettings": {
+                    "addDeletedField": false,
+                    "addHiddenField": false,
+                    "addStarttimeEndtimeFields": false,
+                    "aggregateRoot": true,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "691787518185"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": true,
+                            "propertyName": "userId",
+                            "propertyType": "Integer",
+                            "uid": "1401363698333"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "533000889339"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "comment",
+                            "propertyType": "Text",
+                            "uid": "88774133311"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "progress",
+                            "propertyType": "Integer",
+                            "uid": "388795923568"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": [
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": false,
+                            "relationDescription": "",
+                            "relationName": "changes",
+                            "relationType": "zeroToMany",
+                            "relationWire": "[wired]",
+                            "uid": "592948364037"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    344,
+                    102
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": true,
+                    "_default1_show": true,
+                    "_default2_new_create": true,
+                    "_default3_edit_update": true,
+                    "_default4_delete": true,
+                    "customActions": [
+                        "secretaryProcess",
+                        "teacherAnswer"
+                    ]
+                },
+                "name": "Change",
+                "objectsettings": {
+                    "addDeletedField": false,
+                    "addHiddenField": false,
+                    "addStarttimeEndtimeFields": false,
+                    "aggregateRoot": true,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "113817593168"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": true,
+                            "propertyName": "courseId",
+                            "propertyType": "Integer",
+                            "uid": "1271685602063"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "originalLesson",
+                            "propertyType": "NativeDateTime",
+                            "uid": "1110139794429"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "changedLesson",
+                            "propertyType": "DateTime",
+                            "uid": "1218389047149"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "secretaryAnswer",
+                            "propertyType": "Boolean",
+                            "uid": "34154032350"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "secretaryComment",
+                            "propertyType": "Text",
+                            "uid": "674744857236"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "room",
+                            "propertyType": "String",
+                            "uid": "1007351991429"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "teacherAnswer",
+                            "propertyType": "Boolean",
+                            "uid": "531488874606"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": false,
+                            "propertyIsRequired": false,
+                            "propertyName": "teacherComment",
+                            "propertyType": "Text",
+                            "uid": "1173736032485"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        }
+    ],
+    "properties": {
+        "backendModules": [
+            {
+                "actions": {
+                    "controllerActionCombinations": "Project => list, show, new, create, edit, update, delete, deleteAll\nChange => list, show, new, create, edit, update, delete"
+                },
+                "description": "",
+                "key": "admin",
+                "mainModule": "tools",
+                "name": "reSchedule Settings",
+                "tabLabel": "reSchedule"
+            }
+        ],
+        "description": "",
+        "emConf": {
+            "category": "plugin",
+            "custom_category": "",
+            "dependsOn": "typo3 => 7.6.0-7.6.99\n",
+            "disableLocalization": false,
+            "disableVersioning": false,
+            "skipGenerateDocumentationTemplate": false,
+            "sourceLanguage": "en",
+            "state": "alpha",
+            "targetVersion": "7.6.0-7.6.99",
+            "version": "1"
+        },
+        "extensionKey": "kzoreschedule",
+        "name": "reSchedule KZO",
+        "originalExtensionKey": "kzoreschedule",
+        "originalVendorName": "AmosCalamida",
+        "persons": [
+            {
+                "company": "",
+                "email": "amos@calamida.ch",
+                "name": "Amos Calamida",
+                "role": "Developer"
+            }
+        ],
+        "plugins": [
+            {
+                "actions": {
+                    "controllerActionCombinations": "Project =>  list, show, new, create, edit, update, delete\nChange => show, new, create, edit, update, delete",
+                    "noncacheableActions": "Project => list, show, new, create, edit, update, delete\nChange => show, new, create, edit, update, delete",
+                    "switchableActions": ""
+                },
+                "key": "student",
+                "name": "Student Module"
+            },
+            {
+                "actions": {
+                    "controllerActionCombinations": "Project => teacherList, show\nChange => show, teacherAnswer",
+                    "noncacheableActions": "Project => teacherList, show\nChange => show, teacherAnswer",
+                    "switchableActions": ""
+                },
+                "key": "teacher",
+                "name": "Teacher Module"
+            },
+            {
+                "actions": {
+                    "controllerActionCombinations": "Project => secretaryList, show, secretaryClose\nChange => show, edit, update, secretaryProcess",
+                    "noncacheableActions": "Project => secretaryList, show, secretaryClose\nChange => show, edit, update, secretaryProcess",
+                    "switchableActions": ""
+                },
+                "key": "secretary",
+                "name": "Secretary Module"
+            }
+        ],
+        "vendorName": "AmosCalamida"
+    },
+    "wires": [
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_0",
+                "uid": "592948364037"
+            },
+            "tgt": {
+                "moduleId": 1,
+                "terminal": "SOURCES",
+                "uid": "113817593168"
+            }
+        }
+    ],
+    "log": {
+        "last_modified": "2016-07-30 02:19",
+        "extension_builder_version": "7.6.0",
+        "be_user": "Amos Calamida (1)"
+    }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-07-30T14:19:30Z" product-name="kzoreschedule">
+		<header/>
+		<body>
+			<trans-unit id="course_id.description">
+				<source>courseId</source>
+			</trans-unit>
+			<trans-unit id="original_lesson.description">
+				<source>originalLesson</source>
+			</trans-unit>
+			<trans-unit id="changed_lesson.description">
+				<source>changedLesson</source>
+			</trans-unit>
+			<trans-unit id="secretary_answer.description">
+				<source>secretaryAnswer</source>
+			</trans-unit>
+			<trans-unit id="secretary_comment.description">
+				<source>secretaryComment</source>
+			</trans-unit>
+			<trans-unit id="room.description">
+				<source>room</source>
+			</trans-unit>
+			<trans-unit id="room_category.description">
+            	<source>roomCategory</source>
+            </trans-unit>
+			<trans-unit id="teacher_answer.description">
+				<source>teacherAnswer</source>
+			</trans-unit>
+			<trans-unit id="teacher_comment.description">
+				<source>teacherComment</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
