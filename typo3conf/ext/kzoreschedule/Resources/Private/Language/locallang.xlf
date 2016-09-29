@@ -53,7 +53,7 @@
 			</trans-unit>
 
 
-			<!-- Errors -->
+			<!-- Translated Errors -->
 
 			<trans-unit id="error.1221560718">
             				<source>Dieses Feld darf nicht leer sein</source>
