@@ -18,7 +18,7 @@ Links
 	https://forge.typo3.org/projects/extension-<extension key>/issues
 
 :Git Repository:
-	https://github.com/<username>/<extension key>
+	https://github.com/amoscalamida/reschedule
 
 :Contact:
-	`@<username> <https://twitter.com/your-username>`__
+	`Amos Calamida <mailto:amos@calamida.ch>`__
