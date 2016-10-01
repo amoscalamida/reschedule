@@ -38,6 +38,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     *
+     * injection of persistence manager to be able to persist manually
+     *
      * @inject
      */
     protected $persistenceManager;
@@ -45,6 +48,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * projectRepository
+     *
+     * injecting the project repository to create and manipulate projects
      *
      * @var \AmosCalamida\Kzoreschedule\Domain\Repository\ProjectRepository
      * @inject
@@ -55,13 +60,13 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action list
      *
+     * list all projects for logged in FE User
+     *
      * @return void
      */
     public function listAction()
     {
-     //   $projects = $this->projectRepository->findByUserId("3");
        $projects = $this->projectRepository->findByUserId($GLOBALS['TSFE']->fe_user->user['uid']);
-// 		$projects = $this->projectRepository->findAll();
         $this->view->assign('projects', $projects);
     }
     
@@ -71,7 +76,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * Detail View of Project for Student
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @return string
+     * @return void
      */
     public function showAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
@@ -112,6 +117,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action new
      *
+     * renders the project creation form
+     *
+     *
      * @return void
      */
     public function newAction()
@@ -122,13 +130,15 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action create
      *
+     * get the new project object from the form, add the uid of the current FE User as userId
+     * and persist it. Redirect to the detail view of the created project
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $newProject
      * @return void
      */
     public function createAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $newProject)
     {
      	$newProject->setUserId($GLOBALS['TSFE']->fe_user->user['uid']);
- //   	$newProject->setUserId("3");
         $this->addFlashMessage('Verschiebungen können nun in der Tabelle unten eingetragen werden', 'Das Projekt wurde erstellt.', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->projectRepository->add($newProject);
         $this->persistenceManager->persistAll();
@@ -214,7 +224,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param string $level
      *
-     * @return string
+     * @return void
      */
     public function projectStatusAdjustAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $level)
     {
@@ -254,7 +264,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action studentList
      *
-     * @return string
+     * @return void
      */
     public function studentListAction()
     {
@@ -345,7 +355,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      *
      * @param integer $progress
      *
-     * @return string
+     * @return void
      */
     public function secretaryListAction($progress = 2)
     {
@@ -361,12 +371,14 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
 
     /**
+     * function getAnswerProgress
+     *
      * function to get the state of Teacher and Secretary Answers
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param  string $value The value to get the Answers from (either "secretary" or "teacher")
      *
-     * @return integer (0 => wait, 1 => disallowed, 2 => allowed, 3 => partly allowed
+     * @return integer (0 => wait, 1 => disallowed, 2 => allowed, 3 => partly allowed)
      */
     public function getAnswerProgress(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $value) {
 
