@@ -148,6 +148,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action edit
      *
+     * render the edit form and assign the project object to view
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @ignorevalidation $project
      * @return void
@@ -159,6 +161,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     
     /**
      * action update
+     *
+     * update the repository object and redirect to the project detail view
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @return void
@@ -173,6 +177,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action delete
      *
+     * remove the project and all of its changes from repository
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @return void
      */
@@ -186,6 +192,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action secretaryChange
      *
+     * secretary action to either close or reopen a project
+     * on close first check for unanswered changes
+     *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param string $modification modification to perform (either open or close)
      * @return void
@@ -193,7 +202,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function secretaryChangeAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $modification)
     {
         if ($modification == "close") { //Close Project
-            // Check if there are unhandled Changes
+            // Check if there are still unhandled changes
             $changes = $project->getChanges();
             $errorCount = 0;
             foreach ($changes as $change) {
@@ -254,15 +263,26 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action deleteAll
      *
+     * delete all projects (massive action / only available from admin panel)
+     *
      * @return void
      */
     public function deleteAllAction()
     {
+
+        foreach ($this->projectRepository->findAll() as $project) {
+            $this->projectRepository->remove($project);
+        }
+
+
+
         
     }
     
     /**
      * action studentList
+     *
+     * list all projects for student view and check the teacher and secretary answer status
      *
      * @return void
      */
@@ -270,7 +290,6 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
 
          $projects = $this->projectRepository->findByUserId($GLOBALS['TSFE']->fe_user->user['uid']);
-// 		$projects = $this->projectRepository->findAll();
         $this->view->assign('projects', $projects);
 
         $secretaryAnswers = array ();
@@ -300,7 +319,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action teacherList
      *
-     * @param integer $filter Filter for Results (Either 0: unanswered or 1: answered)
+     * list all changes for teacher view
+     *
+     * @param integer $filter - filter for results (either 0: unanswered or 1: answered)
      * @return void
      */
     public function teacherListAction($filter = 0)
@@ -312,12 +333,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         foreach ($projects as $project) {
             if ($project->getProgress() >0) {
                 foreach ($project->getChanges() as $change) {
-                   // foreach ($teacher_courses as $teacher_course) {
-                   //     if ($change->getCourseId() == $teacher_course) {
                             array_push($allowed_changes, $change);
                             array_push($allowed_changes_project, $project);
-                    //    }
-                   // }
                 }
             }
         }
@@ -353,8 +370,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action secretaryList
      *
-     * @param integer $progress
+     * list projects for sectretary view
      *
+     * @param integer $progress - show either opened (progress: 2) or already closed projects (progress: 3)
      * @return void
      */
     public function secretaryListAction($progress = 2)
@@ -373,20 +391,20 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * function getAnswerProgress
      *
-     * function to get the state of Teacher and Secretary Answers
+     * function to get the status of teacher and secretary answers
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @param  string $value The value to get the Answers from (either "secretary" or "teacher")
+     * @param  string $category - the category to get the answers from (either "secretary" or "teacher")
      *
-     * @return integer (0 => wait, 1 => disallowed, 2 => allowed, 3 => partly allowed)
+     * @return integer - (0 => wait, 1 => all disallowed, 2 => all allowed, 3 => partly allowed)
      */
-    public function getAnswerProgress(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $value) {
+    public function getAnswerProgress(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $category) {
 
         $allowed = 0;
         $disallowed = 0;
 
         foreach($project->getChanges() as $change) {
-            switch ($value) {
+            switch ($category) {
                 case 'teacher':
                     $answer = $change->getTeacherAnswer();
                     break;
@@ -420,4 +438,3 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     return $result;
     }
 }
-
