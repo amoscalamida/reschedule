@@ -326,8 +326,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function teacherListAction($filter = 0)
     {
-
-        $projects = $this->projectRepository->findByPublicAndCourses(array("240","250","289","580","123","239","212"));
+        $teachersCourses = array("240","250","289","580","123","239","212");
+        $projects = $this->projectRepository->findByPublicAndCourses($teachersCourses);
         $allowed_changes = array();
         $allowed_changes_project = array();
         foreach ($projects as $project) {
