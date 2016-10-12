@@ -5,10 +5,10 @@ namespace AmosCalamida\Kzoreschedule\ViewHelpers;
 class ArrayViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
-     * @param string $object The array to resolve
-     * @param integer $key The array Key
+     * @param string $object The array to search
+     * @param integer $key The array key
      * @param string $property The property to get
-     * @return string the Array/Key/Property Value
+     * @return string the property's value
      */
     
     public function render($object,$key,$property) {
