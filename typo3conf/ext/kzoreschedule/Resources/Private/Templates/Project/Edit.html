@@ -6,11 +6,12 @@
 
 <f:flashMessages />
 
-<f:render partial="FormErrors" arguments="{object:Project}" />
-
 <f:form class="form" action="update" name="project" object="{project}" >
 <f:render partial="Project/FormFields" arguments="{project:project}" />
     <f:link.action action="studentList" class="btn btn-default">Abbrechen</f:link.action>
 	<f:form.submit class="btn btn-success" value="Speichern" />
 </f:form>
+
+    <f:render partial="FormErrors" arguments="{object:Project}" />
+
 </f:section>
