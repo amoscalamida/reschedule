@@ -7,7 +7,7 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     /**
      * @param datetime $datetime The date and time of the Lesson
      * @param string $category The category string
-     * @return array the List of rooms
+     * @return array the list of rooms
      */
 
     public function render($datetime,$category) {
