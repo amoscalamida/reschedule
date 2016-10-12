@@ -1,12 +1,14 @@
 <f:form.validationResults>
 	<f:if condition="{validationResults.flattenedErrors}">
+		<f:debug>{validationResults.flattenedErrors}</f:debug>
 		<f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+			<script>
 			<f:for each="{errors}" as="error">
-				<script>
-					console.log("Error {error.code}: {error}");
-				</script>
-				<li><f:translate key="error.{error.code}"></f:translate></li>
+					property = ("{propertyPath}").split(".")[1];
+					$('label[for="' + property + '"]').append("<p class='text-danger'><f:translate key="error.{error.code}"></f:translate></p>")
+
 			</f:for>
+			</script>
 		</f:for>
 
 	</f:if>
