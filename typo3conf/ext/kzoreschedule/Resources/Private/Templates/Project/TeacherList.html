@@ -1,101 +1,151 @@
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 <f:layout name="Default" xmlns:f="http://www.w3.org/1999/html"/>
 <f:section name="main">
-<f:flashMessages style="clear:both;"/>
+    <f:flashMessages style="clear:both;"/>
     <f:switch expression="{divfilter}">
-        <f:case value="1"><h1 style="float: left;">Anfragen </h1><h6 style="float: right; text-align: right;"><f:link.action action="teacherList" arguments="{filter: divfilter}"> <span class="glyphicon glyphicon-check"></span> Beantwortete anzeigen</f:link.action></h6></f:case>
-        <f:case value="0"><h1 style="float: left;">Beantwortete Verschiebungen</h1><h6 style="float: right; text-align: right;"><f:link.action action="teacherList" arguments="{filter: divfilter}"> <span class="glyphicon glyphicon-log-in"></span> Offene anzeigen</f:link.action></h6></f:case>
+        <f:case value="1"><h1 style="float: left;">Anfragen </h1>
+            <h6 style="float: right; text-align: right;">
+                <f:link.action action="teacherList" arguments="{filter: divfilter}"><span
+                        class="glyphicon glyphicon-check"></span> Beantwortete anzeigen
+                </f:link.action>
+            </h6>
+        </f:case>
+        <f:case value="0"><h1 style="float: left;">Beantwortete Verschiebungen</h1>
+            <h6 style="float: right; text-align: right;">
+                <f:link.action action="teacherList" arguments="{filter: divfilter}"><span
+                        class="glyphicon glyphicon-log-in"></span> Offene anzeigen
+                </f:link.action>
+            </h6>
+        </f:case>
     </f:switch>
-<f:if condition="{changes}">
-    <f:then>
-<table  class="table table-hover" >
-	<tr>
-		<th></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.course_id" /></th>
-        <th><f:translate key="tx_kzoreschedule_domain_model_project.user_id" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.original_lesson" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson" /> </th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.teacherAnswer" /> </th>
-		<th></th>
+    <f:if condition="{changes}">
+        <f:then>
+            <table class="table table-hover">
+                <tr>
+                    <th></th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.user_id"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.original_lesson"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.teacherAnswer"/>
+                    </th>
+                    <th></th>
 
-	</tr>
-	<f:for each="{changes}" as="change" key="key">
-		<tr>
-			<f:render partial="Change/TeacherAnswerText" arguments="{change : change, role : 'teacher'}"> </f:render>
-			<td>{change.courseId}</td>
-            <td>{vh:array(object: projects, key: key, property: 'userId')}</td>
-			<td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
-			<td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
-			<td></td>
-			<td>
-                <f:if condition="{vh:array(object: projects, key: key, property: 'progress')} == 1">
-                    <f:then>
-                        <f:switch expression="{divfilter}">
-                            <f:case value="0">
-                            <div class="dropdown">
-                                <a class="btn btn-xs btn-default dropdown-toggle"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Antwort bearbeiten
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 1 }"><span class="text-success"><span class="glyphicon glyphicon-ok"></span> Akzeptieren</span></f:link.action></li>
-                                    <li><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 0 }"><span class="text-danger"><span class="glyphicon glyphicon-remove"></span> Ablehnen</span></f:link.action></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Abbrechen</a></li>
-                                </ul>
-                            </div>
-                            </f:case>
-                            <f:case value="1">
-                                <f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 1 }">
-                                    <span data-toggle="tooltip" data-placement="top" title="Zustimmen" class="glyphicon glyphicon-ok"></span>
-                                </f:link.action>
-                                <f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 0 }">
-                                    <span data-toggle="tooltip" data-placement="top" title="Ablehnen" class="glyphicon glyphicon-remove"></span>
-                                </f:link.action>
-                            </f:case>
-                        </f:switch>
+                </tr>
+                <f:for each="{changes}" as="change" key="key">
+                    <tr>
+                        <f:render partial="Change/TeacherAnswerText"
+                                  arguments="{change : change, role : 'teacher'}"></f:render>
+                        <td>{change.courseId}</td>
+                        <td>{vh:array(object: projects, key: key, property: 'userId')}</td>
+                        <td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                        <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                        <td></td>
+                        <td>
+                            <f:if condition="{vh:array(object: projects, key: key, property: 'progress')} == 1">
+                                <f:then>
+                                    <f:switch expression="{divfilter}">
+                                        <f:case value="0">
+                                            <div class="dropdown">
+                                                <a class="btn btn-xs btn-default dropdown-toggle" id="dropdownMenu1"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    Antwort bearbeiten
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <li>
+                                                        <f:link.action action="teacherAnswer" controller="Change"
+                                                                       arguments="{change : change, answer: 1 }"><span
+                                                                class="text-success"><span
+                                                                class="glyphicon glyphicon-ok"></span> Akzeptieren</span>
+                                                        </f:link.action>
+                                                    </li>
+                                                    <li>
+                                                        <f:link.action action="teacherAnswer" controller="Change"
+                                                                       arguments="{change : change, answer: 0 }"><span
+                                                                class="text-danger"><span
+                                                                class="glyphicon glyphicon-remove"></span> Ablehnen</span>
+                                                        </f:link.action>
+                                                    </li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">Abbrechen</a></li>
+                                                </ul>
+                                            </div>
+                                        </f:case>
+                                        <f:case value="1">
+                                            <f:link.action action="teacherAnswer" controller="Change"
+                                                           arguments="{change : change, answer: 1 }">
+                                                <span data-toggle="tooltip" data-placement="top" title="Zustimmen"
+                                                      class="glyphicon glyphicon-ok"></span>
+                                            </f:link.action>
+                                            <f:link.action action="teacherAnswer" controller="Change"
+                                                           arguments="{change : change, answer: 0 }">
+                                                <span data-toggle="tooltip" data-placement="top" title="Ablehnen"
+                                                      class="glyphicon glyphicon-remove"></span>
+                                            </f:link.action>
+                                        </f:case>
+                                    </f:switch>
 
-                    </f:then>
-                    <f:else>
-                        <f:switch expression="{divfilter}">
-                            <f:case value="0">
-                                <div class="dropdown">
-                                    <button disabled class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Antwort bearbeiten
-                                        <span class="caret"></span>
-                                    </button>
-                                </div>
-                            </f:case>
+                                </f:then>
+                                <f:else>
+                                    <f:switch expression="{divfilter}">
+                                        <f:case value="0">
+                                            <div class="dropdown">
+                                                <button disabled class="btn btn-default btn-xs dropdown-toggle"
+                                                        type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="true">
+                                                    Antwort bearbeiten
+                                                    <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </f:case>
 
-                            <f:case value="1">
-                        <span class="text-muted glyphicon glyphicon-ok"></span>
-                        <span class="text-muted glyphicon glyphicon-remove"></span>
-                            </f:case>
-                        </f:switch>
-                    </f:else>
-                </f:if>
-            </td>
-        </tr>
+                                        <f:case value="1">
+                                            <span class="text-muted glyphicon glyphicon-ok"></span>
+                                            <span class="text-muted glyphicon glyphicon-remove"></span>
+                                        </f:case>
+                                    </f:switch>
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
 
-            <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}" ></f:render>
+                    <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}"></f:render>
 
 
-	</f:for>
+                </f:for>
 
-</table>
+            </table>
 
-    </f:then>
-    <f:else>
-        <f:switch expression="{divfilter}">
-            <f:case value="1">
-        <p style="clear: both;">Zurzeit gibt es keine Anfragen (<f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">Beantwortete anzeigen</f:link.action>)</span></p>
-            </f:case>
-            <f:case value="0">
-                <p style="clear: both;">Es wurden keine beantworteten Verschiebungen gefunden (<f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">Offene anzeigen</f:link.action>)</span></p>
-            </f:case>
-        </f:switch>
-    </f:else>
-</f:if>
+        </f:then>
+        <f:else>
+            <f:switch expression="{divfilter}">
+                <f:case value="1">
+                    <p style="clear: both;">Zurzeit gibt es keine Anfragen (
+                        <f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">
+                            Beantwortete anzeigen
+                        </f:link.action>
+                        )</span></p>
+                </f:case>
+                <f:case value="0">
+                    <p style="clear: both;">Es wurden keine beantworteten Verschiebungen gefunden (
+                        <f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">Offene
+                            anzeigen
+                        </f:link.action>
+                        )</span></p>
+                </f:case>
+            </f:switch>
+        </f:else>
+    </f:if>
 
 
 </f:section>

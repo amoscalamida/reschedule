@@ -1,67 +1,67 @@
-
-<table class="tx-kzoreschedule table" >
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.course_id" />
-		</td>
-		<td>
-		{change.courseId}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.original_lesson" />
-		</td>
-		<td>
-			{change.originalLesson ->f:format.date(format: 'd.m.Y H:i')}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson" />
-		</td>
-		<td>
-			{change.changedLesson ->f:format.date(format: 'd.m.Y H:i')}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.secretary_answer" />
-		</td>
-		<!-- Set Color and Text for Secretary Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
-		<f:render partial="Change/SecretaryAnswerText" arguments="{change : change}"> </f:render>
-		<!-- End Secretary Answer -->
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.secretary_comment" />
-		</td>
-		<td>
-		{change.secretaryComment}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.room" />
-		</td>
-		<td>
-		{change.room}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.teacher_answer" />
-		</td>
-		<!-- Set Color and Text for Teacher Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
-		<f:render partial="Change/TeacherAnswerText" arguments="{change : change, project : project, role: 'student'}"> </f:render>
-		<!-- End Teacher Answer -->
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_change.teacher_comment" />
-		</td>
-		<td>
-		{change.teacherComment}
-		</td>
-	</tr>
+<table class="tx-kzoreschedule table">
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
+        </td>
+        <td>
+            {change.courseId}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.original_lesson"/>
+        </td>
+        <td>
+            {change.originalLesson ->f:format.date(format: 'd.m.Y H:i')}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson"/>
+        </td>
+        <td>
+            {change.changedLesson ->f:format.date(format: 'd.m.Y H:i')}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.secretary_answer"/>
+        </td>
+        <!-- Set Color and Text for Secretary Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
+        <f:render partial="Change/SecretaryAnswerText" arguments="{change : change}"></f:render>
+        <!-- End Secretary Answer -->
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.secretary_comment"/>
+        </td>
+        <td>
+            {change.secretaryComment}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.room"/>
+        </td>
+        <td>
+            {change.room}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.teacher_answer"/>
+        </td>
+        <!-- Set Color and Text for Teacher Answer (either 0 => not yet handled, 1 => denied, 2 => approved) -->
+        <f:render partial="Change/TeacherAnswerText"
+                  arguments="{change : change, project : project, role: 'student'}"></f:render>
+        <!-- End Teacher Answer -->
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_change.teacher_comment"/>
+        </td>
+        <td>
+            {change.teacherComment}
+        </td>
+    </tr>
 </table>

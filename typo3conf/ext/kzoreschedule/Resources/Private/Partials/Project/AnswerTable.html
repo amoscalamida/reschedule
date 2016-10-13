@@ -21,7 +21,12 @@
 
 
             <f:case value="2">
-                <td class=" text-success">Alle angenommen <f:link.action action="projectStatusAdjust" class="btn btn-xs text-success" arguments="{project:project, level: 'secretary'}"><span class="glyphicon glyphicon-hand-right" data-toggle="tooltip" data-placement="top" title="Für Sekretariat freigeben"></span></f:link.action></td>
+                <td class=" text-success">Alle angenommen
+                    <f:link.action action="projectStatusAdjust" class="btn btn-xs text-success"
+                                   arguments="{project:project, level: 'secretary'}"><span
+                            class="glyphicon glyphicon-hand-right" data-toggle="tooltip" data-placement="top"
+                            title="Für Sekretariat freigeben"></span></f:link.action>
+                </td>
             </f:case>
 
 
@@ -55,17 +60,17 @@
         <f:switch expression="{secretaryAnswer}">
 
             <f:case value="0">
-                <td class=" text-info"><span>Warten</span> </td>
+                <td class=" text-info"><span>Warten</span></td>
             </f:case>
 
 
             <f:case value="1">
-                <td class=" text-info"><span>In Bearbeitung</span> </td>
+                <td class=" text-info"><span>In Bearbeitung</span></td>
             </f:case>
 
 
             <f:case value="2">
-                <td class=" text-info"><span>In Bearbeitung</span> </td>
+                <td class=" text-info"><span>In Bearbeitung</span></td>
             </f:case>
 
 

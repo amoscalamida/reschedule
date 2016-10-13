@@ -1,4 +1,3 @@
-
 <!-- Project Show Template
  *
  * detail view for project
@@ -6,108 +5,116 @@
  -->
 
 
-<f:layout name="Default" />
-    <f:section name="main">
-        <f:flashMessages />
-        <!-- Render Partial with Project Properties-->
-        <f:render partial="Project/Properties" arguments="{project:project}" /><br>
-        <!-- START Action Buttons Block -->
-        <!-- Check if Project has Changes assigned to it-->
-            <f:if condition="{project.changes}">
+<f:layout name="Default"/>
+<f:section name="main">
+    <f:flashMessages/>
+    <!-- Render Partial with Project Properties-->
+    <f:render partial="Project/Properties" arguments="{project:project}"/>
+    <br>
+    <!-- START Action Buttons Block -->
+    <!-- Check if Project has Changes assigned to it-->
+    <f:if condition="{project.changes}">
+        <f:then>
+            <!-- If Project is in preparation phase (progress: 0) -->
+            <f:if condition="{project.progress} == 0">
                 <f:then>
-                    <!-- If Project is in preparation phase (progress: 0) -->
-                    <f:if condition="{project.progress} == 0">
+                    <!-- Provide button to release the project for teachers (progress: 1) -->
+                    <f:link.action action="projectStatusAdjust" class="btn btn-success"
+                                   arguments="{project : project, level : 'teacher'}">
+                        Für Lehrer freigeben
+                    </f:link.action>
+                    <br><br>
+                </f:then>
+            </f:if>
+            <!-- If Project is released for teachers (progress: 1) -->
+            <f:if condition="{project.progress} == 1">
+                <f:then>
+                    <!-- Provide button to take the project back into preparation phase (progress: 0) -->
+                    <f:link.action action="projectStatusAdjust" class="btn btn-warning"
+                                   arguments="{project : project, level : 'student'}">
+                        Zurückziehen
+                    </f:link.action>
+                    <!--
+                    * Check if all teachers answered and agreed
+                    * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
+                    -->
+                    <f:if condition="{allTeachersAgree}">
                         <f:then>
-                            <!-- Provide button to release the project for teachers (progress: 1) -->
-                            <f:link.action action="projectStatusAdjust" class="btn btn-success" arguments="{project : project, level : 'teacher'}">
-                                Für Lehrer freigeben
+                            <!-- Provide button to release the project for secretary (progress: 2) -->
+                            <f:link.action action="projectStatusAdjust" class="btn btn-success"
+                                           arguments="{project : project, level : 'secretary'}">
+                                Für Sekretariat freigeben
                             </f:link.action>
                             <br><br>
                         </f:then>
+                        <f:else>
+                            <!-- Provide disabled "Pseudo"-Button with explanation why project can't be released -->
+                            <span class="btn btn-default" disabled="disabled"
+                                  onclick="alert('Projekt kann noch nicht eingereicht werden\n\nEs sind entweder nicht alle Lehrer einverstanden oder es haben noch nicht alle geantwortet. \n\nBitte warte auf die Antworten bzw. lösche Verschiebungen welche vom Lehrer verweigert wurden um das Projekt einzureichen.')">
+                                        Für Sekretariat freigeben
+                                    </span>
+                            <br><br>
+                        </f:else>
                     </f:if>
-                    <!-- If Project is released for teachers (progress: 1) -->
-                    <f:if condition="{project.progress} == 1">
+                </f:then>
+            </f:if>
+            <!-- If Project is released for secretary (progress: 2) -->
+            <f:if condition="{project.progress} == 2">
+                <f:then>
+                    <!--
+                    * Check if secretary has not yet seen or interacted with the project
+                    * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
+                    -->
+                    <f:if condition="{secretaryDidNotTouch}">
                         <f:then>
-                            <!-- Provide button to take the project back into preparation phase (progress: 0) -->
-                            <f:link.action action="projectStatusAdjust" class="btn btn-warning" arguments="{project : project, level : 'student'}">
+                            <!-- Provide button to take the project back to teacher release phase (progress: 1) -->
+                            <f:link.action action="projectStatusAdjust" class="btn btn-warning"
+                                           arguments="{project : project, level : 'teacher'}">
                                 Zurückziehen
                             </f:link.action>
-                            <!--
-                            * Check if all teachers answered and agreed
-                            * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
-                            -->
-                            <f:if condition="{allTeachersAgree}">
-                                <f:then>
-                                    <!-- Provide button to release the project for secretary (progress: 2) -->
-                                    <f:link.action action="projectStatusAdjust" class="btn btn-success" arguments="{project : project, level : 'secretary'}">
-                                        Für Sekretariat freigeben
-                                    </f:link.action>
-                                    <br><br>
-                                </f:then>
-                                <f:else>
-                                    <!-- Provide disabled "Pseudo"-Button with explanation why project can't be released -->
-                                    <span class="btn btn-default" disabled="disabled" onclick="alert('Projekt kann noch nicht eingereicht werden\n\nEs sind entweder nicht alle Lehrer einverstanden oder es haben noch nicht alle geantwortet. \n\nBitte warte auf die Antworten bzw. lösche Verschiebungen welche vom Lehrer verweigert wurden um das Projekt einzureichen.')">
-                                        Für Sekretariat freigeben
-                                    </span>
-                                    <br><br>
-                                </f:else>
-                            </f:if>
+                            <br><br>
                         </f:then>
-                    </f:if>
-                    <!-- If Project is released for secretary (progress: 2) -->
-                    <f:if condition="{project.progress} == 2">
-                        <f:then>
-                            <!--
-                            * Check if secretary has not yet seen or interacted with the project
-                            * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
-                            -->
-                            <f:if condition="{secretaryDidNotTouch}">
-                                <f:then>
-                                    <!-- Provide button to take the project back to teacher release phase (progress: 1) -->
-                                    <f:link.action action="projectStatusAdjust" class="btn btn-warning" arguments="{project : project, level : 'teacher'}">
-                                        Zurückziehen
-                                    </f:link.action>
-                                    <br><br>
-                                </f:then>
-                                <f:else>
-                                    <!-- Provide disabled "Pseudo"-Button with explanation why project can't be taken back anymore -->
-                                    <span class="btn btn-default" disabled="disabled" onclick="alert('Projekt kann nicht mehr zurückgezogen werden\n\nEs wurden bereits Verschiebungen vom Sekretariat bearbeitet. \n\nKontaktiere das Sekretariat bei Fragen direkt')">
+                        <f:else>
+                            <!-- Provide disabled "Pseudo"-Button with explanation why project can't be taken back anymore -->
+                            <span class="btn btn-default" disabled="disabled"
+                                  onclick="alert('Projekt kann nicht mehr zurückgezogen werden\n\nEs wurden bereits Verschiebungen vom Sekretariat bearbeitet. \n\nKontaktiere das Sekretariat bei Fragen direkt')">
                                         Zurückziehen
                                     </span>
-                                    <br><br>
-                                </f:else>
-                            </f:if>
-                        </f:then>
+                            <br><br>
+                        </f:else>
                     </f:if>
                 </f:then>
             </f:if>
-        <!-- END Action Buttons Block -->
+        </f:then>
+    </f:if>
+    <!-- END Action Buttons Block -->
 
-        <!-- START Change List Block -->
-        <h4>Verschiebungen in diesem Projekt</h4>
+    <!-- START Change List Block -->
+    <h4>Verschiebungen in diesem Projekt</h4>
 
-        <table class="table table-hover">
-            <!-- Render Table-Rows with Changes for given project -->
-            <f:render partial="Project/ChangeList" arguments="{project:project}" />
-        </table>
-        <!-- Backlink to Projects List -->
-         <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
-             <span class="glyphicon-chevron-left glyphicon"></span> Zurück zur Liste
-         </f:link.action>
-            <!-- If the project is pre secretary phase (progress <2) -->
-            <f:if condition="{project.progress} < 2">
-                <f:then>
-                    <!-- Action-Button to create a new Change in given project  -->
-                    <f:link.action action="new" style="float:right" class="btn btn-success hidden-sm hidden-md hidden-lg" controller="Change" arguments="{project : project}">
-                        <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
-                    </f:link.action>
-                </f:then>
-                <f:else>
-                    <!-- disabled "Pseudo"-Button  -->
-                    <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
+    <table class="table table-hover">
+        <!-- Render Table-Rows with Changes for given project -->
+        <f:render partial="Project/ChangeList" arguments="{project:project}"/>
+    </table>
+    <!-- Backlink to Projects List -->
+    <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
+        <span class="glyphicon-chevron-left glyphicon"></span> Zurück zur Liste
+    </f:link.action>
+    <!-- If the project is pre secretary phase (progress <2) -->
+    <f:if condition="{project.progress} < 2">
+        <f:then>
+            <!-- Action-Button to create a new Change in given project  -->
+            <f:link.action action="new" style="float:right" class="btn btn-success hidden-sm hidden-md hidden-lg"
+                           controller="Change" arguments="{project : project}">
+                <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
+            </f:link.action>
+        </f:then>
+        <f:else>
+            <!-- disabled "Pseudo"-Button  -->
+            <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
                         <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
                     </span>
-                </f:else>
-            </f:if>
-        <!-- END Change List Block -->
-    </f:section>
+        </f:else>
+    </f:if>
+    <!-- END Change List Block -->
+</f:section>

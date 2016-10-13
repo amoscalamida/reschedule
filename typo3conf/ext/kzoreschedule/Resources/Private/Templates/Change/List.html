@@ -1,47 +1,78 @@
 <f:layout name="Default" xmlns:f="http://www.w3.org/1999/html"/>
 
 <f:section name="main">
-<f:flashMessages style="clear:both;"/>
+    <f:flashMessages style="clear:both;"/>
     <f:switch expression="{divfilter}">
-        <f:case value="1"><h1 style="float: left;">Verschiebungen</h1><h6 style="float: right; text-align: right;"><f:link.action action="list" arguments="{filter: divfilter}"> <span class="glyphicon glyphicon-check"></span> Beantwortete anzeigen</f:link.action></h6></f:case>
-        <f:case value="0"><h1 style="float: left;">Beantwortete Verschiebungen</h1><h6 style="float: right; text-align: right;"><f:link.action action="list" arguments="{filter: divfilter}"> <span class="glyphicon glyphicon-log-in"></span> Offene anzeigen</f:link.action></h6></f:case>
+        <f:case value="1"><h1 style="float: left;">Verschiebungen</h1>
+            <h6 style="float: right; text-align: right;">
+                <f:link.action action="list" arguments="{filter: divfilter}"><span
+                        class="glyphicon glyphicon-check"></span> Beantwortete anzeigen
+                </f:link.action>
+            </h6>
+        </f:case>
+        <f:case value="0"><h1 style="float: left;">Beantwortete Verschiebungen</h1>
+            <h6 style="float: right; text-align: right;">
+                <f:link.action action="list" arguments="{filter: divfilter}"><span
+                        class="glyphicon glyphicon-log-in"></span> Offene anzeigen
+                </f:link.action>
+            </h6>
+        </f:case>
     </f:switch>
-<f:if condition="{changes}">
-    <f:then>
-<table  class="tx_kzoreschedule table table-hover" >
-	<tr>
-		<th></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.course_id" /></th>
-        <th><f:translate key="tx_kzoreschedule_domain_model_project.user_id" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.original_lesson" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson" /> </th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_change.teacherAnswer" /> </th>
-		<th></th>
-		<th></th>
-		<th></th>
+    <f:if condition="{changes}">
+        <f:then>
+            <table class="tx_kzoreschedule table table-hover">
+                <tr>
+                    <th></th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.user_id"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.original_lesson"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_change.teacherAnswer"/>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
 
-	</tr>
-	<f:for each="{changes}" as="change">
-		<tr>
-			<f:render partial="Change/TeacherAnswerText" arguments="{change : change, role : 'teacher'}"> </f:render>
-			<td>{change.courseId}</td>
-            <td>{change.project.userId}</td>
-			<td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
-			<td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
-			<td></td>
-			<!--<td><f:if condition="{change.project.progress} == 1"><f:then><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 1 }"><span class="glyphicon glyphicon-ok"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-ok"></span></f:else></f:if></td>-->
-            <!--<td><f:if condition="{change.project.progress} == 1"><f:then><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 0 }"><span class="glyphicon glyphicon-remove"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-remove"></span></f:else></f:if></td>-->
-            <td><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 1 }"><span class="glyphicon glyphicon-ok"></span></f:link.action></td>
-            <td><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 0 }"><span class="glyphicon glyphicon-remove"></span></f:link.action></td>
+                </tr>
+                <f:for each="{changes}" as="change">
+                    <tr>
+                        <f:render partial="Change/TeacherAnswerText"
+                                  arguments="{change : change, role : 'teacher'}"></f:render>
+                        <td>{change.courseId}</td>
+                        <td>{change.project.userId}</td>
+                        <td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                        <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
+                        <td></td>
+                        <!--<td><f:if condition="{change.project.progress} == 1"><f:then><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 1 }"><span class="glyphicon glyphicon-ok"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-ok"></span></f:else></f:if></td>-->
+                        <!--<td><f:if condition="{change.project.progress} == 1"><f:then><f:link.action action="teacherAnswer" controller="Change" arguments="{change : change, answer: 0 }"><span class="glyphicon glyphicon-remove"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-remove"></span></f:else></f:if></td>-->
+                        <td>
+                            <f:link.action action="teacherAnswer" controller="Change"
+                                           arguments="{change : change, answer: 1 }"><span
+                                    class="glyphicon glyphicon-ok"></span></f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="teacherAnswer" controller="Change"
+                                           arguments="{change : change, answer: 0 }"><span
+                                    class="glyphicon glyphicon-remove"></span></f:link.action>
+                        </td>
 
-        </tr>
-	</f:for>
+                    </tr>
+                </f:for>
 
-</table>
-    </f:then>
-    <f:else>
-        <p style="clear: both;">Zurzeit keine Anfragen</span></p>
-    </f:else>
-</f:if>
+            </table>
+        </f:then>
+        <f:else>
+            <p style="clear: both;">Zurzeit keine Anfragen</span></p>
+        </f:else>
+    </f:if>
 
 </f:section>

@@ -1,38 +1,59 @@
+<table class="tx-kzoreschedule table table-basic">
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_project.user_id"/>
+        </td>
+        <td>
+            {project.userId}
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_project.title"/>
+        </td>
+        <td>
+            {project.title}
+        </td>
+        <td>
+            <f:if condition="{project.progress} < 2">
+                <f:then>
+                    <f:link.action action="edit" arguments="{project : project}"><span data-toggle="tooltip"
+                                                                                       data-placement="top"
+                                                                                       title="Titel bearbeiten"
+                                                                                       class="glyphicon glyphicon-pencil"></span>
+                    </f:link.action>
+                </f:then>
+                <f:else><span class="text-muted glyphicon glyphicon-pencil"></span></f:else>
+            </f:if>
+        </td>
 
-<table class="tx-kzoreschedule table table-basic" >
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_project.user_id" />
-		</td>
-		<td>
-			{project.userId}
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_project.title" />
-		</td>
-		<td>
-		{project.title}
-		</td>
-		<td><f:if condition="{project.progress} < 2"><f:then><f:link.action action="edit" arguments="{project : project}"> <span data-toggle="tooltip" data-placement="top" title="Titel bearbeiten" class="glyphicon glyphicon-pencil"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-pencil"></span></f:else></f:if></td>
-
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_project.comment" />
-		</td>
-		<td>
-		{project.comment}
-		</td>
-		<td><f:if condition="{project.progress} < 2"><f:then><f:link.action action="edit" arguments="{project : project}"> <span data-toggle="tooltip" data-placement="top" title="Grund bearbeiten" class="glyphicon glyphicon-pencil"></span></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-pencil"></span></f:else></f:if></td>
-	</tr>
-	<tr>
-		<td>
-			<f:translate key="tx_kzoreschedule_domain_model_project.progress" />
-		</td>
-		<f:render partial="Project/ProgressTable" arguments="{project : project}" />
-		<td></td>
-	</tr>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_project.comment"/>
+        </td>
+        <td>
+            {project.comment}
+        </td>
+        <td>
+            <f:if condition="{project.progress} < 2">
+                <f:then>
+                    <f:link.action action="edit" arguments="{project : project}"><span data-toggle="tooltip"
+                                                                                       data-placement="top"
+                                                                                       title="Grund bearbeiten"
+                                                                                       class="glyphicon glyphicon-pencil"></span>
+                    </f:link.action>
+                </f:then>
+                <f:else><span class="text-muted glyphicon glyphicon-pencil"></span></f:else>
+            </f:if>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <f:translate key="tx_kzoreschedule_domain_model_project.progress"/>
+        </td>
+        <f:render partial="Project/ProgressTable" arguments="{project : project}"/>
+        <td></td>
+    </tr>
 </table>
