@@ -5,8 +5,8 @@
 
 
 <f:form.validationResults>
+    <!-- check if error messages are present -->
     <f:if condition="{validationResults.flattenedErrors}">
-        <f:debug>{validationResults.flattenedErrors}</f:debug>
         <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
             <f:for each="{errors}" as="error">
                 <script>
