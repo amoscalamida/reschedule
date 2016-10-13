@@ -1,21 +1,23 @@
-<f:layout name="Default" />
+<f:layout name="Default"/>
 
 <f:section name="main">
     <h1>Verschiebung beantworten</h1>
 
-    <f:flashMessages />
+    <f:flashMessages/>
 
-    <f:render partial="FormErrors" arguments="{object:Change}" />
+    <f:render partial="FormErrors" arguments="{object:Change}"/>
 
-    <f:render partial="Change/InlineProperties" arguments="{change:change}" />
+    <f:render partial="Change/InlineProperties" arguments="{change:change}"/>
 
     <f:form action="teacherAnswerCompletion" name="change" object="{change}">
-        <f:form.hidden class="form-control"  property="teacherAnswer" /><br />
+        <f:form.hidden class="form-control" property="teacherAnswer"/>
+        <br/>
         <label for="teacherComment">
-            <f:translate key="tx_kzoreschedule_domain_model_change.teacher_comment" />
-        </label><br />
-        <f:form.textarea class="form-control" property="teacherComment" cols="40" rows="3" /><br />
+            <f:translate key="tx_kzoreschedule_domain_model_change.teacher_comment"/>
+        </label><br/>
+        <f:form.textarea class="form-control" property="teacherComment" cols="40" rows="3"/>
+        <br/>
         <f:link.action action="teacherList" controller="Project" class="btn btn-default">Abbrechen</f:link.action>
-        <f:form.submit class="btn btn-success" value="Speichern" />
+        <f:form.submit class="btn btn-success" value="Speichern"/>
     </f:form>
 </f:section>

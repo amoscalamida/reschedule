@@ -1,54 +1,82 @@
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
-<f:layout name="Default" />
+<f:layout name="Default"/>
 <f:section name="main">
-	<f:flashMessages />
+    <f:flashMessages/>
     <f:if condition="{projects}">
         <f:then>
-<h1>Projekte</h1>
-<table  class="tx_kzoreschedule table table-hover" >
-	<tr>
-		<th><f:translate key="tx_kzoreschedule_domain_model_project.title" /></th>
-        <th><f:translate key="tx_kzoreschedule_domain_model_project.progress" /></th>
-		<th>Antwort</th>
-		<th></th>
-		<th></th>
-        <th></th>
-		<th></th>
-	</tr>
+            <h1>Projekte</h1>
+            <table class="tx_kzoreschedule table table-hover">
+                <tr>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.title"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.progress"/>
+                    </th>
+                    <th>Antwort</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
 
-			<f:for each="{projects}" as="project" key="key">
-				<tr>
-					<td><f:link.action action="show" arguments="{project : project}">{project.title}</f:link.action></td>
-					<f:render partial="Project/ProgressTable" arguments="{project : project}" />
-                    <f:alias map="{teacherAnswer : '{vh:array(object: teacherAnswers, key: key, property: \'none\')}', secretaryAnswer : '{vh:array(object: secretaryAnswers, key: key, property: \'none\')}' }">
-                        <f:render partial="Project/AnswerTable" arguments="{teacherAnswer : teacherAnswer, secretaryAnswer: secretaryAnswer, progress : project.progress, project: project}" />
-                    </f:alias>
-                    <td> </td>
-					<td> </td>
-					<td><f:link.action action="show" arguments="{project : project}"> <span data-toggle="tooltip" data-placement="top" title="Projekt anzeigen" class="glyphicon glyphicon-eye-open"></f:link.action></td>
-					<td><f:if condition="{project.progress} != 2"><f:then><f:link.action action="delete" arguments="{project : project}"> <span data-toggle="tooltip" data-placement="top" title="Projekt löschen" class="glyphicon glyphicon-trash" ></f:link.action></f:then><f:else><span class="text-muted glyphicon glyphicon-trash"></span></f:else></f:if></td>
-				</tr>
-   			 </f:for>
-				<tr>
-       				 <td colspan="8" style="text-align: right;">
-           				 <f:link.action action="new">
-               			 <span class="glyphicon-plus glyphicon"></span> Neues Projekt
-						 </f:link.action>
-       				 </td>
-    			</tr>
-</table>
-	</f:then>
-	<f:else>
-		<div class="row">
-			<div class="col-md-5 col-md-offset-3">
-				<div class="well">
-					<h5 class="text-center">Noch keine Projekte</h5>
-					<p class="small text-center">Ein Projekt sammelt eine oder mehrere zusammenhängende Verschiebungen, welche dem Sekretariat gemeinsam abgegeben werden können.<br /></p>
-					<div class="text-center"><f:link.action action="new" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Neues Projekt</f:link.action></div>
-				</div>
-			</div>
-		</div>
+                <f:for each="{projects}" as="project" key="key">
+                    <tr>
+                        <td>
+                            <f:link.action action="show" arguments="{project : project}">{project.title}</f:link.action>
+                        </td>
+                        <f:render partial="Project/ProgressTable" arguments="{project : project}"/>
+                        <f:alias
+                                map="{teacherAnswer : '{vh:array(object: teacherAnswers, key: key, property: \'none\')}', secretaryAnswer : '{vh:array(object: secretaryAnswers, key: key, property: \'none\')}' }">
+                            <f:render partial="Project/AnswerTable"
+                                      arguments="{teacherAnswer : teacherAnswer, secretaryAnswer: secretaryAnswer, progress : project.progress, project: project}"/>
+                        </f:alias>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <f:link.action action="show" arguments="{project : project}"><span data-toggle="tooltip"
+                                                                                               data-placement="top"
+                                                                                               title="Projekt anzeigen"
+                                                                                               class="glyphicon glyphicon-eye-open">
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:if condition="{project.progress} != 2">
+                                <f:then>
+                                    <f:link.action action="delete" arguments="{project : project}"><span
+                                            data-toggle="tooltip" data-placement="top" title="Projekt löschen"
+                                            class="glyphicon glyphicon-trash"></f:link.action>
+                                </f:then>
+                                <f:else><span class="text-muted glyphicon glyphicon-trash"></span></f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+                <tr>
+                    <td colspan="8" style="text-align: right;">
+                        <f:link.action action="new">
+                            <span class="glyphicon-plus glyphicon"></span> Neues Projekt
+                        </f:link.action>
+                    </td>
+                </tr>
+            </table>
+        </f:then>
+        <f:else>
+            <div class="row">
+                <div class="col-md-5 col-md-offset-3">
+                    <div class="well">
+                        <h5 class="text-center">Noch keine Projekte</h5>
+                        <p class="small text-center">Ein Projekt sammelt eine oder mehrere zusammenhängende
+                            Verschiebungen, welche dem Sekretariat gemeinsam abgegeben werden können.<br/></p>
+                        <div class="text-center">
+                            <f:link.action action="new" class="btn btn-success"><span
+                                    class="glyphicon glyphicon-plus"></span> Neues Projekt
+                            </f:link.action>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-	</f:else>
-	</f:if>
+        </f:else>
+    </f:if>
 </f:section>

@@ -10,38 +10,38 @@
         //initialize date and time-picker on .datetime class
         jQuery('.datetime').datetimepicker({
             //set language
-            lang:'de',
+            lang: 'de',
             //define month and weekday strings for language
-            i18n:{
-                de:{
-                    months:[
-                        'Januar','Februar','März','April',
-                        'Mai','Juni','Juli','August',
-                        'September','Oktober','November','Dezember'
+            i18n: {
+                de: {
+                    months: [
+                        'Januar', 'Februar', 'März', 'April',
+                        'Mai', 'Juni', 'Juli', 'August',
+                        'September', 'Oktober', 'November', 'Dezember'
                     ],
-                    dayOfWeek:[
+                    dayOfWeek: [
                         'So', 'Mo', 'Di', 'Mi',
                         'Do', 'Fr', 'Sa'
                     ]
                 }
             },
             //set selectable times (lesson beginning)
-            allowTimes:['07:30','08:25', '09:20','10:25','11:20','12:25','13:20','14:15','15:10','16:05', '16:55'],
+            allowTimes: ['07:30', '08:25', '09:20', '10:25', '11:20', '12:25', '13:20', '14:15', '15:10', '16:05', '16:55'],
             //set format to be written into the input field
-            format:'d.m.Y H:i',
+            format: 'd.m.Y H:i',
             //define start day of week (monday)
             dayOfWeekStart: '1',
             //set inline display (hide input, just show datepicker)
             inline: 'true',
 
             /* setting dates
-            * system works with 1970/01/01 as today and every year/month/day +/- from today
-            * set minimum date to today
-            */
+             * system works with 1970/01/01 as today and every year/month/day +/- from today
+             * set minimum date to today
+             */
 
-            minDate:'+1970/01/01',
+            minDate: '+1970/01/01',
             //set maximum date to +6 months (year/month/day)
-            maxDate:'+1970/06/01'
+            maxDate: '+1970/06/01'
         });
     });
 

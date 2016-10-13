@@ -1,19 +1,19 @@
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
-<f:layout name="Default" />
+<f:layout name="Default"/>
 <f:section name="main">
 
-    <vh:findRoom datetime="{Change.changedLesson}" category="{category}"> </vh:findRoom>
+    <vh:findRoom datetime="{Change.changedLesson}" category="{category}"></vh:findRoom>
 
     <script>
-        $('.room-select').click( function(e) {
-            e.preventDefault();
-            $("input[name='tx_kzoreschedule_secretary[change][room]']").val($(this).html());
-            $(".roomInput").addClass("has-success");
-            $("#roomSearchToggle").removeClass("btn-warning");
-            $("#roomSearchToggle").addClass("btn-success");
-            $('#roomSearch').modal('hide');
-            return false;
-        }
+        $('.room-select').click(function (e) {
+                    e.preventDefault();
+                    $("input[name='tx_kzoreschedule_secretary[change][room]']").val($(this).html());
+                    $(".roomInput").addClass("has-success");
+                    $("#roomSearchToggle").removeClass("btn-warning");
+                    $("#roomSearchToggle").addClass("btn-success");
+                    $('#roomSearch').modal('hide');
+                    return false;
+                }
         );
 
     </script>

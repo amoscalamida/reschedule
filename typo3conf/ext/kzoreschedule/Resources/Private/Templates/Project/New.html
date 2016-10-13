@@ -1,17 +1,16 @@
-
-<f:layout name="Default" />
+<f:layout name="Default"/>
 
 <f:section name="main">
-<h1>Neues Projekt</h1>
+    <h1>Neues Projekt</h1>
 
-<f:flashMessages />
+    <f:flashMessages/>
 
-<f:form action="create"  name="newProject" object="{newProject}">
-<f:render partial="Project/FormFields" />
-    <f:link.action action="studentList" class="btn btn-default">Abbrechen</f:link.action>
-	<f:form.submit class="btn btn-success" value="Projekt erstellen" />
-</f:form>
+    <f:form action="create" name="newProject" object="{newProject}">
+        <f:render partial="Project/FormFields"/>
+        <f:link.action action="studentList" class="btn btn-default">Abbrechen</f:link.action>
+        <f:form.submit class="btn btn-success" value="Projekt erstellen"/>
+    </f:form>
 
-    <f:render partial="FormErrors" arguments="{object:Project}" />
+    <f:render partial="FormErrors" arguments="{object:Project}"/>
 
 </f:section>
