@@ -13,13 +13,7 @@
                     // split property path to get only property name
                     property = ("{propertyPath}").split(".")[1];
                     // find label for property and append the translated error message
-                    $('label[for="' + property + '"]').append("<p class='text-danger'><f:translate key="
-                    error.
-                    {
-                        error.code
-                    }
-                    "></f:translate></p>"
-                    )
+                    $('label[for="' + property + '"]').append("<p class='text-danger'><f:translate key='error.{error.code}'> </f:translate></p>");
                 </script>
             </f:for>
         </f:for>
