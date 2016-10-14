@@ -1,43 +1,64 @@
-
-<f:layout name="Default" />
-
-This Template is responsible for creating a table of domain objects.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+<f:layout name="Default"/>
 
 <f:section name="content">
-<h1>Admin Listing for Project</h1>
+    <h1>Administrator reSchedule</h1>
 
-<f:flashMessages />
+    <f:flashMessages/>
 
-<table  class="tx_kzoreschedule" >
-	<tr>
-		<th><f:translate key="tx_kzoreschedule_domain_model_project.user_id" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_project.title" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_project.comment" /></th>
-		<th><f:translate key="tx_kzoreschedule_domain_model_project.progress" /></th>
-		<th> </th>
-		<th> </th>
-	</tr>
+    <f:if condition="{projects}">
+        <f:then>
+            <table class="tx_kzoreschedule table">
+                <tr>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.user_id"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.comment"/>
+                    </th>
+                    <th>
+                        <f:translate key="tx_kzoreschedule_domain_model_project.progress"/>
+                    </th>
+                    <th></th>
+                </tr>
 
-	<f:for each="{projects}" as="project">
-		<tr>
-			<td><f:link.action action="show" arguments="{project : project}"> {project.userId}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{project : project}"> {project.title}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{project : project}"> {project.comment}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{project : project}"> {project.progress}</f:link.action></td>
-			<td><f:link.action action="edit" arguments="{project : project}">Edit</f:link.action></td>
-			<td><f:link.action action="delete" arguments="{project : project}">Delete</f:link.action></td>
-		</tr>
-	</f:for>
-</table>
+                <f:for each="{projects}" as="project">
+                    <tr>
+                        <td> {project.userId}</td>
+                        <td> {project.comment}
 
-<f:link.action action="new">New Project</f:link.action>
+                        </td>
+                        <f:render partial="Project/ProgressTable" arguments="{project : project}"/>
+
+                        <td>
+                            <f:link.action action="delete" arguments="{project : project}">Löschen</f:link.action>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+            <button type="button" class="btn btn-danger" data-toggle="modal" onclick="console.log(document.getElementsByClassName('modal-backdrop')[0])" data-target="#confirmationModal">
+                Alle Projekte löschen
+            </button>
+        </f:then>
+        <f:else>
+            <h5>Keine Projekte vorhanden</h5>
+        </f:else>
+    </f:if>
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Aktion bestätigen</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Diese Aktion löscht ALLE Projekte und kann nicht rückgängig gemacht werden.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                    <f:link.action action="deleteAll" class="btn btn-danger">Ja, ich möchte alle Projekte löschen</f:link.action>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </f:section>
