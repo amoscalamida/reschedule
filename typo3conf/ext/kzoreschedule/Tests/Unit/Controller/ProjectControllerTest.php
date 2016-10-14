@@ -32,178 +32,108 @@ namespace AmosCalamida\Kzoreschedule\Tests\Unit\Controller;
 class ProjectControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
 
-	/**
-	 * @var \AmosCalamida\Kzoreschedule\Controller\ProjectController
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \AmosCalamida\Kzoreschedule\Controller\ProjectController
+     */
+    protected $subject = NULL;
 
-	public function setUp()
-	{
-		$this->subject = $this->getMock('AmosCalamida\\Kzoreschedule\\Controller\\ProjectController', array('redirect', 'forward', 'addFlashMessage'), array(), '', FALSE);
-	}
+    public function setUp()
+    {
+        $this->subject = $this->getMock('AmosCalamida\\Kzoreschedule\\Controller\\ProjectController', array('redirect', 'forward', 'addFlashMessage'), array(), '', FALSE);
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllProjectsFromRepositoryAndAssignsThemToView()
-	{
+    /**
+     * @test
+     */
+    public function listActionFetchesAllProjectsFromRepositoryAndAssignsThemToView()
+    {
 
-		$allProjects = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
+        $allProjects = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
 
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('findAll'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('findAll')->will($this->returnValue($allProjects));
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
+        $projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('findAll'), array(), '', FALSE);
+        $projectRepository->expects($this->once())->method('findAll')->will($this->returnValue($allProjects));
+        $this->inject($this->subject, 'projectRepository', $projectRepository);
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('projects', $allProjects);
-		$this->inject($this->subject, 'view', $view);
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $view->expects($this->once())->method('assign')->with('projects', $allProjects);
+        $this->inject($this->subject, 'view', $view);
 
-		$this->subject->listAction();
-	}
+        $this->subject->listAction();
+    }
 
-	/**
-	 * @test
-	 */
-	public function showActionAssignsTheGivenProjectToView()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
+    /**
+     * @test
+     */
+    public function showActionAssignsTheGivenProjectToView()
+    {
+        $project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('project', $project);
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $this->inject($this->subject, 'view', $view);
+        $view->expects($this->once())->method('assign')->with('project', $project);
 
-		$this->subject->showAction($project);
-	}
+        $this->subject->showAction($project);
+    }
 
-	/**
-	 * @test
-	 */
-	public function createActionAddsTheGivenProjectToProjectRepository()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
+    /**
+     * @test
+     */
+    public function createActionAddsTheGivenProjectToProjectRepository()
+    {
+        $project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
 
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('add'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('add')->with($project);
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
+        $projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('add'), array(), '', FALSE);
+        $projectRepository->expects($this->once())->method('add')->with($project);
+        $this->inject($this->subject, 'projectRepository', $projectRepository);
 
-		$this->subject->createAction($project);
-	}
+        $this->subject->createAction($project);
+    }
 
-	/**
-	 * @test
-	 */
-	public function editActionAssignsTheGivenProjectToView()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
+    /**
+     * @test
+     */
+    public function editActionAssignsTheGivenProjectToView()
+    {
+        $project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('project', $project);
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $this->inject($this->subject, 'view', $view);
+        $view->expects($this->once())->method('assign')->with('project', $project);
 
-		$this->subject->editAction($project);
-	}
+        $this->subject->editAction($project);
+    }
 
-	/**
-	 * @test
-	 */
-	public function updateActionUpdatesTheGivenProjectInProjectRepository()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
+    /**
+     * @test
+     */
+    public function updateActionUpdatesTheGivenProjectInProjectRepository()
+    {
+        $project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
 
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('update'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('update')->with($project);
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
+        $projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('update'), array(), '', FALSE);
+        $projectRepository->expects($this->once())->method('update')->with($project);
+        $this->inject($this->subject, 'projectRepository', $projectRepository);
 
-		$this->subject->updateAction($project);
-	}
+        $this->subject->updateAction($project);
+    }
 
-	/**
-	 * @test
-	 */
-	public function deleteActionRemovesTheGivenProjectFromProjectRepository()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
+    /**
+     * @test
+     */
+    public function deleteActionRemovesTheGivenProjectFromProjectRepository()
+    {
+        $project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
 
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('remove'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('remove')->with($project);
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
+        $projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('remove'), array(), '', FALSE);
+        $projectRepository->expects($this->once())->method('remove')->with($project);
+        $this->inject($this->subject, 'projectRepository', $projectRepository);
 
-		$this->subject->deleteAction($project);
-	}
+        $this->subject->deleteAction($project);
+    }
 
-	/**
-	 * @test
-	 */
-	public function deleteActionRemovesTheGivenProjectFromProjectRepository()
-	{
-		$project = new \AmosCalamida\Kzoreschedule\Domain\Model\Project();
-
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('remove'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('remove')->with($project);
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
-
-		$this->subject->deleteAction($project);
-	}
-
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllProjectsFromRepositoryAndAssignsThemToView()
-	{
-
-		$allProjects = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
-
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('findAll'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('findAll')->will($this->returnValue($allProjects));
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('projects', $allProjects);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
-
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllProjectsFromRepositoryAndAssignsThemToView()
-	{
-
-		$allProjects = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
-
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('findAll'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('findAll')->will($this->returnValue($allProjects));
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('projects', $allProjects);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
-
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllProjectsFromRepositoryAndAssignsThemToView()
-	{
-
-		$allProjects = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
-
-		$projectRepository = $this->getMock('AmosCalamida\\Kzoreschedule\\Domain\\Repository\\ProjectRepository', array('findAll'), array(), '', FALSE);
-		$projectRepository->expects($this->once())->method('findAll')->will($this->returnValue($allProjects));
-		$this->inject($this->subject, 'projectRepository', $projectRepository);
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('projects', $allProjects);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
 }

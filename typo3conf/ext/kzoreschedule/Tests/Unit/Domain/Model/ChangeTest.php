@@ -156,10 +156,10 @@ class ChangeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function setSecretaryCommentForStringSetsSecretaryComment()
 	{
-		$this->subject->setSecretaryComment('Conceived at T3CON10');
+		$this->subject->setSecretaryComment('Comment');
 
 		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
+			'Comment',
 			'secretaryComment',
 			$this->subject
 		);
@@ -181,10 +181,10 @@ class ChangeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function setRoomForStringSetsRoom()
 	{
-		$this->subject->setRoom('Conceived at T3CON10');
+		$this->subject->setRoom('Z3');
 
 		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
+			'Z3',
 			'room',
 			$this->subject
 		);
@@ -231,10 +231,10 @@ class ChangeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function setTeacherCommentForStringSetsTeacherComment()
 	{
-		$this->subject->setTeacherComment('Conceived at T3CON10');
+		$this->subject->setTeacherComment('Comment');
 
 		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
+			'Comment',
 			'teacherComment',
 			$this->subject
 		);

@@ -79,10 +79,10 @@ class ProjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function setTitleForStringSetsTitle()
 	{
-		$this->subject->setTitle('Conceived at T3CON10');
+		$this->subject->setTitle('Title');
 
 		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
+			'Title',
 			'title',
 			$this->subject
 		);
@@ -104,10 +104,10 @@ class ProjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function setCommentForStringSetsComment()
 	{
-		$this->subject->setComment('Conceived at T3CON10');
+		$this->subject->setComment('Title');
 
 		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
+			'Title',
 			'comment',
 			$this->subject
 		);
