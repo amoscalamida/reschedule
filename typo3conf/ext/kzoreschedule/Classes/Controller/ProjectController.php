@@ -270,13 +270,15 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function deleteAllAction()
     {
 
-        foreach ($this->projectRepository->findAll() as $project) {
+        $projects = $this->projectRepository->findAll();
+        $projectsCount = count($projects);
+
+        foreach ($projects as $project) {
             $this->projectRepository->remove($project);
         }
 
-
-
-        
+        $this->addFlashMessage("Es wurden ".$projectsCount." Projekte gelöscht");
+        $this->redirect("adminList");
     }
     
     /**
