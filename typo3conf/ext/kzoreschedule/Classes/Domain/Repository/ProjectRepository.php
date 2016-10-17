@@ -42,11 +42,12 @@ class ProjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @return object
      */
-    public function findByPublicAndCourses(array $teacherCourses) {
+    public function findByPublicAndCourses(array $teacherCourses)
+    {
         $query = $this->createQuery();
         $query->matching(
-        $query->logicalAnd($query->in('progress', array(1,2,3)), $query->in('changes.course_id', $teacherCourses))
-    );
+            $query->logicalAnd($query->in('progress', array(1, 2, 3)), $query->in('changes.course_id', $teacherCourses))
+        );
         return $query->execute();
     }
 
