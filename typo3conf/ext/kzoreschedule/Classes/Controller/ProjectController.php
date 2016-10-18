@@ -196,7 +196,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * on close first check for unanswered changes
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @param string $modification modification to perform (either open or close)
+     * @param string $modification - modification to perform (either open or close)
      * @return void
      */
     public function secretaryChangeAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $modification)
