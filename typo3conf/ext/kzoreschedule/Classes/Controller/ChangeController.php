@@ -28,7 +28,7 @@ namespace AmosCalamida\Kzoreschedule\Controller;
  ***************************************************************/
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
-setlocale (LC_ALL, 'de_CH.UTF-8');
+setlocale(LC_ALL, 'de_CH.UTF-8');
 
 /**
  * ChangeController
@@ -55,7 +55,6 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @inject
      */
     protected $projectRepository = NULL;
-
 
 
     /**
@@ -106,7 +105,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function newAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange = Null)
     {
-        $this->view->assign('project',$project);
+        $this->view->assign('project', $project);
         $this->view->assign('newChange', $newChange);
     }
 
@@ -118,21 +117,35 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param void
      */
-    public function initializeCreateAction() {
-        $this->arguments->getArgument('newChange')
-            ->getPropertyMappingConfiguration()->forProperty('originalLesson')
-            ->setTypeConverterOption(
-                'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-                'd.m.Y H:i'
-            );
-        $this->arguments->getArgument('newChange')
-            ->getPropertyMappingConfiguration()->forProperty('changedLesson')
-            ->setTypeConverterOption(
-                'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-                'd.m.Y H:i'
-            );
+    public function initializeCreateAction()
+    {
+
+        if ($this->request->hasArgument('newChange')) {
+            $request = $this->request->getArgument('newChange');
+            if (strlen($request['originalLesson'])) {
+                $this->arguments->getArgument('newChange')
+                    ->getPropertyMappingConfiguration()->forProperty('originalLesson')
+                    ->setTypeConverterOption(
+                        'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+                        \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'd.m.Y H:i'
+                    );
+            } else {
+                $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
+            }
+
+            if (strlen($request['changedLesson'])) {
+                $this->arguments->getArgument('newChange')
+                    ->getPropertyMappingConfiguration()->forProperty('changedLesson')
+                    ->setTypeConverterOption(
+                        'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+                        \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'd.m.Y H:i'
+                    );
+            } else {
+                $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
+            }
+        }
     }
 
     /**
@@ -148,9 +161,9 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $project->addChange($newChange);
         $this->projectRepository->update($project);
-        $this->redirect("show", "Project",NULL,array("project" => $project));
+        $this->redirect("show", "Project", NULL, array("project" => $project));
     }
-    
+
     /**
      * action edit
      *
@@ -173,7 +186,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param void
      */
-    public function initializeUpdateAction() {
+    public function initializeUpdateAction()
+    {
         $this->arguments->getArgument('change')
             ->getPropertyMappingConfiguration()->forProperty('originalLesson')
             ->setTypeConverterOption(
@@ -199,13 +213,13 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return void
      */
-    public function updateAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change,\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
+    public function updateAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
         $this->addFlashMessage('Die Verschiebung wurde aktualisiert.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->update($change);
-        $this->redirect("show", "Project",NULL,array("project" => $project));
+        $this->redirect("show", "Project", NULL, array("project" => $project));
     }
-    
+
     /**
      * action delete
      *
@@ -215,13 +229,13 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return void
      */
-    public function deleteAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change,\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
+    public function deleteAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
         $this->addFlashMessage('Die Verschiebung wurde gelöscht.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->remove($change);
-        $this->redirect("show", "Project",NULL,array("project" => $project));
+        $this->redirect("show", "Project", NULL, array("project" => $project));
     }
-    
+
     /**
      * action secretaryProcess
      *
@@ -234,11 +248,11 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function secretaryProcessAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, $answer)
     {
-        $change->setSecretaryAnswer((($answer == 1)?2:1));
+        $change->setSecretaryAnswer((($answer == 1) ? 2 : 1));
         if ($answer == 0) {
             $change->setRoom("");
         }
-        $this->addFlashMessage('Die Verschiebung wird '.(($change->getSecretaryAnswer() == 2)?'akzeptiert':'abgelehnt').'', '', ($change->getSecretaryAnswer() == 2)?\TYPO3\CMS\Core\Messaging\AbstractMessage::OK : \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage('Die Verschiebung wird ' . (($change->getSecretaryAnswer() == 2) ? 'akzeptiert' : 'abgelehnt') . '', '', ($change->getSecretaryAnswer() == 2) ? \TYPO3\CMS\Core\Messaging\AbstractMessage::OK : \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         $this->view->assign('change', $change);
         $this->view->assign('answer', $answer);
 
@@ -255,9 +269,9 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function secretaryProcessCompletionAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change)
     {
-        $this->addFlashMessage('Die Verschiebung wurde erfolgreich '.(($change->getSecretaryAnswer() == 2)?'akzeptiert':'abgelehnt').'. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->addFlashMessage('Die Verschiebung wurde erfolgreich ' . (($change->getSecretaryAnswer() == 2) ? 'akzeptiert' : 'abgelehnt') . '. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->update($change);
-        $this->redirect("secretaryList","Project");
+        $this->redirect("secretaryList", "Project");
 
     }
 
@@ -273,8 +287,8 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function teacherAnswerAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, $answer)
     {
-        $change->setTeacherAnswer((($answer == 1)?2:1));
-        $this->addFlashMessage('Sie sind mit der Verschiebung '.(($change->getTeacherAnswer() == 2)?'einverstanden':'nicht einverstanden').'', '', ($change->getTeacherAnswer() == 2)?\TYPO3\CMS\Core\Messaging\AbstractMessage::OK : \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $change->setTeacherAnswer((($answer == 1) ? 2 : 1));
+        $this->addFlashMessage('Sie sind mit der Verschiebung ' . (($change->getTeacherAnswer() == 2) ? 'einverstanden' : 'nicht einverstanden') . '', '', ($change->getTeacherAnswer() == 2) ? \TYPO3\CMS\Core\Messaging\AbstractMessage::OK : \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         $this->view->assign('change', $change);
 
     }
@@ -289,9 +303,9 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function teacherAnswerCompletionAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change)
     {
-        $this->addFlashMessage('Die Verschiebung wurde '.(($change->getTeacherAnswer() == 2)?'akzeptiert':'abgelehnt').' und ist nun unter "Beantwortete Verschiebungen" zu finden. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->addFlashMessage('Die Verschiebung wurde ' . (($change->getTeacherAnswer() == 2) ? 'akzeptiert' : 'abgelehnt') . ' und ist nun unter "Beantwortete Verschiebungen" zu finden. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->update($change);
-        $this->redirect("teacherList","Project");
+        $this->redirect("teacherList", "Project");
 
     }
 
@@ -304,13 +318,14 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @return string
      */
-    public function findRoomAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change) {
+    public function findRoomAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change)
+    {
 
-    $this->view->assign("Change", $change);
-    if($this->request->hasArgument('category')){
+        $this->view->assign("Change", $change);
+        if ($this->request->hasArgument('category')) {
             $category = $this->request->getArgument('category');
             $this->view->assign("category", $category);
-    }
+        }
 
 
     }
