@@ -5,9 +5,11 @@ namespace AmosCalamida\Kzoreschedule\ViewHelpers;
 class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
-     * @param datetime $datetime The date and time of the Lesson
-     * @param string $category The category string
-     * @return array the list of rooms
+     * this ViewHelper searches the timetable for available rooms in a specified lesson
+     *
+     * @param datetime $datetime - The date and time of the lesson
+     * @param string $category - The room category requested
+     * @return string - the list of available rooms as html output
      */
 
     public function render($datetime,$category) {
@@ -41,32 +43,39 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
         $request = "https://api.tam.ch/$school/$controller?mod=$mod";
 
 
-
-
-
-        $result = exec("curl ".$request
+        $api_result = exec("curl ".$request
             .' -H "Accept:application/xml"'
             .' -H "X-gr-AuthDate:'.$headers['X-gr-AuthDate'].'"'
             .' -H "Authorization:'.$headers['Authorization'].'"'
         );
-        $json = json_decode($result)->body;
+        //decode result body as php array
+        $json = json_decode($api_result)->body;
 
 
 
         $rooms = array();
+        //split the input datetime to date and startTime of lesson
         $Query = array("Date" => $datetime->format('Y-m-d'), "StartTime" => $datetime->format('H:i:s'));
         $result = array();
         $course_count = 0;
 
         foreach ($json as $course) {
+            //push all found rooms in reference-array $rooms only if they don't already exist in it
             if (!in_array($course->Location,$rooms)) {
                 array_push($rooms, $course->Location);
             }
         }
 
         foreach ($json as $course) {
+            //compare date and time for each course with date and time from the passed change
             if ($course->Date == $Query["Date"] AND $course->StartTime == $Query["StartTime"])
             {
+                /** course takes place at the same time as the planned change
+                 *
+                 * search the location (room) of the course in reference-array
+                 * if room is found it will be removed from the reference-array
+                 * because the room is not available.
+                 */
                 if(($key = array_search($course->Location, $rooms)) !== false) {
                     unset($rooms[$key]);
                     $course_count++;
@@ -74,97 +83,68 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             }
         }
 
+        /** if no course matches with the change time there are no lessons this day
+         * -> timetable data is not available for this date
+         * This prevents the ViewHelper from returning anything
+         */
         if ($course_count == 0) {
             return "Suche fehlgeschlagen: Für dieses Datum stehen (noch) keine Stundenpläne zur Verfügung. </br> ";
             die();
         }
 
 
-        switch ($category) {
-
-            case "G":
-                if(substr($room, 0, 1) != 'C' && substr($room, 0, 1) != 'B' && substr($room, 0, 2) != 'TH' && substr($room, 0, 1) != 'Z' && substr($room, 0, 1) != 'P' && is_numeric(substr($room, 0, 1))){
-                array_push($result,$room);
-                }
-                break;
-            case "C":
-                if(substr($room, 0, 1) == 'C'){
-                 array_push($result,$room);
-                }
-                break;
-            case "B":
-               if(substr($room, 0, 1) == 'B'){
-                array_push($result,$room);
-               }
-                break;
-            case "T":
-                if(substr($room, 0, 2) == 'TH') {
-                array_push($result,$room);
-                }
-                break;
-            case "P":
-                if(substr($room, 0, 1) == 'P'){
-                array_push($result,$room);
-                }
-                break;
-            case "BG":
-                if(substr($room, 0, 1) == 'Z'){
-                array_push($result,$room);
-                }
-                break;
-            case "S":
-                if(!is_numeric(substr($room, 0, 1))){
-                array_push($result,$room);
-                }
-                break;
-        }
-
 
         foreach ($rooms as $room) {
 
             switch ($category) {
-
+                // general rooms (every room with no prefix)
                 case "G":
-                    if(substr($room, 0, 1) != 'C' && substr($room, 0, 1) != 'B' && substr($room, 0, 2) != 'TH' && substr($room, 0, 1) != 'Z' && substr($room, 0, 1) != 'P' && is_numeric(substr($room, 0, 1))){
+                    if(substr($room, 0, 1) != 'C' && substr($room, 0, 1) != 'B' && substr($room, 0, 2) != 'TH' && substr($room, 0, 1) != 'Z' && substr($room, 0, 1) != 'P' ){
                         array_push($result,$room);
                     }
                     break;
+                // chemistry rooms
                 case "C":
                     if(substr($room, 0, 1) == 'C'){
                         array_push($result,$room);
                     }
                     break;
+                // biology rooms
                 case "B":
                     if(substr($room, 0, 1) == 'B'){
                         array_push($result,$room);
                     }
                     break;
+                // sports rooms
                 case "T":
                     if(substr($room, 0, 2) == 'TH') {
                         array_push($result,$room);
                     }
                     break;
+                // physics rooms
                 case "P":
                     if(substr($room, 0, 1) == 'P'){
                         array_push($result,$room);
                     }
                     break;
+                // arts rooms
                 case "Z":
                     if(substr($room, 0, 1) == 'Z'){
                         array_push($result,$room);
                     }
                     break;
-                case "S":
-                    if(substr($room, 0, 1) != 'C' && substr($room, 0, 1) != 'B' && substr($room, 0, 2) != 'TH' && substr($room, 0, 1) != 'Z' && substr($room, 0, 1) != 'P' && !is_numeric(substr($room, 0, 1))){
-                        array_push($result,$room);
-                    }
+                default:
+                    return "Fehler bei der Kategoriewahl. Bitte erneut versuchen!";
+                    die();
                     break;
             }
         }
-
+        // sort the result array to display rooms in ascending order
         sort($result);
+        // count the total rooms in the result array for proper display in 3 columns
         $arr_length = count($result);
         $row_length = ceil($arr_length/3);
+        // if some rooms match the criteria generate the list
         if (!empty($result)) {
            $list = "<div class='row'>";
             for ($v = 0; $v <= 2; $v++){
@@ -178,9 +158,11 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             }
 
             $list .= "</div>";
+            // return and display the list
             return $list;
         }
         else {
+            // return and display error if no matching rooms found
             return "Keine freien Zimmer gefunden. </br> Bitte Einschränkung entfernen und erneut versuchen.";
         }
 
