@@ -9,6 +9,12 @@
     jQuery(function () {
         //initialize date and time-picker on .datetime class
         jQuery('.datetime').datetimepicker({
+            onGenerate:function(){
+                // remove weekends
+                jQuery(this).find('th').slice(-2).remove();
+                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                        .remove();
+            },
             //set language
             lang: 'de',
             //define month and weekday strings for language
@@ -25,9 +31,9 @@
                     ]
                 }
             },
-            //set selectable times (lesson beginning)
+            //set selectable times (lesson start)
             allowTimes: ['07:30', '08:25', '09:20', '10:25', '11:20', '12:25', '13:20', '14:15', '15:10', '16:05', '16:55'],
-            //set format to be written into the input field
+            //set format to be written into input field
             format: 'd.m.Y H:i',
             //define start day of week (monday)
             dayOfWeekStart: '1',
@@ -36,12 +42,14 @@
 
             /* setting dates
              * system works with 1970/01/01 as today and every year/month/day +/- from today
+             *
              * set minimum date to today
              */
 
             minDate: '+1970/01/01',
-            //set maximum date to +6 months (year/month/day)
-            maxDate: '+1970/06/01'
+            //set maximum date to +3 months (year/month/day)
+            maxDate: '+1970/03/01'
+
         });
     });
 
