@@ -54,7 +54,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * changedLesson
      *
      * @var \DateTime
-     *
+     * @validate \AmosCalamida\Kzoreschedule\Validation\Validator\ChangedLessonValidator
      */
     protected $changedLesson = null;
     
