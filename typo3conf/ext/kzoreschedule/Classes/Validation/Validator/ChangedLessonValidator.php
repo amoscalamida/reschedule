@@ -23,8 +23,6 @@ class ChangedLessonValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 
         return TRUE;
 
-
     }
-
 
 }

@@ -16,15 +16,13 @@ class OriginalLessonValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Ab
             return FALSE;
         }
         //Check if originalLesson Weekday is >= 6 (Saturday or Sunday)
-        if (date('N', strtotime($originalLesson)) >= 6){
+        if (date('N', strtotime($originalLesson)) >= 6) {
             $this->addError('originalLesson Date is a weekend.', 1262341483);
             return FALSE;
         }
 
         return TRUE;
 
-
     }
-
 
 }
