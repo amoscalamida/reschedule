@@ -155,10 +155,14 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
+     *
      * @return string
      */
     public function createAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange)
     {
+        if (!class_exists('\AmosCalamida\Kzoreschedule\Validation\Validator\ChangeValidator')) {
+           die("Class not found");
+        }
         $project->addChange($newChange);
         $this->projectRepository->update($project);
         $this->redirect("show", "Project", NULL, array("project" => $project));

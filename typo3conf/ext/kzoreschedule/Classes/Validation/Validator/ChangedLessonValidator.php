@@ -1,5 +1,5 @@
 <?php
-namespace \AmosCalamida\Kzoreschedule\Domain\Validator;
+namespace \AmosCalamida\Kzoreschedule\Validation\Validator;
 
 class ChangedLessonValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
