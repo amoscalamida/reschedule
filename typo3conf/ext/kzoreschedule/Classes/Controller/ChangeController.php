@@ -160,7 +160,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function createAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange)
     {
-        if (!class_exists('\AmosCalamida\Kzoreschedule\Validation\Validator\ChangeValidator')) {
+        if (!class_exists('\AmosCalamida\Kzoreschedule\Validation\ChangeValidator')) {
            die("Class not found");
         }
         $project->addChange($newChange);
