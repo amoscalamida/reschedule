@@ -1,7 +1,9 @@
 <?php
-namespace AmosCalamida\Kzoreschedule\Validation\Validator;
+
+namespace AmosCalamida\Kzoreschedule\Validation;
 
 class ChangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+
     public function isValid($change) {
 
         if (! $change instanceof \AmosCalamida\Kzoreschedule\Domain\Model\Change) {
