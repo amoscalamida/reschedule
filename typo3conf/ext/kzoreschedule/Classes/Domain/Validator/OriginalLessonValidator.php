@@ -1,7 +1,7 @@
 <?php
 namespace \AmosCalamida\Kzoreschedule\Domain\Validator;
 
-class ChangedLessonValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+class OriginalLessonValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
     public function isValid($originalLesson)
     {
