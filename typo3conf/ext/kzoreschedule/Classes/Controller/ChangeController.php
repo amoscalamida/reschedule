@@ -26,8 +26,7 @@ namespace AmosCalamida\Kzoreschedule\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
-
+use \AmosCalamida\Kzoreschedule\Validation\Validator;
 setlocale(LC_ALL, 'de_CH.UTF-8');
 
 /**
@@ -130,7 +129,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         'd.m.Y H:i'
                     );
             } else {
-                $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
+             $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
             }
 
             if (strlen($request['changedLesson'])) {

@@ -1,3 +1,8 @@
+<!-- Change List Partial
+ *
+ * generate table to display on project detail page in student module
+ *
+ -->
 <f:if condition="{project.changes}">
     <f:then>
         <tr>
@@ -81,10 +86,11 @@
             </tr>
             <!-- Secretary Answer Block: Sets Color, Text and Room for Secretary Answer -->
             <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}"></f:render>
+            <!-- End Secretary Answer Block -->
         </f:for>
     </f:then>
     <f:else>
-
+        <!-- No Changes found -> Display message with button to add one -->
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -106,6 +112,7 @@
 
     </f:else>
 </f:if>
+<!-- "Add Change" Button: Visible if progress < 2 (pre Secretary) -->
 <tr class="hidden-xs">
     <td colspan="8" style="text-align: right;">
         <f:if condition="{project.progress} < 2">
@@ -119,3 +126,4 @@
         </f:if>
     </td>
 </tr>
+<!-- End "Add Change Button" -->

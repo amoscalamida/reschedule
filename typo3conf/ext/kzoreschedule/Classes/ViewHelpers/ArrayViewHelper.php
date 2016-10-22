@@ -5,6 +5,8 @@ namespace AmosCalamida\Kzoreschedule\ViewHelpers;
 class ArrayViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
+     * gets the element and property of the array provided
+     *
      * @param string $object The array to search
      * @param integer $key The array key
      * @param string $property The property to get

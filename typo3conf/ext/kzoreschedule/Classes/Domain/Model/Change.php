@@ -27,9 +27,7 @@ namespace AmosCalamida\Kzoreschedule\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Change
- */
+
 class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
 
@@ -182,16 +180,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->secretaryAnswer = $secretaryAnswer;
     }
     
-    /**
-     * Returns the boolean state of secretaryAnswer
-     *
-     * @return bool
-     */
-    public function isSecretaryAnswer()
-    {
-        return $this->secretaryAnswer;
-    }
-    
+
     /**
      * Returns the secretaryComment
      *
@@ -237,7 +226,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the teacherAnswer
      *
-     * @return bool $teacherAnswer
+     * @return int $teacherAnswer
      */
     public function getTeacherAnswer()
     {
@@ -255,16 +244,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->teacherAnswer = $teacherAnswer;
     }
     
-    /**
-     * Returns the boolean state of teacherAnswer
-     *
-     * @return bool
-     */
-    public function isTeacherAnswer()
-    {
-        return $this->teacherAnswer;
-    }
-    
+
     /**
      * Returns the teacherComment
      *

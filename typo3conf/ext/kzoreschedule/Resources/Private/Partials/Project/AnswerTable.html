@@ -1,25 +1,33 @@
+<!-- Answer Table Partial
+ *
+ * displays status and action buttons based on answer progress
+ * generated in Controller (see ProjectController->getAnswerProgress())
+ -->
+
 <f:switch expression="{progress}">
 
+    <!-- Progress 0: Preparation-->
     <f:case value="0">
 
         <td class="text-info"><span>Warte auf Freigabe</span></td>
 
     </f:case>
 
+    <!-- Progress 1: Teachers -->
     <f:case value="1">
 
         <f:switch expression="{teacherAnswer}">
-
+            <!-- TeacherAnswer 0: not yet answered -->
             <f:case value="0">
                 <td class=" text-info">Warten</td>
             </f:case>
 
-
+            <!-- TeacherAnswer 1: none accepted -->
             <f:case value="1">
                 <td class=" text-danger">Keine angenommen</td>
             </f:case>
 
-
+            <!-- TeacherAnswer 2: all accepted - propose button for secretary release -->
             <f:case value="2">
                 <td class=" text-success">Alle angenommen
                     <f:link.action action="projectStatusAdjust" class="btn btn-xs text-success"
@@ -29,7 +37,7 @@
                 </td>
             </f:case>
 
-
+            <!-- TeacherAnswer 3: partly accepted - generate tooltip with details -->
             <f:case value="3">
                 <td class=" text-primary">
                     <span data-toggle="tooltip" data-placement="right" data-html="true" title="
@@ -54,67 +62,52 @@
         </f:switch>
 
     </f:case>
-
+    <!-- Progress 2: Secretary -->
     <f:case value="2">
 
         <f:switch expression="{secretaryAnswer}">
-
+            <!-- Secretary Answer 0: not yet answered -->
             <f:case value="0">
                 <td class=" text-info"><span>Warten</span></td>
             </f:case>
 
-
+            <!-- Secretary Answer 1: none accepted (still processing) -->
             <f:case value="1">
                 <td class=" text-info"><span>In Bearbeitung</span></td>
             </f:case>
 
-
+            <!-- Secretary Answer 2: all accepted (still processing) -->
             <f:case value="2">
                 <td class=" text-info"><span>In Bearbeitung</span></td>
             </f:case>
 
-
+            <!-- Secretary Answer 2: partly accepted (still processing) -->
             <f:case value="3">
-                <td class="text-primary"> <span data-toggle="tooltip" data-placement="right" data-html="true" title="
-                            <f:for each='{project.changes}' as='change'>
-                                <p class='text-left'>
-                                    <b>{change.courseId}</b>:
-                                        <f:if condition='{change.secretaryAnswer} == 1'>
-                                            <f:then>
-                                                Nein
-                                            </f:then>
-                                            <f:else>
-                                                Ja
-                                            </f:else>
-                                       </f:if>
-                                </p>
-                            </f:for>">
-                        Sekretariat: Teilweise bewilligt
-                </span></td>
+                <td class=" text-info"><span>In Bearbeitung</span></td>
             </f:case>
         </f:switch>
 
     </f:case>
-
+    <!-- Progress 3: Workflow completed -->
     <f:case value="3">
 
         <f:switch expression="{secretaryAnswer}">
-
+            <!-- Secretary Answer 0: no answer -> error -->
             <f:case value="0">
                 <td class=" text-info"> Fehler: Projekt ohne Antwort abgeschlossen</td>
             </f:case>
 
-
+            <!-- Secretary Answer 1: none accepted -->
             <f:case value="1">
                 <td class=" text-danger">Wird nicht durchgeführt</td>
             </f:case>
 
-
+            <!-- Secretary Answer 2: all accepted -->
             <f:case value="2">
                 <td class=" text-success">Wird durchgeführt</td>
             </f:case>
 
-
+            <!-- Secretary Answer 3: partly accepted - generate tooltip with details -->
             <f:case value="3">
                 <td class=" text-primary">
                     <span data-toggle="tooltip" data-placement="right" data-html="true" title="
