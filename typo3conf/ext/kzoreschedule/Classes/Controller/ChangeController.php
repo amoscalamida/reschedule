@@ -60,7 +60,6 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * action show
      *
-     * TODO: Maybe remove and use secretaryShow (rename to show) for both plugins
      *
      * renders the change detail view (for student) with assigned project and change
      *
