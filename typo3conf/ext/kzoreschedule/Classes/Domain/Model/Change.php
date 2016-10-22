@@ -78,6 +78,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * room
      *
      * @var string
+     * @validate StringLength(maximum=10)
      */
     protected $room = '';
     
