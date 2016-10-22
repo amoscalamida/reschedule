@@ -35,7 +35,7 @@
                     </tr>
                 </f:for>
             </table>
-            <button type="button" class="btn btn-danger" data-toggle="modal" onclick="console.log(document.getElementsByClassName('modal-backdrop')[0])" data-target="#confirmationModal">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">
                 Alle Projekte löschen
             </button>
         </f:then>
@@ -43,7 +43,7 @@
             <h5>Keine Projekte vorhanden</h5>
         </f:else>
     </f:if>
-    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="confirmationModal" tabindex="-1" style="z-index: 1050" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
