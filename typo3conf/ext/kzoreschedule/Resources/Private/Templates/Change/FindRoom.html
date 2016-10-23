@@ -1,8 +1,15 @@
+<!-- Find Room Template
+ *
+ * Search for available rooms with passed category.
+ * on click fill out the form
+ *
+ -->
+
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 <f:layout name="Default"/>
 <f:section name="main">
 
-    <vh:findRoom datetime="{Change.changedLesson}" category="{category}"></vh:findRoom>
+    <vh:findRoom datetime="{Change.changedLesson}" category="{category}"> </vh:findRoom>
 
     <script>
         $('.room-select').click(function (e) {

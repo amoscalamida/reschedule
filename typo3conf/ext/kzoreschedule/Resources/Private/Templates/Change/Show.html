@@ -1,10 +1,20 @@
+<!-- Change Show Template
+ *
+ * details for change in student view
+ *
+ -->
+
 <f:layout name="Default"/>
 <f:section name="main">
-    <h1>Single View for Change</h1>
 
     <f:flashMessages/>
+
+    <!-- Render Change Properties -->
     <f:render partial="Change/Properties" arguments="{change : change, project : project}"/>
+
+    <!-- Back Button to project -->
     <f:link.action action="show" class="btn btn-default" controller="Project" arguments="{project : project}">
         <span class="glyphicon-chevron-left glyphicon"></span> Zurück zum Projekt
     </f:link.action>
+    <!-- End Back Button -->
 </f:section>

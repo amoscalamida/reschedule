@@ -1,11 +1,17 @@
+<!-- Change New Template
+ *
+ * Generates the form to create a Change
+ *
+ *
+ -->
 <f:layout name="Default"/>
 
 <f:section name="main">
     <h1>Neue Verschiebung</h1>
 
     <f:flashMessages/>
+    <!-- Load DateTimePicker Config -->
     <f:render partial="Change/DateTimePicker"/>
-    <f:render partial="FormErrors" arguments="{object:Change}"/>
 
     <f:form action="create" name="newChange" object="{newChange}" arguments="{project : project}">
         <f:render partial="Change/FormFields"/>
@@ -14,4 +20,6 @@
         </f:link.action>
         <f:form.submit class="btn btn-success" value="Verschiebung hinzufügen"/>
     </f:form>
+
+    <f:render partial="FormErrors" arguments="{object:Change}"/>
 </f:section>
