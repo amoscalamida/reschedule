@@ -1,7 +1,13 @@
+<!-- TeacherList Template
+ *
+ * display list of changes for teacher view
+ *
+ -->
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 <f:layout name="Default" xmlns:f="http://www.w3.org/1999/html"/>
 <f:section name="main">
     <f:flashMessages style="clear:both;"/>
+    <!-- check filter and show either only answered (filter: 0) or unanswered (filter:1) -->
     <f:switch expression="{divfilter}">
         <f:case value="1"><h1 style="float: left;">Anfragen </h1>
             <h6 style="float: right; text-align: right;">
@@ -18,6 +24,7 @@
             </h6>
         </f:case>
     </f:switch>
+    <!-- check if there are changes to display -->
     <f:if condition="{changes}">
         <f:then>
             <table class="table table-hover">
@@ -51,10 +58,13 @@
                         <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
                         <td></td>
                         <td>
+                            <!-- check if progress is still 1 (only then, teachers can answer) -->
                             <f:if condition="{vh:array(object: projects, key: key, property: 'progress')} == 1">
                                 <f:then>
+                                    <!-- check filter (0: answered -> edit answer dropdowns are shown / 1: unanswered -> simple toggles shown) -->
                                     <f:switch expression="{divfilter}">
                                         <f:case value="0">
+                                            <!-- Dropdown to edit answer -->
                                             <div class="dropdown">
                                                 <a class="btn btn-xs btn-default dropdown-toggle" id="dropdownMenu1"
                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -80,8 +90,10 @@
                                                     <li><a href="#">Abbrechen</a></li>
                                                 </ul>
                                             </div>
+                                            <!-- End Dropdown -->
                                         </f:case>
                                         <f:case value="1">
+                                            <!-- Simple Toggles to answer -->
                                             <f:link.action action="teacherAnswer" controller="Change"
                                                            arguments="{change : change, answer: 1 }">
                                                 <span data-toggle="tooltip" data-placement="top" title="Zustimmen"
@@ -92,11 +104,13 @@
                                                 <span data-toggle="tooltip" data-placement="top" title="Ablehnen"
                                                       class="glyphicon glyphicon-remove"></span>
                                             </f:link.action>
+                                            <!-- End Toggles -->
                                         </f:case>
                                     </f:switch>
 
                                 </f:then>
                                 <f:else>
+                                    <!-- Progress not 1 -> disable dropdown and buttons -->
                                     <f:switch expression="{divfilter}">
                                         <f:case value="0">
                                             <div class="dropdown">
@@ -118,7 +132,7 @@
                             </f:if>
                         </td>
                     </tr>
-
+                    <!-- render secretary answer row -->
                     <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}"></f:render>
 
 
@@ -128,8 +142,10 @@
 
         </f:then>
         <f:else>
+            <!-- no changes found -->
             <f:switch expression="{divfilter}">
                 <f:case value="1">
+                    <!-- show message and link to answered changes -->
                     <p style="clear: both;">Zurzeit gibt es keine Anfragen (
                         <f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">
                             Beantwortete anzeigen
@@ -137,6 +153,7 @@
                         )</span></p>
                 </f:case>
                 <f:case value="0">
+                    <!-- show message and link to unanswered changes -->
                     <p style="clear: both;">Es wurden keine beantworteten Verschiebungen gefunden (
                         <f:link.action action="teacherList" class="btn btn-xs" arguments="{filter: divfilter}">Offene
                             anzeigen

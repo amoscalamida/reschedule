@@ -1,7 +1,14 @@
+<!-- StudentList Template
+ *
+ * display list of projects for student view
+ *
+ -->
+
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 <f:layout name="Default"/>
 <f:section name="main">
     <f:flashMessages/>
+    <!-- Check if there are projects to display -->
     <f:if condition="{projects}">
         <f:then>
             <h1>Projekte</h1>
@@ -22,17 +29,26 @@
 
                 <f:for each="{projects}" as="project" key="key">
                     <tr>
+                        <!-- Linked Title (show): Always visible -->
                         <td>
                             <f:link.action action="show" arguments="{project : project}">{project.title}</f:link.action>
                         </td>
+                        <!-- End Title -->
+                        <!-- Render Progress Table -->
                         <f:render partial="Project/ProgressTable" arguments="{project : project}"/>
+                        <!-- End Progress Table -->
+                        <!-- Map answers from controller to be available for AnswerTable Partial -->
                         <f:alias
                                 map="{teacherAnswer : '{vh:array(object: teacherAnswers, key: key, property: \'none\')}', secretaryAnswer : '{vh:array(object: secretaryAnswers, key: key, property: \'none\')}' }">
+                            <!-- Render intelligent AnswerTable -->
                             <f:render partial="Project/AnswerTable"
                                       arguments="{teacherAnswer : teacherAnswer, secretaryAnswer: secretaryAnswer, progress : project.progress, project: project}"/>
+                            <!-- End AnswerTable -->
                         </f:alias>
+                        <!-- End Mapping -->
                         <td></td>
                         <td></td>
+                        <!-- Show Button: Always visible -->
                         <td>
                             <f:link.action action="show" arguments="{project : project}"><span data-toggle="tooltip"
                                                                                                data-placement="top"
@@ -40,6 +56,8 @@
                                                                                                class="glyphicon glyphicon-eye-open">
                             </f:link.action>
                         </td>
+                        <!-- End Show Button-->
+                        <!-- Delete Button: Visible if progress is not 2 (secretary) -->
                         <td>
                             <f:if condition="{project.progress} != 2">
                                 <f:then>
@@ -50,18 +68,22 @@
                                 <f:else><span class="text-muted glyphicon glyphicon-trash"></span></f:else>
                             </f:if>
                         </td>
+                        <!-- End Delete Button -->
                     </tr>
                 </f:for>
                 <tr>
+                    <!-- New Project Button: Always visible -->
                     <td colspan="8" style="text-align: right;">
                         <f:link.action action="new">
                             <span class="glyphicon-plus glyphicon"></span> Neues Projekt
                         </f:link.action>
                     </td>
+                    <!-- End New Project Button -->
                 </tr>
             </table>
         </f:then>
         <f:else>
+            <!-- No Projects to display: Display Info and provide Button for new Project -->
             <div class="row">
                 <div class="col-md-5 col-md-offset-3">
                     <div class="well">
@@ -76,7 +98,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- End No Projects Message -->
         </f:else>
     </f:if>
 </f:section>
