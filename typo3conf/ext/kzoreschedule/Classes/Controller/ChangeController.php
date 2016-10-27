@@ -328,4 +328,15 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     }
 
+    /**
+     * Deactivate errorFlashMessage by overwriting Extbase method.
+     * Important for translated errors
+     *
+     * @return bool
+     */
+    public function getErrorFlashMessage() {
+        return FALSE;
+    }
+
+
 }
