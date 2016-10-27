@@ -141,7 +141,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         'd.m.Y H:i'
                     );
             } else {
-                $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
+                $this->arguments->getArgument('newChange')->getPropertyMappingConfiguration()->skipProperties('changedLesson');
             }
         }
     }
@@ -157,6 +157,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function createAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange)
     {
+        $this->addFlashMessage('Die Verschiebung wurde gespeichert.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $project->addChange($newChange);
         $this->projectRepository->update($project);
         $this->redirect("show", "Project", NULL, array("project" => $project));
