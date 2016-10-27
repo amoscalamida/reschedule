@@ -439,4 +439,14 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     return $result;
     }
+
+    /**
+     * Deactivate errorFlashMessage by overwriting Extbase method.
+     * Important for translated errors
+     *
+     * @return bool
+     */
+    public function getErrorFlashMessage() {
+        return FALSE;
+    }
 }
