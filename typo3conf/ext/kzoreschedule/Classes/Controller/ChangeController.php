@@ -187,20 +187,32 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function initializeUpdateAction()
     {
-        $this->arguments->getArgument('change')
-            ->getPropertyMappingConfiguration()->forProperty('originalLesson')
-            ->setTypeConverterOption(
-                'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-                'd.m.Y H:i'
-            );
-        $this->arguments->getArgument('change')
-            ->getPropertyMappingConfiguration()->forProperty('changedLesson')
-            ->setTypeConverterOption(
-                'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-                \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-                'd.m.Y H:i'
-            );
+        if ($this->request->hasArgument('change')) {
+            $request = $this->request->getArgument('change');
+            if (strlen($request['originalLesson'])) {
+                $this->arguments->getArgument('newChange')
+                    ->getPropertyMappingConfiguration()->forProperty('originalLesson')
+                    ->setTypeConverterOption(
+                        'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+                        \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'd.m.Y H:i'
+                    );
+            } else {
+                $this->arguments->getArgument('change')->getPropertyMappingConfiguration()->skipProperties('originalLesson');
+            }
+
+            if (strlen($request['changedLesson'])) {
+                $this->arguments->getArgument('change')
+                    ->getPropertyMappingConfiguration()->forProperty('changedLesson')
+                    ->setTypeConverterOption(
+                        'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+                        \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'd.m.Y H:i'
+                    );
+            } else {
+                $this->arguments->getArgument('change')->getPropertyMappingConfiguration()->skipProperties('changedLesson');
+            }
+        }
     }
 
     /**

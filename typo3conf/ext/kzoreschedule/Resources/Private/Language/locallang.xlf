@@ -59,13 +59,13 @@
             				<source>Dieses Feld darf nicht leer sein</source>
             </trans-unit>
             <trans-unit id="error.1221560910">
-                        	<source>Dieses Feld darf nicht NULL sein</source>
+                        	<source>Dieses Feld darf nicht leer sein</source>
             </trans-unit>
             <trans-unit id="error.1307719788">
                             <source>Es ist ein Fehler bei der Datumswahl aufgetreten. Bitte versuche es erneut.</source>
             </trans-unit>
             <trans-unit id="error.1428504122">
-                        <source>Der eingegebene Text ist entweder zu kurz oder zu lang </source>
+                        <source>Der eingegebene Text ist zu kurz </source>
             </trans-unit>
 
 
