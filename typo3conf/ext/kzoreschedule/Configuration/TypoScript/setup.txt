@@ -97,7 +97,7 @@ ajaxCall {
 	admPanel = 0
 	10 = COA
 	10 < tt_content.list.20.kzoreschedule_secretary
-}
+	}
 
 config.contentObjectExceptionHandler = 0
 
