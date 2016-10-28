@@ -386,8 +386,32 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $divprogress = 2;
         }
         $projects = $this->projectRepository->findByProgress($progress);
+
+        $secretaryAnswers = array ();
+        foreach ($projects as $project) {
+
+            array_push($secretaryAnswers, $this->getAnswerProgress($project,"secretary"));
+
+        }
+
+        $this->view->assign('secretaryAnswers',$secretaryAnswers);
         $this->view->assign('divprogress',$divprogress);
         $this->view->assign('projects', $projects);
+
+    }
+
+
+    /**
+     * action secretaryPrint
+     *
+     * list projects for sectretary view
+     *
+     * @param $project \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
+     * @return void
+     */
+    public function secretaryPrintAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
+    {
+        $this->view->assign('project', $project);
     }
 
 
@@ -460,8 +484,6 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
  * @param string $teacher - the short form of the teachers name
  * @return array
  */
-
-include "../ViewHelpers/Headers.php";
 
 function generateHeaders($username, $password, $prefix, $hashAlgorithm = 'sha1')
 {

@@ -39,13 +39,13 @@ if (!defined('TYPO3_MODE')) {
 	'AmosCalamida.' . $_EXTKEY,
 	'Secretary',
 	array(
-		'Project' => 'secretaryList, secretaryShow, secretaryChange, delete',
+		'Project' => 'secretaryList, secretaryShow, secretaryChange, delete, secretaryPrint',
 		'Change' => 'secretaryShow, secretaryProcess, secretaryProcessCompletion, findRoom',
 		
 	),
 	// non-cacheable actions
 	array(
-		'Project' => 'secretaryList, secretaryShow, secretaryChange, delete',
+		'Project' => 'secretaryList, secretaryShow, secretaryChange, delete, secretaryPrint',
 		'Change' => 'secretaryShow, secretaryProcess, secretaryProcessCompletion, findRoom',
 		
 	)
