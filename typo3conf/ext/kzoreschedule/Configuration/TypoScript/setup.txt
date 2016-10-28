@@ -78,6 +78,7 @@ page.includeJSFooter {
 	file2 = http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js
 	file3 = EXT:kzoreschedule/Resources/Public/js/jquery.datetimepicker.js
 	file4 = EXT:kzoreschedule/Resources/Public/js/bootstrap_config.js
+	file5 = EXT:kzoreschedule/Resources/Public/js/js.cookie.js
 
 }
 
