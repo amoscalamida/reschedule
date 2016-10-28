@@ -3,12 +3,13 @@
  * returns a easy to understand sentence explaining the course movement
  * used for secretary and teacher approval dialogs
  -->
+{namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 
 <p>Kurs
-    <b>{change.courseId}</b>
+    <!-- Get Course Details from Course ViewHelper-->
+    <b>{vh:courseDetail(id:'{change.courseId}', mode:'{mode}')}</b>
     wird verschoben von
     <b>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</b>
     nach
-    <b>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</b>
-    .
+    <b>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</b>.
 </p>

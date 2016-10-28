@@ -44,6 +44,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * originalLesson
      *
      * @var \DateTime
+     * @validate NotEmpty, \AmosCalamida\Kzoreschedule\Validation\Validator\OriginalLessonValidator
      *
      */
     protected $originalLesson = null;
@@ -52,7 +53,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * changedLesson
      *
      * @var \DateTime
-     *
+     * @validate NotEmpty, \AmosCalamida\Kzoreschedule\Validation\Validator\ChangedLessonValidator
      */
     protected $changedLesson = null;
     
@@ -141,7 +142,6 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the changedLesson
      *
-     * @validate NotEmpty
      * @return \DateTime $changedLesson
      */
     public function getChangedLesson()
@@ -153,7 +153,6 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the changedLesson
      *
      * @param \DateTime $changedLesson
-     * @validate NotEmpty
      * @return void
      */
     public function setChangedLesson(\DateTime $changedLesson)

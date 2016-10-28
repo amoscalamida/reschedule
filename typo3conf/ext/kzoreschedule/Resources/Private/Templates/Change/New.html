@@ -14,7 +14,7 @@
     <f:render partial="Change/DateTimePicker"/>
 
     <f:form action="create" name="newChange" object="{newChange}" arguments="{project : project}">
-        <f:render partial="Change/FormFields"/>
+        <f:render partial="Change/FormFields" arguments="{project:project}"/>
         <f:link.action action="show" controller="Project" arguments="{project : project}" class="btn btn-default">
             Abbrechen
         </f:link.action>

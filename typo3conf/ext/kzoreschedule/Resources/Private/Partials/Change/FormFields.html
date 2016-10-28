@@ -4,12 +4,15 @@
  * used in forms for create and update actions
  -->
 
+
+{namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
+
 <!-- START courseId -->
 <label for="courseId">
     <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
     <span class="required">(*)</span>
 </label><br/>
-<f:form.textfield class="form-control" property="courseId"/><br/>
+<f:form.select options="{vh:findCourses(class:'A 6')}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/><br/>
 <!-- END courseId -->
 
 <!-- DateTimePickers wrapped in row and col-md-6 bootstrap grid for better responsive behaviour -->

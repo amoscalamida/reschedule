@@ -52,7 +52,8 @@
                     <tr>
                         <f:render partial="Change/TeacherAnswerText"
                                   arguments="{change : change, role : 'teacher'}"></f:render>
-                        <td>{change.courseId}</td>
+                        <!-- Get Course Details from Course ViewHelper-->
+                        <td>{vh:courseDetail(id:'{change.courseId}', mode:'teacher')}</td>
                         <td>{vh:array(object: projects, key: key, property: 'userId')}</td>
                         <td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
                         <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
