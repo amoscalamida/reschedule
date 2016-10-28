@@ -99,7 +99,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project - the project to add the change to
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange - the new change object
      * @return string
-     * @dontvalidate $newChange - newChange is empty at the moment
+     * @ignorevalidation $newChange - newChange is empty at the moment
      */
     public function newAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange = Null)
     {
@@ -190,7 +190,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($this->request->hasArgument('change')) {
             $request = $this->request->getArgument('change');
             if (strlen($request['originalLesson'])) {
-                $this->arguments->getArgument('newChange')
+                $this->arguments->getArgument('change')
                     ->getPropertyMappingConfiguration()->forProperty('originalLesson')
                     ->setTypeConverterOption(
                         'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
@@ -238,6 +238,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
+     * @dontvalidate originalLesson $change
      * @return void
      */
     public function deleteAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)

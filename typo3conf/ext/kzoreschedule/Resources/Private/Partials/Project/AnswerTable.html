@@ -4,6 +4,8 @@
  * generated in Controller (see ProjectController->getAnswerProgress())
  -->
 
+
+{namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 <f:switch expression="{progress}">
 
     <!-- Progress 0: Preparation-->
@@ -43,10 +45,10 @@
                     <span data-toggle="tooltip" data-placement="right" data-html="true" title="
                             <f:for each='{project.changes}' as='change'>
                                 <p class='text-left'>
-                                    <b>{change.courseId}</b>:
+                                    <b>{vh:courseDetail(id:'{change.courseId}', mode:'student')}</b>:
                                         <f:if condition='{change.teacherAnswer} == 1'>
                                             <f:then>
-                                                Nein
+                                                <span class='text-danger'>Nein</span>
                                             </f:then>
                                             <f:else>
                                                 Ja
@@ -113,7 +115,7 @@
                     <span data-toggle="tooltip" data-placement="right" data-html="true" title="
                             <f:for each='{project.changes}' as='change'>
                                 <p class='text-left'>
-                                    <b>{change.courseId}</b>:
+                                    <b>{vh:courseDetail(id:'{change.courseId}', mode:'student')}</b>:
                                         <f:if condition='{change.secretaryAnswer} == 1'>
                                             <f:then>
                                                 Nein

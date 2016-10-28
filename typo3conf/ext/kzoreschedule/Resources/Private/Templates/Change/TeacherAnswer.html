@@ -7,7 +7,7 @@
 
     <f:render partial="FormErrors" arguments="{object:Change}"/>
 
-    <f:render partial="Change/InlineProperties" arguments="{change:change}"/>
+    <f:render partial="Change/InlineProperties" arguments="{change:change, mode:'teacher'}"/>
 
     <f:form action="teacherAnswerCompletion" name="change" object="{change}">
         <f:form.hidden class="form-control" property="teacherAnswer"/>

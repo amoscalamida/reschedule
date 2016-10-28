@@ -7,7 +7,7 @@
 				<source>Projekt</source>
 			</trans-unit>
 			<trans-unit id="tx_kzoreschedule_domain_model_project.user_id">
-				<source>Benutzer ID</source>
+				<source>Benutzer</source>
 			</trans-unit>
 			<trans-unit id="tx_kzoreschedule_domain_model_project.title">
 				<source>Titel</source>
@@ -25,7 +25,7 @@
 				<source>Verschiebung</source>
 			</trans-unit>
 			<trans-unit id="tx_kzoreschedule_domain_model_change.course_id">
-				<source>Kurs ID</source>
+				<source>Kurs</source>
 			</trans-unit>
 			<trans-unit id="tx_kzoreschedule_domain_model_change.original_lesson">
 				<source>Ursprüngliche Lektion</source>
@@ -58,14 +58,29 @@
 			<trans-unit id="error.1221560718">
             				<source>Dieses Feld darf nicht leer sein</source>
             </trans-unit>
+
             <trans-unit id="error.1221560910">
                         	<source>Dieses Feld darf nicht leer sein</source>
             </trans-unit>
+
             <trans-unit id="error.1307719788">
                             <source>Es ist ein Fehler bei der Datumswahl aufgetreten. Bitte versuche es erneut.</source>
             </trans-unit>
+
             <trans-unit id="error.1428504122">
                         <source>Der eingegebene Text ist zu kurz </source>
+            </trans-unit>
+
+            <trans-unit id="error.1262341481">
+                        <source>Die angegebene Lektion darf nicht vor Morgen sein</source>
+            </trans-unit>
+
+            <trans-unit id="error.1262341482">
+                        <source>Die angegebene Lektion hat keinen gültigen Lektionsbeginn</source>
+            </trans-unit>
+
+            <trans-unit id="error.1262341483">
+                        <source>Die angegebene Lektion ist an einem Wochenende</source>
             </trans-unit>
 
 

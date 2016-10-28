@@ -328,7 +328,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function teacherListAction($filter = 0)
     {
-        $teachersCourses = array("240","250","289","580","123","239","212");
+        //$teachersCourses = array("11255","11323","11399","11539","11540","11623","11691","11692","11776","11795");
+        $teachersCourses = getTeacherCourses("Gb");
         $projects = $this->projectRepository->findByPublicAndCourses($teachersCourses);
         $allowed_changes = array();
         $allowed_changes_project = array();
@@ -442,11 +443,91 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Deactivate errorFlashMessage by overwriting Extbase method.
-     * Important for translated errors
+     * Important for translated error messages
      *
      * @return bool
      */
     public function getErrorFlashMessage() {
         return FALSE;
     }
+
+
 }
+
+/**
+ * Get all courses given by a teacher
+ *
+ * @param string $teacher - the short form of the teachers name
+ * @return array
+ */
+
+include "../ViewHelpers/Headers.php";
+
+function generateHeaders($username, $password, $prefix, $hashAlgorithm = 'sha1')
+{
+
+    $rfc_1123_date = gmdate('D, d M Y H:i:s T', time());
+    $xgrdate = utf8_encode($rfc_1123_date);
+    $userPasswd = base64_encode(hash($hashAlgorithm, $password, true));
+
+    $signature = base64_encode(hash_hmac($hashAlgorithm, $userPasswd, $xgrdate));
+    $auth = $prefix . " " . base64_encode($username) . ":" . $signature;
+    $headers = array(
+        'X-gr-AuthDate' => $xgrdate,
+        'Authorization' => $auth
+    );
+
+
+    return $headers;
+
+
+}
+
+
+
+function getTeacherCourses($teacher){
+    $conditions = array('WHERE' => array("Teacher" => "$teacher"), 'ORDER' => 'Class');
+    $mod = base64_encode(json_encode($conditions));
+
+    $user = 'rest-timetable';
+    $pwd = 'a46vQJzsY9YwVhKCxjUD';
+    $controller = 'data/source/timetable';
+    $school = 'kzo';
+
+    $headers = generateHeaders($user, $pwd, 'gr001');
+
+    $request = "https://api.tam.ch/$school/$controller?mod=$mod";
+
+    $result = exec("curl " . $request
+
+
+        . ' -H "Accept:application/xml"'
+
+
+        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
+
+
+        . ' -H "Authorization:' . $headers['Authorization'] . '"'
+
+    );
+
+    $json = json_decode($result)->body;
+
+    $teacher_courses = array();
+    function checkArrayForObject($array, $id)
+    {
+        return array_filter($array, function ($object) use ($id) {
+            return $object->ID == $id;
+        });
+    }
+
+    foreach ($json as $course) {
+        if (!in_array($course->ID,$teacher_courses)) {
+            array_push($teacher_courses, $course->ID);
+        }
+    }
+
+    return $teacher_courses;
+
+}
+
