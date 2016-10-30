@@ -100,6 +100,28 @@ ajaxCall {
 	10 < tt_content.list.20.kzoreschedule_secretary
 	}
 
+ajaxCallStudent = PAGE
+ajaxCallStudent {
+	typeNum = 998
+	config.disableAllHeaderCode = 1
+	additionalHeaders = Content-type:application/html
+	xhtml_cleaning = 0
+	admPanel = 0
+	10 = COA
+	10 < tt_content.list.20.kzoreschedule_student
+}
+
+ajaxCallTeacher = PAGE
+ajaxCallTeacher {
+	typeNum = 997
+	config.disableAllHeaderCode = 1
+	additionalHeaders = Content-type:application/html
+	xhtml_cleaning = 0
+	admPanel = 0
+	10 = COA
+	10 < tt_content.list.20.kzoreschedule_teacher
+}
+
 config.contentObjectExceptionHandler = 0
 
 # Module configuration

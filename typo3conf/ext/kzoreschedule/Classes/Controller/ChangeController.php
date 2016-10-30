@@ -343,6 +343,29 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
+     * action courseDetails
+     *
+     * return the course details for a given ID
+     *
+     * @return string
+     */
+    public function courseDetailsAction ()
+    {
+
+        if ($this->request->hasArgument('id')) {
+            $id = $this->request->getArgument('id');
+            $this->view->assign("id", $id);
+        }
+        if ($this->request->hasArgument('mode')) {
+            $mode = $this->request->getArgument('mode');
+            $this->view->assign("mode", $mode);
+        }
+
+
+
+    }
+
+    /**
      * Deactivate errorFlashMessage by overwriting Extbase method.
      * Important for translated errors
      *
