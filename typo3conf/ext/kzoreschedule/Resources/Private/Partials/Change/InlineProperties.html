@@ -5,9 +5,13 @@
  -->
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 
+
+
 <p>Kurs
     <!-- Get Course Details from Course ViewHelper-->
-    <b>{vh:courseDetail(id:'{change.courseId}', mode:'{mode}')}</b>
+    <b>
+        <f:render partial="Change/CourseDetailAjax" arguments="{key:key, courseId: change.courseId, mode: mode}"></f:render>
+    </b>
     wird verschoben von
     <b>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</b>
     nach

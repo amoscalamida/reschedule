@@ -8,13 +8,13 @@ if (!defined('TYPO3_MODE')) {
 	'Student',
 	array(
 		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust',
-		'Change' => 'show, new, create, edit, update, delete',
+		'Change' => 'show, new, create, edit, update, delete, courseDetails',
 		
 	),
 	// non-cacheable actions
 	array(
 		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust',
-		'Change' => 'show, new, create, edit, update, delete',
+		'Change' => 'show, new, create, edit, update, delete, courseDetails',
 		
 	)
 );
@@ -24,7 +24,7 @@ if (!defined('TYPO3_MODE')) {
 	'Teacher',
 	array(
 		'Project' => 'teacherList',
-		'Change' => 'teacherAnswer, teacherAnswerCompletion',
+		'Change' => 'teacherAnswer, teacherAnswerCompletion,courseDetails',
 
 	),
 	// non-cacheable actions
@@ -40,7 +40,7 @@ if (!defined('TYPO3_MODE')) {
 	'Secretary',
 	array(
 		'Project' => 'secretaryList, secretaryShow, secretaryChange, delete, secretaryPrint',
-		'Change' => 'secretaryShow, secretaryProcess, secretaryProcessCompletion, findRoom',
+		'Change' => 'secretaryShow, secretaryProcess, secretaryProcessCompletion, findRoom, courseDetails',
 		
 	),
 	// non-cacheable actions

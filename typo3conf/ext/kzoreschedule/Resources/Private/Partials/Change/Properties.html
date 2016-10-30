@@ -10,7 +10,7 @@
             <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
         </td>
         <td>
-            {change.courseId}
+            {change.courseId} | <span><f:render partial="Change/CourseDetailAjax" arguments="{key:key, courseId: change.courseId, mode: mode}"></f:render></span>
         </td>
     </tr>
     <tr>

@@ -49,11 +49,14 @@
 
                 </tr>
                 <f:for each="{changes}" as="change" key="key">
+
                     <tr>
                         <f:render partial="Change/TeacherAnswerText"
                                   arguments="{change : change, role : 'teacher'}"></f:render>
                         <!-- Get Course Details from Course ViewHelper-->
-                        <td>{vh:courseDetail(id:'{change.courseId}', mode:'teacher')}</td>
+                        <td>
+                            <f:render partial="Change/CourseDetailAjax" arguments="{key:key, courseId: change.courseId, mode: 'teacher'}"></f:render>
+                        </td>
                         <td>{vh:array(object: projects, key: key, property: 'userId')}</td>
                         <td>{change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>
                         <td>{change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}</td>

@@ -10,7 +10,7 @@
     <f:flashMessages/>
 
     <!-- Render Change Properties -->
-    <f:render partial="Change/Properties" arguments="{change : change, project : project}"/>
+    <f:render partial="Change/Properties" arguments="{change : change, project : project, mode: 'student'}"/>
 
     <!-- Back Button to project -->
     <f:link.action action="show" class="btn btn-default" controller="Project" arguments="{project : project}">
