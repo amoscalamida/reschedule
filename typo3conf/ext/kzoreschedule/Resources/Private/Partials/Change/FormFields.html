@@ -12,8 +12,10 @@
     <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
     <span class="required">(*)</span>
 </label><br/>
-<f:form.select options="{vh:findCourses(class:'A 6')}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/><br/>
-<!-- END courseId -->
+<f:alias map="{ class: '{vh:frontEndUser(attribute:\'zip\')}' }">
+<f:form.select options="{vh:findCourses(class:class)}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/><br/>
+</f:alias>
+    <!-- END courseId -->
 
 <!-- DateTimePickers wrapped in row and col-md-6 bootstrap grid for better responsive behaviour -->
 <div class="row">
