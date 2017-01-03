@@ -48,7 +48,17 @@ class ProjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->matching(
             $query->logicalAnd($query->in('progress', array(1, 2, 3)), $query->in('changes.course_id', $teacherCourses))
         );
-        return $query->execute();
+        $result = $query->execute();
+
+        foreach ($result as $project) {
+            foreach ($project->getChanges() as $change) {
+                if(!in_array($change->getCourseId(),$teacherCourses)){
+                    $project->removeChange($change);
+                }
+          }
+        }
+        return $result;
+
     }
 
 
