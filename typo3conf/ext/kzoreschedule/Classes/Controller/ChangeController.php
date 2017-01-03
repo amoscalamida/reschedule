@@ -99,7 +99,6 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project - the project to add the change to
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange - the new change object
      * @return string
-     * @ignorevalidation $newChange - newChange is empty at the moment
      */
     public function newAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, \AmosCalamida\Kzoreschedule\Domain\Model\Change $newChange = Null)
     {
@@ -170,6 +169,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
+     * @ignorevalidation $change
      * @return void
      */
     public function editAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
@@ -238,7 +238,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
-     * @dontvalidate originalLesson $change
+     * @ignorevalidation $change
      * @return void
      */
     public function deleteAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
@@ -317,6 +317,7 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $this->addFlashMessage('Die Verschiebung wurde ' . (($change->getTeacherAnswer() == 2) ? 'akzeptiert' : 'abgelehnt') . ' und ist nun unter "Beantwortete Verschiebungen" zu finden. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->update($change);
+        //TODO: Send "Updateproject" Notification Email
         $this->redirect("teacherList", "Project");
 
     }
