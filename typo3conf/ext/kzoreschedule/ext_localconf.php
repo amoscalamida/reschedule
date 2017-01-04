@@ -23,13 +23,13 @@ if (!defined('TYPO3_MODE')) {
 	'AmosCalamida.' . $_EXTKEY,
 	'Teacher',
 	array(
-		'Project' => 'teacherList',
+		'Project' => 'teacherContainer,teacherList',
 		'Change' => 'teacherAnswer, teacherAnswerCompletion,courseDetails',
 
 	),
 	// non-cacheable actions
 	array(
-		'Project' => 'teacherList',
+		'Project' => 'teacherContainer,teacherList',
 		'Change' => 'teacherAnswer, teacherAnswerCompletion',
 
 	)
