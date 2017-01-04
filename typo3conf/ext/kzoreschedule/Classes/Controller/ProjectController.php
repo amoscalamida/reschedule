@@ -135,7 +135,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function secretaryShowAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
-        $project->setUserId($this->getUserInfo($project->getUserId(),"name"));
+        $project->setUserId($this->getUserInfo($project->getUserId(),"name,zip"));
         $this->view->assign('project', $project);
     }
 
@@ -350,6 +350,29 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     }
 
     /**
+     * action teacherContainer
+     *
+     * prepare container for teacher view
+     *
+     * @param integer $filter - filter for results (either 0: unanswered or 1: answered)
+     * @return void
+     */
+    public function teacherContainerAction($filter = 0)
+    {
+
+        switch ($filter) {
+            case 0:
+                $divfilter = 1;
+                break;
+            case 1:
+                $divfilter = 0;
+                break;
+        }
+        $this->view->assign("divfilter",$divfilter);
+
+    }
+
+    /**
      * action teacherList
      *
      * list all changes for teacher view
@@ -444,6 +467,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function secretaryPrintAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
+        $project->setUserId($this->getUserInfo($project->getUserId(),"name,zip"));
         $this->view->assign('project', $project);
     }
 

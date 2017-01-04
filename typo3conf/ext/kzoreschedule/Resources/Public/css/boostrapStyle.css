@@ -30,3 +30,18 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+@media print {
+    td.bg-danger {
+        background-color: #f2dede !important;
+    }
+
+    td.bg-warning {
+        background-color: orange !important;
+    }
+
+    td.bg-success {
+        background-color: #dff0d8 !important;
+    }
+
+}
