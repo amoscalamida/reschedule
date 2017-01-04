@@ -422,6 +422,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $this->view->assign('projects', $allowed_changes_project);
             $this->view->assign('divfilter', $divfilter);
 
+
         }
     }
 
