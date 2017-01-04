@@ -382,7 +382,6 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function teacherListAction($filter = 0)
     {
-        //$teachersCourses = array("11255","11323","11399","11539","11540","11623","11691","11692","11776","11795");
         $teachersCourses = getTeacherCourses($GLOBALS['TSFE']->fe_user->user['title']);
         $projects = $this->projectRepository->findByPublicAndCourses($teachersCourses);
         $allowed_changes = array();

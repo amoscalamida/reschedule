@@ -48,11 +48,7 @@ class ProjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->matching(
             $query->logicalAnd($query->in('progress', array(1, 2, 3)), $query->in('changes.course_id', $teacherCourses))
         );
-        $query->setOrderings(
-            array(
-                'changes.changed_lesson' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-            )
-        );
+
         $result = $query->execute();
         foreach ($result as $project) {
             $unallowedChanges = array();
