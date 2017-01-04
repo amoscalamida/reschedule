@@ -169,7 +169,6 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Change $change
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
-     * @ignorevalidation $change
      * @return void
      */
     public function editAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
