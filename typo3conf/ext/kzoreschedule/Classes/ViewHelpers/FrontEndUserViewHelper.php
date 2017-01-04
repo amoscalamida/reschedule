@@ -21,7 +21,7 @@ class FrontEndUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
             return $value;
         }
         else {
-            return "Error";
+            return "Error. Attribute or Value not found!";
         }
 
 

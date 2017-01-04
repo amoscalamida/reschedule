@@ -15,7 +15,7 @@
 
 </div>
 
-    <f:link.action class="ajax-button" pageType="997" action="teacherList" ></f:link.action>
+    <f:link.action class="ajax-button" pageType="997" action="j" ></f:link.action>
 
 <script type="text/javascript">
     $(function () {
@@ -42,7 +42,7 @@
             $('.formresult').html(data)
         }).fail(function (error) {
             // on failure display notice and post the complete error msg to console
-            $('.formresult').html('<p>Es ist ein Fehler aufgetreten! <a onclick="load();">Erneut versuchen</a> </p>');
+            $('.formresult').html('<p class="text-center text-muted" style="display: none; margin-top: 10%;"> <f:image src="EXT:kzoreschedule/Resources/Public/Icons/error.png" width="50" /> <br><br> <small>Es ist ein Fehler aufgetreten!<br><a onclick="load();">Erneut versuchen</a></small> </p>');
             console.debug(error);
         }).always(function () {
             // always hide the loading gif on completion and
