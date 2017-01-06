@@ -5,8 +5,8 @@
     border-radius: 2px;
 }
 
-.btn-default {
-    border-color: #bbbbbb;
+a {
+    text-decoration:none !important;
 }
 
 .input-group-btn .btn {

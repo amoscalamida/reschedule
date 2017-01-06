@@ -84,7 +84,7 @@ page.includeJSFooter {
 }
 
 page.includeCSS {
-	file1 = https://bootswatch.com/flatly/bootstrap.min.css
+	file1 = https://bootswatch.com/paper/bootstrap.min.css
 	file2 = EXT:kzoreschedule/Resources/Public/css/boostrapStyle.css
 	file3 = EXT:kzoreschedule/Resources/Public/css/jquery.datetimepicker.css
 	file4 = EXT:kzoreschedule/Resources/Public/css/sumoselect.css

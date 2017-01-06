@@ -8,6 +8,7 @@
 {namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 
 <!-- START courseId -->
+<div class="form-group">
 <label for="courseId">
     <f:translate key="tx_kzoreschedule_domain_model_change.course_id"/>
     <span class="required">(*)</span>
@@ -16,12 +17,15 @@
 <f:form.select prependOptionLabel="Bitte wählen..." options="{vh:findCourses(class:class)}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/>
     <br/>
 </f:alias>
+<br>
+</div>
     <!-- END courseId -->
 
 <!-- DateTimePickers wrapped in row and col-md-6 bootstrap grid for better responsive behaviour -->
 <div class="row">
 
     <!-- START originalLesson (DateTimePicker) -->
+    <div class="form-group">
     <div class="col-md-6">
         <label for="originalLesson">
             <f:translate key="tx_kzoreschedule_domain_model_change.original_lesson"/>
@@ -30,9 +34,12 @@
         <f:form.textfield class="form-control datetime" property="originalLesson"
                           value="{change.originalLesson ->f:format.date(format: 'd.m.Y H:i')}"/>
     </div>
+    </div>
+
     <!-- END originalLesson -->
 
     <!-- START changedLesson (DateTimePicker) -->
+    <div class="form-group">
     <div class="col-md-6">
         <label for="changedLesson">
             <f:translate key="tx_kzoreschedule_domain_model_change.changed_lesson"/>
@@ -41,6 +48,7 @@
         <f:form.textfield class="form-control datetime" property="changedLesson"
                           value="{change.changedLesson ->f:format.date(format: 'd.m.Y H:i')}"/>
         <br/>
+    </div>
     </div>
     <!-- END changedLesson -->
 

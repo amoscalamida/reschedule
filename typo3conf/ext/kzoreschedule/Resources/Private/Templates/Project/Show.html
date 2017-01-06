@@ -92,13 +92,15 @@
     <!-- START Change List Block -->
     <h4>Verschiebungen in diesem Projekt</h4>
 
+    <div class="table-responsive">
     <table class="table table-hover">
         <!-- Render Table-Rows with Changes for given project -->
         <f:render partial="Project/ChangeList" arguments="{project:project}"/>
     </table>
+    </div>
     <!-- Backlink to Projects List -->
     <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
-        <span class="glyphicon-chevron-left glyphicon"></span> Zurück zur Liste
+        <span class="glyphicon-chevron-left glyphicon"></span> Zurück
     </f:link.action>
     <!-- If the project is pre secretary phase (progress <2) -->
     <f:if condition="{project.progress} < 2">
