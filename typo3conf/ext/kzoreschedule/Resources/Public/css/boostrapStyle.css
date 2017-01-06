@@ -5,6 +5,15 @@
     border-radius: 2px;
 }
 
+body {
+    font-size: 14px;
+}
+
+h1 {
+    font-size:35px;
+    margin-bottom:50px;
+}
+
 a {
     text-decoration:none !important;
 }
