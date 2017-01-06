@@ -386,7 +386,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $projects = $this->projectRepository->findByPublicAndCourses($teachersCourses);
         $allowed_changes = array();
         $allowed_changes_project = array();
+        $changeCount = 0;
         foreach ($projects as $project) {
+            $changeCount += count($project->getChanges());
             if ($project->getProgress() > 0) {
                 $project->setUserId($this->getUserInfo($project->getUserId(),"name"));
                 foreach ($project->getChanges() as $change) {
@@ -418,9 +420,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     $divfilter = 0;
                     break;
             }
+            $count = $changeCount-count($allowed_changes);
             $this->view->assign('changes', $allowed_changes);
             $this->view->assign('projects', $allowed_changes_project);
             $this->view->assign('divfilter', $divfilter);
+            $this->view->assign('filtercount',$count);
 
 
         }

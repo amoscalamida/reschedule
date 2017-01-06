@@ -11,15 +11,15 @@
     <f:switch expression="{divfilter}">
         <f:case value="1"><h1 style="float: left;">Anfragen </h1>
             <h6 style="float: right; text-align: right;">
-                <f:link.action class="inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}"><span
-                        class="glyphicon glyphicon-check"></span> Beantwortete anzeigen
+                <f:link.action class="btn btn-primary btn-sm inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}">
+                    Beantwortete anzeigen&nbsp;&nbsp;<span class="badge">&nbsp;{filtercount}&nbsp;</span>
                 </f:link.action>
             </h6>
         </f:case>
-        <f:case value="0"><h1 style="float: left;">Beantwortete Verschiebungen</h1>
+        <f:case value="0"><h1 style="float: left;">Beantwortete Anfragen</h1>
             <h6 style="float: right; text-align: right;">
-                <f:link.action class="inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}"><span
-                        class="glyphicon glyphicon-log-in"></span> Offene anzeigen
+                <f:link.action class="btn btn-primary btn-sm inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}">
+                    Offene anzeigen&nbsp;&nbsp;<span class="badge">&nbsp;{filtercount}&nbsp;</span>
                 </f:link.action>
             </h6>
         </f:case>
@@ -150,19 +150,37 @@
             <f:switch expression="{divfilter}">
                 <f:case value="1">
                     <!-- show message and link to answered changes -->
-                    <p style="clear: both;">Zurzeit gibt es keine Anfragen (
-                        <f:link.action action="teacherList" pageType="997" class="btn btn-xs inner-ajax-button" arguments="{filter: divfilter}">
-                            Beantwortete anzeigen
+                    <p style="clear: both;">
+                        <f:if condition="{filtercount} > 0">
+                            <f:then>
+                            Es wurden keine neuen, aber
+                        <f:link.action action="teacherList" pageType="997" class="inner-ajax-button" arguments="{filter: divfilter}">
+                            {filtercount} beantwortete Anfragen
                         </f:link.action>
-                        )</span></p>
+                              gefunden.
+                            </f:then>
+                            <f:else>
+                                Es wurden weder neue noch bereits beantwortete Anfragen gefunden.
+                            </f:else>
+                    </f:if>
+                        </span></p>
                 </f:case>
                 <f:case value="0">
                     <!-- show message and link to unanswered changes -->
-                    <p style="clear: both;">Es wurden keine beantworteten Verschiebungen gefunden (
-                        <f:link.action action="teacherList" pageType="997" class="btn btn-xs inner-ajax-button" arguments="{filter: divfilter}">Offene
-                            anzeigen
-                        </f:link.action>
-                        )</span></p>
+                    <p style="clear: both;">
+                        <f:if condition="{filtercount} > 0">
+                            <f:then>
+                                Es wurden keine beantworteten, aber
+                                <f:link.action action="teacherList" pageType="997" class="inner-ajax-button" arguments="{filter: divfilter}">
+                                    {filtercount} offene Anfragen
+                                </f:link.action>
+                                  gefunden.
+                            </f:then>
+                            <f:else>
+                                Es wurden weder bereits beantwortete noch neue Anfragen gefunden.
+                            </f:else>
+                        </f:if>
+                        </span></p>
                 </f:case>
             </f:switch>
         </f:else>
