@@ -79,15 +79,16 @@ page.includeJSFooter {
 	file3 = EXT:kzoreschedule/Resources/Public/js/jquery.datetimepicker.js
 	file4 = EXT:kzoreschedule/Resources/Public/js/bootstrap_config.js
 	file5 = EXT:kzoreschedule/Resources/Public/js/js.cookie.js
+	file6 = EXT:kzoreschedule/Resources/Public/js/jquery.sumoselect.min.js
 
 }
 
 page.includeCSS {
-	file1 = http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
+	file1 = https://bootswatch.com/flatly/bootstrap.min.css
 	file2 = EXT:kzoreschedule/Resources/Public/css/boostrapStyle.css
 	file3 = EXT:kzoreschedule/Resources/Public/css/jquery.datetimepicker.css
-
-}
+	file4 = EXT:kzoreschedule/Resources/Public/css/sumoselect.css
+	}
 
 ajaxCall = PAGE
 ajaxCall {
