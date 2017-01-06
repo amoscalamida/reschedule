@@ -2,7 +2,7 @@
 
     /* DateTimePicker Partial
      *
-     * sets the jQuery Configuration Code for the DateTimePicker Plugin
+     * sets the jQuery Configuration Code for the DateTimePicker and SumoSelect Plugin
      * needs to be included wherever DateTimePicker is used
      */
 
@@ -57,6 +57,9 @@
             yearEnd: new Date().getFullYear()+1
 
         });
+
+        $('select').SumoSelect({search: true, searchText: 'Suche'});
+
     });
 
 </script>
