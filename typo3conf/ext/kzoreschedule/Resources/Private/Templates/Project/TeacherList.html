@@ -8,22 +8,30 @@
 <f:section name="main">
     <f:flashMessages style="clear:both;"/>
     <!-- check filter and show either only answered (filter: 0) or unanswered (filter:1) -->
+    <div class="row" style="margin-bottom: 50px;">
     <f:switch expression="{divfilter}">
-        <f:case value="1"><h1 style="float: left;">Anfragen </h1>
-            <h6 style="float: right; text-align: right;">
+        <f:case value="1">
+            <div class="col-md-9">
+            <h1>Anfragen </h1>
+            </div>
+            <div class="col-md-3">
                 <f:link.action class="btn btn-primary btn-sm inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}">
-                    Beantwortete anzeigen&nbsp;&nbsp;<span class="badge">&nbsp;{filtercount}&nbsp;</span>
+                    Beantwortete anzeigen <span style="margin-left: 5px;" class="badge">&nbsp;{filtercount}&nbsp;</span>
                 </f:link.action>
-            </h6>
+            </div>
         </f:case>
-        <f:case value="0"><h1 style="float: left;">Beantwortete Anfragen</h1>
-            <h6 style="float: right; text-align: right;">
+        <f:case value="0">
+            <div class="col-md-9">
+            <h1 >Beantwortete Anfragen</h1>
+            </div>
+            <div class="col-md-3">
                 <f:link.action class="btn btn-primary btn-sm inner-ajax-button" action="teacherList" pageType="997" arguments="{filter: divfilter}">
-                    Offene anzeigen&nbsp;&nbsp;<span class="badge">&nbsp;{filtercount}&nbsp;</span>
+                    Offene anzeigen <span style="margin-left: 5px;" class="badge">&nbsp;{filtercount}&nbsp;</span>
                 </f:link.action>
-            </h6>
+            </div>
         </f:case>
     </f:switch>
+    </div>
     <!-- check if there are changes to display -->
     <f:if condition="{changes}">
         <f:then>

@@ -11,11 +11,14 @@ body {
 
 h1 {
     font-size:35px;
-    margin-bottom:50px;
 }
 
 a {
     text-decoration:none !important;
+}
+
+.inner-ajax-button, .inner-button{
+    margin-top: 23px;
 }
 
 .input-group-btn .btn {
