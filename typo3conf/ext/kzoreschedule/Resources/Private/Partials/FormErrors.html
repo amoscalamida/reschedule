@@ -16,7 +16,7 @@
                     // find label for property and append the translated error message
                     var label = $('label[for="' + property + '"]');
                     label.append("<p class='text-danger'><f:translate key='error.{error.code}'> </f:translate></p>");
-                    label.next().next().removeClass("f3-form-error");
+                    label.next().removeClass("f3-form-error");
                     label.parent().addClass("has-error");
 
                     console.log("{error.code}, {error.message}, {propertyPath}");
