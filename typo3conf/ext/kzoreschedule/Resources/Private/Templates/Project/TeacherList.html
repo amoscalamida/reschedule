@@ -194,7 +194,8 @@
                 $('.formresult').html(data)
             }).fail(function (error) {
                 // on failure display notice and post the complete error msg to console
-                $('.formresult').html('<p>Es ist ein Fehler aufgetreten! <a onclick="load();">Erneut versuchen</a> </p>');
+                $('.formresult').html('<p class="text-center text-muted" style="margin-top: 10%;"> <f:image src="EXT:kzoreschedule/Resources/Public/Icons/error.svg" width="50" /> <br><br> <small title="'+ error.status + ': ' +error.statusText +'"  data-toggle="tooltip" data-placement="auto">Es ist ein Fehler aufgetreten!</small><br><small><a onclick="load();">Erneut versuchen</a></small> </p>');
+                $('[data-toggle="tooltip"]').tooltip();
                 console.debug(error);
             }).always(function () {
                 // always hide the loading gif on completion and
