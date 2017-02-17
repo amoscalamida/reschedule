@@ -366,9 +366,12 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function assistantSearchAction()
     {
 
+
         if ($this->request->hasArgument('falloutDate')) {
             $falloutDate = $this->request->getArgument('falloutDate');
             $this->view->assign("falloutDate", $falloutDate);
+        } else {
+            $this->view->assign("falloutDate", "15.02.2017 11:20");
         }
         if ($this->request->hasArgument('subject')) {
             $subject = $this->request->getArgument('subject');

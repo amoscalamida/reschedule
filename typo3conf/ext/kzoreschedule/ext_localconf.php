@@ -8,12 +8,12 @@ if (!defined('TYPO3_MODE')) {
 	'Student',
 	array(
 		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust, assistantSearch',
-		'Change' => 'show, new, create, edit, update, delete, courseDetails, assistantSearch',
+		'Change' => 'show, new, create, edit, update, delete, courseDetails',
 		
 	),
 	// non-cacheable actions
 	array(
-		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust',
+		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust, assistantSearch',
 		'Change' => 'show, new, create, edit, update, delete, courseDetails',
 		
 	)
