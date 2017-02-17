@@ -96,6 +96,15 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $teacherComment = '';
+
+    /**
+     * emailsProgress
+     *
+     * Possible Values: 0 => None sent, 1 => Release (Teacher), 2 => Update (Student), 3 => Close (Teacher/Student)
+     *
+     * @var integer
+     */
+    protected $emailsProgress = 0;
     
     /**
      * Returns the courseId
@@ -237,7 +246,7 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the teacherAnswer
      *
-     * @param bool $teacherAnswer
+     * @param int $teacherAnswer
      * @return void
      */
     public function setTeacherAnswer($teacherAnswer)
@@ -266,6 +275,28 @@ class Change extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->teacherComment = $teacherComment;
     }
+
+    /**
+     * Returns the emailsProgress
+     *
+     * @return int $emailsProgress
+     */
+    public function getEmailsProgress()
+    {
+        return $this->emailsProgress;
+    }
+
+    /**
+     * Sets the emailsProgress
+     *
+     * @param int $emailsProgress
+     * @return void
+     */
+    public function setEmailsProgress($emailsProgress)
+    {
+        $this->emailsProgress = $emailsProgress;
+    }
+
 
 
 }

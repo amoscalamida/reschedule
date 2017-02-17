@@ -102,10 +102,11 @@
     <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
         <span class="glyphicon-chevron-left glyphicon"></span> Zurück
     </f:link.action>
-    <!-- If the project is pre secretary phase (progress <2) -->
-    <f:if condition="{project.progress} < 2">
+    <!-- If the project is pre teacher phase (progress <1) -->
+    <f:if condition="{project.progress} < 1">
         <f:then>
             <!-- Action-Button to create a new Change in given project  -->
+
             <f:link.action action="new" style="float:right" class="btn btn-success hidden-sm hidden-md hidden-lg"
                            controller="Change" arguments="{project : project}">
                 <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
@@ -113,6 +114,9 @@
         </f:then>
         <f:else>
             <!-- disabled "Pseudo"-Button  -->
+            <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
+                        <span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-default">Beta</span>
+                    </span>
             <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
                         <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
                     </span>

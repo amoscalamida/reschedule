@@ -83,6 +83,10 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             }
         }
 
+        $rooms = array("32","16","01","02","25","50","1G","1E","32", "C2", "Z5","Z4","THA","THJ","P3");
+        $course_count = count($rooms);
+
+
         /** if no course matches with the change time there are no lessons this day
          * -> timetable data is not available for this date
          * This prevents the ViewHelper from returning anything

@@ -202,7 +202,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action delete
      *
-     * remove the project and all of its changes from repository
+     * remove the project and all of its changes from repository (for Student View)
      *
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @ignorevalidation $project
@@ -213,6 +213,22 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->addFlashMessage('Das Projekt wurde gelöscht', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->projectRepository->remove($project);
         $this->redirect('studentList');
+    }
+
+    /**
+     * action deleteAdmin
+     *
+     * remove the project and all of its changes from repository (for admin View)
+     *
+     * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
+     * @ignorevalidation $project
+     * @return void
+     */
+    public function deleteAdminAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
+    {
+        $this->addFlashMessage('Das Projekt wurde gelöscht', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->projectRepository->remove($project);
+        $this->redirect('adminList');
     }
 
     /**
@@ -273,6 +289,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
             case 'teacher':
                 $level = 1;
+                foreach ($project->getChanges() as $change) {
+                    if ($change->getEmailsProgress() == 0) {
+                        $this->sendNotificationEmail($change, "releaseproject");
+                    }
+                }
                 break;
 
             case 'secretary':
@@ -333,6 +354,27 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $this->view->assign('secretaryAnswers', $secretaryAnswers);
         $this->view->assign('teacherAnswers', $teacherAnswers);
+    }
+
+    /**
+     * action assistantSearch
+     *
+     * start movement assistant
+     *
+     * @return void
+     */
+    public function assistantSearchAction()
+    {
+
+        if ($this->request->hasArgument('falloutDate')) {
+            $falloutDate = $this->request->getArgument('falloutDate');
+            $this->view->assign("falloutDate", $falloutDate);
+        }
+        if ($this->request->hasArgument('subject')) {
+            $subject = $this->request->getArgument('subject');
+            $this->view->assign("subject", $subject);
+        }
+
     }
 
     /**
@@ -487,16 +529,17 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      *
      * @return void
      */
-    public static function sendNotificationEmail($object, $template = "Auto")
+    public function sendNotificationEmail($object, $template = "Auto")
     {
 
         switch (get_class($object)) {
 
             case 'AmosCalamida\Kzoreschedule\Domain\Model\Change':
-                //passed object is Change
+                //passed object is Change (Teacher Infos)
                 switch ($template) {
 
                     case "closeproject":
+                    // teacher Info on closeproject
 
                         switch ($object->getSecretaryAnswer()) {
 
@@ -528,17 +571,36 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                             ->setSubject($subject)
                             ->setBody($body, 'text/html')
                             ->send();
-
+                        $object->setEmailsProgress(3);
                         break;
 
                     case "updateproject":
-
-
+                        // no info on updateproject
                         break;
 
                     case "releaseproject":
+                        //Teacher Info on ReleaseProject
 
+                    $course_details = getCourseDetails($object->getCourseId(),"teacher","complete");
 
+                        $preheader = "Eine Verschiebungsanfrage für einer Ihrer Lektionen ist eingegangen.";
+                        //$intro = "Die Klasse <b>". $course_details->Class . "</b> hat die Anfrage gestellt, Ihre Lektion <b>".$course_details->Label."</b> von <b>" . $object->getOriginalLesson()->format("d.m.Y H:i"). " Uhr</b> nach <b>".$object->getChangedLesson()->format("d.m.Y H:i")." Uhr</b> zu verschieben.";
+                        $intro = "";
+                        $outro = "Die Details der Verschiebung sowie die Möglichkeit diese zu beantworten finden Sie im Intranet.";
+
+                        $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+                        $to = array("amos.calamida@me.com" => "Amos Calamida");
+                        $body = self::getEmailDesign(array($preheader, $intro, $outro));
+                        $subject = "Neue Verschiebungsanfrage der Klasse $course_details->Class";
+
+                        $mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+                        $mail->setFrom($from)
+                            ->setTo($to)
+                            ->setSubject($subject)
+                            ->setBody($body, 'text/html')
+                            ->send();
+
+                        $object->setEmailsProgress(1);
                         break;
 
 
@@ -548,11 +610,12 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 break;
 
             case 'AmosCalamida\Kzoreschedule\Domain\Model\Project':
-                //passed object is Project
+                //passed object is Project (Student Infos)
 
                 switch ($template) {
 
                     case "closeproject":
+                        //Student Info on CloseProject
 
                         $changeList = "<ul>";
 
@@ -573,6 +636,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                                     break;
 
                             }
+                            $change->setEmailsProgress(3);
                         }
 
                         $changeList .= "</ul>";
@@ -582,7 +646,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                         $outro = "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array("amos.calamida@me.com" => "Amos Calamida");
+                        $to = array($this->getUserInfo($object->getUserId(),"email") => $this->getUserInfo($object->getUserId(),"name"));
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
                         $subject = $object->getTitle() . ": Entscheid des Sekretariats";
 
@@ -597,14 +661,16 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                         break;
 
                     case "updateproject":
-
+                        //Student Info on UpdateProject
                         $changeList = "<ul>";
+
 
                         foreach ($object->getChanges() as $change) {
 
+
                             switch ($change->getTeacherAnswer()) {
 
-                                case 1: //change not answered
+                                case 0: //change not answered
                                     $accentColor = "#f0ad4e";
                                     $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >Warte auf Antwort</span></li>";
                                     break;
@@ -622,6 +688,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                                     break;
 
                             }
+                            $change->setEmailsProgress(2);
                         }
 
                         $changeList .= "</ul>";
@@ -631,9 +698,9 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                         $outro = "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array("amos.calamida@me.com" => "Amos Calamida");
+                        $to = array($this->getUserInfo($object->getUserId(),"email") => $this->getUserInfo($object->getUserId(),"name"));
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
-                        $subject = $object->getTitle() . ": Entscheid des Sekretariats";
+                        $subject = $object->getTitle() . ": Verschiebung beantwortet";
 
 
                         $mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -647,7 +714,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
                     case "releaseproject":
 
-
+                        // no Info on release project
 
                         break;
 
@@ -805,7 +872,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
           font-size: 14px;
           font-weight: bold;
           margin: 0;
-          padding: 12px 25px;
+          padding: 5px 25px;
           text-decoration: none;
            }
       .btn-primary table td {
@@ -1010,13 +1077,14 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param \AmosCalamida\Kzoreschedule\Domain\Model\Project $project
      * @param  string $category - the category to get the answers from (either "secretary" or "teacher")
      *
-     * @return integer - (0 => wait, 1 => all disallowed, 2 => all allowed, 3 => partly allowed)
+     * @return array - progress(0 => wait, 1 => all disallowed, 2 => all allowed, 3 => partly allowed), allowed, disallowed,wait
      */
     public function getAnswerProgress(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $category)
     {
 
         $allowed = 0;
         $disallowed = 0;
+        $wait = 0;
 
         foreach ($project->getChanges() as $change) {
             switch ($category) {
@@ -1027,30 +1095,37 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     $answer = $change->getSecretaryAnswer();
                     break;
             }
-            if ($answer == 0) {
-                $wait = true;
-            } else {
-                if ($answer == 2) {
+
+            switch ($answer) {
+                case 0:
+                    $wait++;
+                    break;
+
+                case 2:
                     $allowed++;
-                } else {
+                    break;
+
+                case 1:
                     $disallowed++;
-                }
-            }
-        }
+                    break;
 
-        if (!$wait) {
+            }
+
+        }
+        if ($wait > 0) {
+            $progress_summary = 0;
+        }
+        else {
             if ($allowed > 0 && $disallowed == 0) {
-                $result = 2;
+                $progress_summary = 2;
             } elseif ($allowed > 0 && $disallowed > 0) {
-                $result = 3;
+                $progress_summary = 3;
             } elseif ($allowed == 0 && $disallowed > 0) {
-                $result = 1;
+                $progress_summary = 1;
             }
-        } else {
-            $result = 0;
         }
 
-        return $result;
+        return $result = array($progress_summary,$allowed,$disallowed,$wait);
     }
 
     /**
@@ -1076,7 +1151,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @return string
      */
 
-    public function getUserInfo($id,$info = "*") {
+    function getUserInfo($id,$info = "*") {
         $data = $this->databaseConnection->fullQuoteStr($id, 'fe_users');
         $res = $this->databaseConnection->exec_SELECTquery(
             $info,
@@ -1224,7 +1299,7 @@ function getCourseDetails($id, $mode, $req)
     $json = json_decode($result)->body;
 
     $course = $json[0];
-    $subjects = array("T" => "Sport", "M" => "Mathematik", "D" => "Deutsch", "B" => "Biologie", "P" => "Physik", "BG" => "Bildnerisches Gestalten", "RL" => "Religion", "GR" => "Griechisch", "L" => "Lateinisch", "SP" => "Spanisch", "IT" => "Italienisch", "G" => "Geschichte", "GG" => "Geografie", "MU" => "Musik", "E" => "Englisch", "F" => "Französisch", "C" => "Chemie", "AM" => "Angewandte Mathematik", "AC" => "Anwendungen des Computers", "");
+    $subjects = array("T" => "Sport", "M" => "Mathematik", "D" => "Deutsch", "B" => "Biologie", "P" => "Physik", "BG" => "Bildnerisches Gestalten", "RL" => "Religion", "GR" => "Griechisch", "L" => "Lateinisch", "SP" => "Spanisch", "IT" => "Italienisch", "G" => "Geschichte", "GG" => "Geografie", "MU" => "Musik", "E" => "Englisch", "F" => "Französisch", "C" => "Chemie", "AM" => "Angewandte Mathematik", "AC" => "Anwendungen des Computers", "FB" => "Französisch Besprechung", "DB" => "Deutsch Besprechung");
 
     switch ($mode) {
         case "secretary":
@@ -1254,6 +1329,10 @@ function getCourseDetails($id, $mode, $req)
         case "class":
             return $course->Class;
 
+            break;
+
+        case "complete":
+            return $course;
             break;
 
     }

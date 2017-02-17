@@ -7,8 +7,8 @@ if (!defined('TYPO3_MODE')) {
 	'AmosCalamida.' . $_EXTKEY,
 	'Student',
 	array(
-		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust',
-		'Change' => 'show, new, create, edit, update, delete, courseDetails',
+		'Project' => 'studentList, show, new, create, edit, update, delete, projectStatusAdjust, assistantSearch',
+		'Change' => 'show, new, create, edit, update, delete, courseDetails, assistantSearch',
 		
 	),
 	// non-cacheable actions

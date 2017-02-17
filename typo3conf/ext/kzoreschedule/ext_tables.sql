@@ -55,6 +55,7 @@ CREATE TABLE tx_kzoreschedule_domain_model_change (
 	room varchar(255) DEFAULT '' NOT NULL,
 	teacher_answer tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	teacher_comment text NOT NULL,
+	emails_progress tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
