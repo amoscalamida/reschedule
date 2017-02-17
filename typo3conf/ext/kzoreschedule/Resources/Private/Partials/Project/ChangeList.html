@@ -92,6 +92,24 @@
             <f:render partial="Change/SecretaryAnswerBlockRow" arguments="{change : change}"></f:render>
             <!-- End Secretary Answer Block -->
         </f:for>
+        <tr class="hidden-xs">
+            <td colspan="8" style="text-align: right;">
+                <f:if condition="{project.progress} < 1">
+                    <f:then>
+                        <a href="#"data-toggle="modal" data-target="#assistantModal"><span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-warning">Beta</span>
+                        </a><span class="glyphicon glyphicon-option-vertical"></span>
+                        <f:link.action action="new" controller="Change" arguments="{project : project}"><span
+                                class="glyphicon-plus glyphicon"></span> Neue Verschiebung
+                        </f:link.action>
+                    </f:then>
+                    <f:else>
+                        <span class="text-muted"><span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-default">Beta</span></span>
+                        <span class="glyphicon glyphicon-option-vertical"></span>
+                        <span class="text-muted"><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span>
+                    </f:else>
+                </f:if>
+            </td>
+        </tr>
     </f:then>
     <f:else>
         <!-- No Changes found -> Display message with button to add one -->
@@ -106,7 +124,8 @@
                                                arguments="{project : project}"><span
                                         class="glyphicon-plus glyphicon"></span> Neue Verschiebung erstellen
                                 </f:link.action>
-                            </f:then>
+                                <a href="#"data-toggle="modal" data-target="#assistantModal" class="btn btn-info"><span class="glyphicon-flash glyphicon"></span> Verschiebungsassistent <span class="label label-warning">Beta</span>
+                                </a>                            </f:then>
                             <f:else><span class="text-muted" class="btn" disabled="disabled"><span
                                     class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span></f:else>
                         </f:if>
@@ -117,170 +136,5 @@
     </f:else>
 </f:if>
 <!-- "Add Change" Button: Visible if progress < 2 (pre Secretary) -->
-<tr class="hidden-xs">
-    <td colspan="8" style="text-align: right;">
-        <f:if condition="{project.progress} < 1">
-            <f:then>
-               <a href="#"data-toggle="modal" data-target="#assistantModal"><span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-warning">Beta</span>
-               </a><span class="glyphicon glyphicon-option-vertical"></span>
-                <f:link.action action="new" controller="Change" arguments="{project : project}"><span
-                        class="glyphicon-plus glyphicon"></span> Neue Verschiebung
-                </f:link.action>
-            </f:then>
-            <f:else>
-                <span class="text-muted"><span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-default">Beta</span></span>
-                <span class="glyphicon glyphicon-option-vertical"></span>
-                <span class="text-muted"><span class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span>
-            </f:else>
-        </f:if>
-    </td>
-</tr>
+
 <!-- End "Add Change Button" -->
-<style>
-    @keyframes fadeIn {
-        from { opacity: 0; }
-    }
-    @-o-keyframes fadeIn{
-        from { opacity: 0; }
-    }
-    @-moz-keyframes fadeIn{
-        from { opacity: 0; }
-    }
-    @-webkit-keyframes fadeIn{
-        from { opacity: 0; }
-    }
-    .animate-flicker {
-        -webkit-animation: fadeIn 3s infinite alternate;
-        -moz-animation: fadeIn 3s infinite alternate;
-        -o-animation: fadeIn 3s infinite alternate;
-        animation: fadeIn 3s infinite alternate;
-    }
-
-</style>
-<f:render partial="Change/DateTimePicker"/>
-<div id="assistantModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Verschiebungsassistent</h4>
-            </div>
-            <div class="modal-body">
-                <div id="assistantModalBody"></div>
-                <div class='loaderAJAX'  style='display:none; margin:50px;'>
-                    <center><f:image class="loaderAJAX" style="display: none; width: 150px; margin-top:-40px; margin-left: -20px"
-                                     src="EXT:kzoreschedule/Resources/Public/Icons/ajax-loader-slow.svg"/><span style='margin-left: -110px; font-size: 60px;' id='timer'>35</span><br><br>
-                        <p style='margin-left: 20px'><span class='animate-flicker' id='message'>Berechnung wird vorbereitet</span><br><span id='timermessage'></span></p>
-                    </center>
-                </div>
-                <div id="requestForm">
-                <f:form class="form-inline assistant-form" action="assistantSearch" pageType="998" method="POST">
-                    <div class="form-group">
-                        <f:form.textfield class="form-control datetime" name="falloutDate" placeholder="Ausfalldatum"></f:form.textfield>
-                    </div>
-                    <div class="form-group">
-                        <f:form.textfield class="form-control" placeholder="Fach" name="subject"></f:form.textfield>
-                    </div>
-                    <div class="form-group">
-                        <a data-dismiss="modal" class="btn btn-warning">Abbrechen</a>
-                        <f:form.submit class="btn btn-success" value="Verschiebungen berechnen"/>
-                    </div>
-                </f:form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<script>
-
-       $(function(){
-
-           $("form.assistant-form").submit(function (event) {
-            // prevent standard submission
-            event.preventDefault();
-            $("#requestForm").hide();
-            $('.loaderAJAX').show();
-           startTimer();
-            var form = $(this);
-            // define action, method and data from fluid form
-            var action = form.attr("action"),
-                method = form.attr("method"),
-                data = form.serialize();
-            // start ajax request
-             assistantFormRequest = $.ajax({
-                url: action,
-                type: method,
-                data: data
-            }).done(function (data) {
-                // on success display the html generated by the Assistant
-                $('#assistantModalBody').html(data)
-            }).fail(function (error) {
-                // on failure display notice and post the complete error msg to console
-                $('#assistantModalBody').html('<p>Es ist ein Fehler aufgetreten!</p>');
-                console.debug(error);
-            }).always(function () {
-                $('.loaderAJAX').hide();
-            });
-        });
-
-           $('#assistantModal').on('hidden.bs.modal', function (e) {
-               assistantFormRequest.abort();
-               stopIntervals();
-               $("#requestForm").show();
-               $('#assistantModalBody').html('');
-
-           });
-
-       });
-
-       var count;
-       var counterText;
-       var intervalID;
-       var counter;
-       var text = ['Stundenplan wird abgerufen', 'Mögliche Verschiebungen werden gesucht', 'Lehrerstudenpläne werden geprüft', 'Verschiebungen werden ausgewertet', 'Ausgabe wird vorbereitet', 'Bitte warten...'];
-
-       function startTimer() {
-           $('#timermessage').html('');
-           $('#timer').text('35');
-           $('#message').text("Berechnung wird vorbereitet");
-           count = 35;
-           counterText = 0;
-           intervalID = setInterval(change, 6000);
-           counter = setInterval(timer, 1000);
-       }
-
-       function stopIntervals() {
-           clearInterval(counter);
-           clearInterval(intervalID);
-       }
-
-
-       function timer() {
-           count = count-1;
-           if (count <= 0)
-           {
-               clearInterval(counter);
-               $('#timer').html('00');
-               $('#timermessage').html('<b>Die Berechnung dauert länger als erwartet. Wir bitten um Geduld!</b>');
-               return;
-           }
-           if (count>=10){
-               $('#timer').text(count);
-           } else {
-               $('#timer').text('0'+count);
-           }
-       }
-
-       function change() {
-           $('#message').text(text[counterText]);
-           counterText++;
-           if(counterText >= text.length) {
-               clearInterval(intervalID);
-           }
-       }
-
-</script>
