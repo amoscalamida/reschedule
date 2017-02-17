@@ -227,7 +227,12 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function updateAction(\AmosCalamida\Kzoreschedule\Domain\Model\Change $change, \AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
         $this->addFlashMessage('Die Verschiebung wurde aktualisiert.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $change->setEmailsProgress(0);
         $this->changeRepository->update($change);
+        //      if ($change->getEmailsProgress() == 0 && $project->getProgress() == 1) {
+            //  $projectController = new ProjectController();
+            //  $projectController->sendNotificationEmail($change, "releaseproject");
+        //      }
         $this->redirect("show", "Project", NULL, array("project" => $project));
     }
 
@@ -317,7 +322,9 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $this->addFlashMessage('Die Verschiebung wurde ' . (($change->getTeacherAnswer() == 2) ? 'akzeptiert' : 'abgelehnt') . ' und ist nun unter "Beantwortete Verschiebungen" zu finden. ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->changeRepository->update($change);
-        //TODO: Send "Updateproject" Notification Email
+        $project = $this->projectRepository->findByChange($change->getUid());
+        $projectController = new ProjectController();
+        $projectController->sendNotificationEmail($project[0], "updateproject");
         $this->redirect("teacherContainer", "Project");
 
     }

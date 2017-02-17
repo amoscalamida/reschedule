@@ -32,8 +32,8 @@ if (TYPO3_MODE === 'BE') {
 		'admin',	// Submodule key
 		'',						// Position
 		array(
-			'Project' => 'adminList, show, new, create, edit, update, delete, deleteAll',
-			'Change' => 'list, show, new, create, edit, update, delete',
+			'Project' => 'adminList, show, new, create, edit, update, deleteAdmin, deleteAll',
+			'Change' => 'list, show, new, create, edit, update',
 			
 		),
 		array(

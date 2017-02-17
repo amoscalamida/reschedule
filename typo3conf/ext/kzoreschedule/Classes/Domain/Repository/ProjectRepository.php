@@ -68,6 +68,28 @@ class ProjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     }
 
+    /**
+     * query findByChange
+     *
+     * Finds all Repository Objects with requested Change
+     *
+     * @param int $changeId
+     *
+     * @return object
+     */
+    public function findByChange($changeId)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+           $query->equals('changes.uid', $changeId)
+        );
+
+        $result = $query->execute();
+
+        return $result;
+
+    }
+
 
 
 }

@@ -18,10 +18,19 @@
     <!-- Progress 1: Teachers -->
     <f:case value="1">
 
-        <f:switch expression="{teacherAnswer}">
+        <f:switch expression="{teacherAnswer.0}">
             <!-- TeacherAnswer 0: not yet answered -->
             <f:case value="0">
-                <td class=" text-info">Warten</td>
+                <td class=" text-info">
+                    <span data-toggle="tooltip" data-placement="right" data-html="true" title="
+                    <p class='text-left'>
+                             <b>{teacherAnswer.1}</b> angenommen<br>
+                             <b>{teacherAnswer.2}</b> abgelehnt <br>
+                             <b>{teacherAnswer.3}</b> wartend  <br>
+
+                    </>">
+                   Warte auf Antwort
+                </td>
             </f:case>
 
             <!-- TeacherAnswer 1: none accepted -->
@@ -67,7 +76,7 @@
     <!-- Progress 2: Secretary -->
     <f:case value="2">
 
-        <f:switch expression="{secretaryAnswer}">
+        <f:switch expression="{secretaryAnswer.0}">
             <!-- Secretary Answer 0: not yet answered -->
             <f:case value="0">
                 <td class=" text-info"><span>Warten</span></td>
@@ -93,7 +102,7 @@
     <!-- Progress 3: Workflow completed -->
     <f:case value="3">
 
-        <f:switch expression="{secretaryAnswer}">
+        <f:switch expression="{secretaryAnswer.0}">
             <!-- Secretary Answer 0: no answer -> error -->
             <f:case value="0">
                 <td class=" text-info"> Fehler: Projekt ohne Antwort abgeschlossen</td>

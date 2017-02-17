@@ -150,6 +150,14 @@ return array(
 				'eval' => 'trim'
 			)
 		),
+        'emails_progress' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:kzoreschedule/Resources/Private/Language/locallang_db.xlf:tx_kzoreschedule_domain_model_change.emails_progress',
+            'config' => array(
+                'type' => 'check',
+                'default' => 0
+            )
+        ),
 		
 		'project' => array(
 			'config' => array(
