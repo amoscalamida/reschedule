@@ -50,3 +50,4 @@ if (!defined('TYPO3_MODE')) {
 		
 	)
 );
+

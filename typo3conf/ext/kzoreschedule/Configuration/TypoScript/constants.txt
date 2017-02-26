@@ -11,6 +11,7 @@ plugin.tx_kzoreschedule_student {
 	persistence {
 		# cat=plugin.tx_kzoreschedule_student//a; type=string; label=Default storage PID
 		storagePid =
+
 	}
 }
 
