@@ -14,7 +14,7 @@
     <span class="required">(*)</span>
 </label><br/>
 <f:alias map="{ class: '{vh:frontEndUser(attribute:\'zip\')}' }">
-<f:form.select prependOptionLabel="Bitte wählen..." options="{vh:findCourses(class:class)}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/>
+<f:form.select prependOptionLabel="Bitte wählen..." options="{vh:findCourses(class:class,onlyMovable:'true')}" optionValueField="ID" optionLabelField="Label" class="form-control" property="courseId"/>
     <br/>
 </f:alias>
 <br>

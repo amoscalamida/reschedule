@@ -15,76 +15,80 @@
     <!-- Check if Project has Changes assigned to it-->
     <f:if condition="{project.changes}">
         <f:then>
-            <!-- If Project is in preparation phase (progress: 0) -->
-            <f:if condition="{project.progress} == 0">
-                <f:then>
-                    <!-- Provide button to release the project for teachers (progress: 1) -->
-                    <f:link.action action="projectStatusAdjust" class="btn btn-success"
-                                   arguments="{project : project, level : 'teacher'}">
-                        Für Lehrer freigeben
-                    </f:link.action>
-                    <br><br>
-                </f:then>
-            </f:if>
-            <!-- If Project is released for teachers (progress: 1) -->
-            <f:if condition="{project.progress} == 1">
-                <f:then>
-                    <!-- Provide button to take the project back into preparation phase (progress: 0) -->
-                    <f:link.action action="projectStatusAdjust" class="btn btn-warning"
-                                   arguments="{project : project, level : 'student'}">
-                        Zurückziehen
-                    </f:link.action>
-                    <!--
-                    * Check if all teachers answered and agreed
-                    * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
-                    -->
-                    <f:if condition="{allTeachersAgree}">
-                        <f:then>
-                            <!-- Provide button to release the project for secretary (progress: 2) -->
-                            <f:link.action action="projectStatusAdjust" class="btn btn-success"
-                                           arguments="{project : project, level : 'secretary'}">
-                                Für Sekretariat freigeben
-                            </f:link.action>
-                            <br><br>
-                        </f:then>
-                        <f:else>
-                            <!-- Provide disabled "Pseudo"-Button with explanation why project can't be released -->
-                            <span class="btn btn-default" disabled="disabled"
-                                  onclick="alert('Projekt kann noch nicht eingereicht werden\n\nEs sind entweder nicht alle Lehrer einverstanden oder es haben noch nicht alle geantwortet. \n\nBitte warte auf die Antworten bzw. lösche Verschiebungen welche vom Lehrer verweigert wurden um das Projekt einzureichen.')">
+            <div class="btn-group" role="group">
+                <!-- If Project is in preparation phase (progress: 0) -->
+                <f:if condition="{project.progress} == 0">
+                    <f:then>
+                        <!-- Provide button to release the project for teachers (progress: 1) -->
+                        <f:link.action action="projectStatusAdjust" class="btn btn-success"
+                                       arguments="{project : project, level : 'teacher'}">
+                            Für Lehrer freigeben
+                        </f:link.action>
+                        <br><br>
+                    </f:then>
+                </f:if>
+                <!-- If Project is released for teachers (progress: 1) -->
+                <f:if condition="{project.progress} == 1">
+                    <f:then>
+                        <!-- Provide button to take the project back into preparation phase (progress: 0) -->
+                        <f:link.action action="projectStatusAdjust" class="btn btn-warning"
+                                       arguments="{project : project, level : 'student'}">
+                            Zurückziehen
+                        </f:link.action>
+                        <!--
+                        * Check if all teachers answered and agreed
+                        * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
+                        -->
+                        <f:if condition="{allTeachersAgree}">
+                            <f:then>
+                                <!-- Provide button to release the project for secretary (progress: 2) -->
+                                <f:link.action action="projectStatusAdjust" class="btn btn-success"
+                                               arguments="{project : project, level : 'secretary'}">
+                                    Für Sekretariat freigeben
+                                </f:link.action>
+                                <br><br>
+                            </f:then>
+                            <f:else>
+                                <!-- Provide disabled "Pseudo"-Button with explanation why project can't be released -->
+                                <span class="btn btn-default" disabled="disabled"
+                                      onclick="alert('Projekt kann noch nicht eingereicht werden\n\nEs sind entweder nicht alle Lehrer einverstanden oder es haben noch nicht alle geantwortet. \n\nBitte warte auf die Antworten bzw. lösche Verschiebungen welche vom Lehrer verweigert wurden um das Projekt einzureichen.')">
                                         Für Sekretariat freigeben
                                     </span>
-                            <br><br>
-                        </f:else>
-                    </f:if>
-                </f:then>
-            </f:if>
-            <!-- If Project is released for secretary (progress: 2) -->
-            <f:if condition="{project.progress} == 2">
-                <f:then>
-                    <!--
-                    * Check if secretary has not yet seen or interacted with the project
-                    * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
-                    -->
-                    <f:if condition="{secretaryDidNotTouch}">
-                        <f:then>
-                            <!-- Provide button to take the project back to teacher release phase (progress: 1) -->
-                            <f:link.action action="projectStatusAdjust" class="btn btn-warning"
-                                           arguments="{project : project, level : 'teacher'}">
-                                Zurückziehen
-                            </f:link.action>
-                            <br><br>
-                        </f:then>
-                        <f:else>
-                            <!-- Provide disabled "Pseudo"-Button with explanation why project can't be taken back anymore -->
-                            <span class="btn btn-default" disabled="disabled"
-                                  onclick="alert('Projekt kann nicht mehr zurückgezogen werden\n\nEs wurden bereits Verschiebungen vom Sekretariat bearbeitet. \n\nKontaktiere das Sekretariat bei Fragen direkt')">
+                                <br><br>
+                            </f:else>
+                        </f:if>
+
+                    </f:then>
+                </f:if>
+
+                <!-- If Project is released for secretary (progress: 2) -->
+                <f:if condition="{project.progress} == 2">
+                    <f:then>
+                        <!--
+                        * Check if secretary has not yet seen or interacted with the project
+                        * this variable is set in the controller: see EXT:Classes/Controller/ProjectController for more information
+                        -->
+                        <f:if condition="{secretaryDidNotTouch}">
+                            <f:then>
+                                <!-- Provide button to take the project back to teacher release phase (progress: 1) -->
+                                <f:link.action action="projectStatusAdjust" class="btn btn-warning"
+                                               arguments="{project : project, level : 'teacher'}">
+                                    Zurückziehen
+                                </f:link.action>
+                                <br><br>
+                            </f:then>
+                            <f:else>
+                                <!-- Provide disabled "Pseudo"-Button with explanation why project can't be taken back anymore -->
+                                <span class="btn btn-default" disabled="disabled"
+                                      onclick="alert('Projekt kann nicht mehr zurückgezogen werden\n\nEs wurden bereits Verschiebungen vom Sekretariat bearbeitet. \n\nKontaktiere das Sekretariat bei Fragen direkt')">
                                         Zurückziehen
                                     </span>
-                            <br><br>
-                        </f:else>
-                    </f:if>
-                </f:then>
-            </f:if>
+                                <br><br>
+                            </f:else>
+                        </f:if>
+                    </f:then>
+                </f:if>
+            </div>
         </f:then>
     </f:if>
     <!-- END Action Buttons Block -->
@@ -93,10 +97,10 @@
     <h4>Verschiebungen in diesem Projekt</h4>
 
     <div class="table-responsive">
-    <table class="table table-hover">
-        <!-- Render Table-Rows with Changes for given project -->
-        <f:render partial="Project/ChangeList" arguments="{project:project}"/>
-    </table>
+        <table class="table table-hover">
+            <!-- Render Table-Rows with Changes for given project -->
+            <f:render partial="Project/ChangeList" arguments="{project:project}"/>
+        </table>
     </div>
     <!-- Backlink to Projects List -->
     <f:link.action action="studentList" class="btn btn-default" controller="Project" arguments="{project : project}">
@@ -115,7 +119,8 @@
         <f:else>
             <!-- disabled "Pseudo"-Button  -->
             <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
-                        <span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-default">Beta</span>
+                        <span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span
+                    class="label label-default">Beta</span>
                     </span>
             <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
                         <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
@@ -126,17 +131,54 @@
 
     <style>
         @keyframes fadeIn {
-            from { opacity: 0; }
+            from {
+                opacity: 0;
+            }
         }
-        @-o-keyframes fadeIn{
-            from { opacity: 0; }
+
+        @-o-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
         }
-        @-moz-keyframes fadeIn{
-            from { opacity: 0; }
+
+        @-moz-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
         }
-        @-webkit-keyframes fadeIn{
-            from { opacity: 0; }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
         }
+
+        @-moz-keyframes spin {
+            100% {
+                -moz-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .loaderSlow{
+            -webkit-animation:spin 4s linear infinite;
+            -moz-animation:spin 4s linear infinite;
+            animation:spin 4s linear infinite;
+        }
+
         .animate-flicker {
             -webkit-animation: fadeIn 3s infinite alternate;
             -moz-animation: fadeIn 3s infinite alternate;
@@ -157,15 +199,29 @@
                 </div>
                 <div class="modal-body">
                     <div id="assistantModalBody"></div>
-                    <div class='loaderAJAX'  style='display:none; margin:50px;'>
-                        <center><f:image class="loaderAJAX" style="display: none; width: 150px; margin-top:-40px; margin-left: -20px"
-                                         src="EXT:kzoreschedule/Resources/Public/Icons/ajax-loader-slow.svg"/><span style='margin-left: -110px; font-size: 60px;' id='timer'>35</span><br><br>
-                            <p style='margin-left: 20px'><span class='animate-flicker' id='message'>Berechnung wird vorbereitet</span><br><span id='timermessage'></span></p>
-                        </center>
+                    <div class='loaderAJAX' style='display:none; margin:50px;'>
+                        <p class="text-center">
+                            <f:image class="loaderSlow loaderAJAX" width="150" height="150"
+                                     style="position: relative; left: 40px; top: -35px; display: inline;"
+                                     src="EXT:kzoreschedule/Resources/Public/Icons/ajax-loader-slow.gif"/>
+                            <span style='position:relative; left:-70px; top: -15px; font-size: 60px; font-weight: 100;' id='timer'>35</span>
+                        </p>
+                        <p class="text-center" style='margin-left: 20px'>
+                            <span class='animate-flicker' id='message'>Berechnung wird vorbereitet</span><br><span
+                                id='timermessage'></span></p>
+                        <br><br>
+
+                        <p class="text-center">
+                            <a onclick="abortQuery();" href="#">Abbrechen</a>
+                        </p>
+
                     </div>
                     <div id="requestForm">
                         <f:render partial="Project/AssistantForm"></f:render>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <a onclick="$('#doorbell-button').click()" href="#" class="text-right">Problem melden</a>
                 </div>
             </div>
 
@@ -173,7 +229,16 @@
     </div>
     <script>
 
-        $(function(){
+        function abortQuery() {
+            if (typeof assistantFormRequest !== 'undefined') {
+                assistantFormRequest.abort();
+            }
+            stopIntervals();
+            $("#requestForm").show();
+            $('#assistantModalBody').html('');
+        }
+
+        $(function () {
 
             $("form.assistant-form").submit(function (event) {
                 // prevent standard submission
@@ -187,8 +252,8 @@
                     method = form.attr("method"),
                     data = form.serialize();
 
-                var betaWarning = '<p class="text-danger"><b>Bitte beachte:</b> Der Assistent ist zurzeit in der Beta-Phase. Vergleiche und überprüfe die vorgeschlagenen Verschiebungen <b>unbedingt</b> mit dem Stundenplan auf dem TAM-Intranet </p>';
-
+                var betaWarning = '<p class="alert alert-warning"><b>Bitte beachte:</b> Der Assistent ist zurzeit in der Beta-Phase. Vergleiche und überprüfe die vorgeschlagenen Verschiebungen <b>unbedingt</b> mit dem Stundenplan auf dem TAM-Intranet </p>';
+                var abort = '<p class="text-right"><button type="button" class="btn btn-default" onclick="abortQuery()">Zurück</button></p>';
                 // start ajax request
                 assistantFormRequest = $.ajax({
                     url: action,
@@ -196,12 +261,12 @@
                     data: data
                 }).done(function (data) {
                     // on success display the html generated by the Assistant
-                    $('#assistantModalBody').html(betaWarning + data);
-                    $('.modal-body').css({width:'auto',height:'auto', 'max-height':'100%'});
+                    $('#assistantModalBody').html(betaWarning + data + abort);
+                    $('.modal-body').css({'overflow-x': 'auto', 'height': 'auto', 'max-height': '100%'});
                     sortPossibles();
                 }).fail(function (error) {
                     // on failure display notice and post the complete error msg to console
-                    $('#assistantModalBody').html('<p>Es ist ein Fehler aufgetreten!</p><code>'+ error.status +': '+ error.statusText +'</code>');
+                    $('#assistantModalBody').html('<p>Es ist ein Fehler aufgetreten!</p><code>' + error.status + ': ' + error.statusText + '</code>');
                     console.debug(error);
                 }).always(function () {
                     $('.loaderAJAX').hide();
@@ -209,12 +274,12 @@
             });
 
             $('#assistantModal').on('hidden.bs.modal', function (e) {
-                assistantFormRequest.abort();
-                stopIntervals();
-                $("#requestForm").show();
-                $('#assistantModalBody').html('');
+
+                abortQuery();
+
 
             });
+
 
         });
 
@@ -241,25 +306,24 @@
 
 
         function timer() {
-            count = count-1;
-            if (count <= 0)
-            {
+            count = count - 1;
+            if (count <= 0) {
                 clearInterval(counter);
                 $('#timer').html('00');
                 $('#timermessage').html('<b>Die Berechnung dauert länger als erwartet. Wir bitten um Geduld!</b>');
                 return;
             }
-            if (count>=10){
+            if (count >= 10) {
                 $('#timer').text(count);
             } else {
-                $('#timer').text('0'+count);
+                $('#timer').text('0' + count);
             }
         }
 
         function change() {
             $('#message').text(text[counterText]);
             counterText++;
-            if(counterText >= text.length) {
+            if (counterText >= text.length) {
                 clearInterval(intervalID);
             }
         }
@@ -268,8 +332,8 @@
         function sortPossibles() {
 
             $("#possible-container").html($('.possible').sort(function (a, b) {
-                var contentA =parseInt( $(a).attr('data-sort'));
-                var contentB =parseInt( $(b).attr('data-sort'));
+                var contentA = parseInt($(a).attr('data-sort'));
+                var contentB = parseInt($(b).attr('data-sort'));
                 return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
             }));
         }

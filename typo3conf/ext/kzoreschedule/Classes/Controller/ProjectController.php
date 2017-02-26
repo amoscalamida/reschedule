@@ -1175,6 +1175,49 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 }
 
 /**
+ * function makeRequest
+ *
+ * do TAM API request
+ *
+ * @param string $conditions
+ * @return string
+ */
+function makeRequest($conditions) {
+    $mod = base64_encode(json_encode($conditions));
+
+    $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+    $user = $extensionConfiguration['tam_api.']['username'];
+    $pwd = $extensionConfiguration['tam_api.']['password'];
+    $uri = $extensionConfiguration['tam_api.']['uri'];
+    $controller = $extensionConfiguration['tam_api.']['controller'];
+    $school = 'kzo';
+
+    $headers = generateHeaders($user, $pwd, 'gr001');
+
+    $request = "$uri/$school/$controller?mod=$mod";
+
+    $result = exec("curl " . $request
+
+
+        . ' -H "Accept:application/xml"'
+
+
+        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
+
+
+        . ' -H "Authorization:' . $headers['Authorization'] . '"'
+
+    );
+
+    $answer_code = json_decode($result)->code;
+    if ($answer_code != 200){
+        exit("Fehler bei der Anfrage!<br>Antwort TAM: <code>".json_decode($result)->body)."</code>";
+    }
+
+    return $result;
+}
+
+/**
  * function generateHeaders
  *
  * Generate Headers for Timetable REST Access
@@ -1218,29 +1261,7 @@ function generateHeaders($username, $password, $prefix, $hashAlgorithm = 'sha1')
 function getTeacherCourses($teacher)
 {
     $conditions = array('WHERE' => array("Teacher" => "$teacher"), 'ORDER' => 'Class');
-    $mod = base64_encode(json_encode($conditions));
-
-    $user = 'rest-timetable';
-    $pwd = 'a46vQJzsY9YwVhKCxjUD';
-    $controller = 'data/source/timetable';
-    $school = 'kzo';
-
-    $headers = generateHeaders($user, $pwd, 'gr001');
-
-    $request = "https://api.tam.ch/$school/$controller?mod=$mod";
-
-    $result = exec("curl " . $request
-
-
-        . ' -H "Accept:application/xml"'
-
-
-        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
-
-
-        . ' -H "Authorization:' . $headers['Authorization'] . '"'
-
-    );
+    $result = makeRequest($conditions);
 
     $json = json_decode($result)->body;
 
@@ -1275,29 +1296,7 @@ function getTeacherCourses($teacher)
 function getCourseDetails($id, $mode, $req)
 {
     $conditions = array('WHERE' => array("ID" => "$id"), 'ORDER' => 'Subject');
-    $mod = base64_encode(json_encode($conditions));
-
-    $user = 'rest-timetable';
-    $pwd = 'a46vQJzsY9YwVhKCxjUD';
-    $controller = 'data/source/timetable';
-    $school = 'kzo';
-
-    $headers = generateHeaders($user, $pwd, 'gr001');
-
-    $request = "https://api.tam.ch/$school/$controller?mod=$mod";
-
-    $result = exec("curl " . $request
-
-
-        . ' -H "Accept:application/xml"'
-
-
-        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
-
-
-        . ' -H "Authorization:' . $headers['Authorization'] . '"'
-
-    );
+    $result = makeRequest($conditions);
 
     $json = json_decode($result)->body;
 

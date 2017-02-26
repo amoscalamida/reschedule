@@ -1,29 +1,39 @@
 <?php
 
-include_once("Headers.php");
+include_once("headers.php");
 
 function makeRequest($conditions) {
-$mod = base64_encode(json_encode($conditions));
-$user       = 'rest-timetable';
-$pwd        = 'a46vQJzsY9YwVhKCxjUD';
-$controller = 'data/source/timetable';
-$school     = 'kzo';
+    $mod = base64_encode(json_encode($conditions));
 
-$headers = generateHeaders($user, $pwd, 'gr001');
-$request = "https://api.tam.ch/$school/$controller?mod=$mod";
+    $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+    $user = $extensionConfiguration['tam_api.']['username'];
+    $pwd = $extensionConfiguration['tam_api.']['password'];
+    $uri = $extensionConfiguration['tam_api.']['uri'];
+    $controller = $extensionConfiguration['tam_api.']['controller'];
+    $school = 'kzo';
 
-    $result = exec("curl ".$request
+    $headers = generateHeaders($user, $pwd, 'gr001');
 
+    $request = "$uri/$school/$controller?mod=$mod";
 
-	.' -H "Accept:application/xml"'
-
-
-	.' -H "X-gr-AuthDate:'.$headers['X-gr-AuthDate'].'"'
+    $result = exec("curl " . $request
 
 
-	.' -H "Authorization:'.$headers['Authorization'].'"'
+        . ' -H "Accept:application/xml"'
 
-);
+
+        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
+
+
+        . ' -H "Authorization:' . $headers['Authorization'] . '"'
+
+    );
+
+    $answer_code = json_decode($result)->code;
+    if ($answer_code != 200){
+        exit("Fehler bei der Anfrage!<br>Antwort TAM: <code>".json_decode($result)->body)."</code>";
+    }
+
     return json_decode($result)->body;
 }
 

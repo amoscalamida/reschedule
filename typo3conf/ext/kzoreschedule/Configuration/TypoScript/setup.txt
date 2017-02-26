@@ -123,6 +123,7 @@ ajaxCallTeacher {
 	10 < tt_content.list.20.kzoreschedule_teacher
 }
 
+//TODO: Herausnehmen für Fluid Exeption Handling.
 config.contentObjectExceptionHandler = 0
 
 # Module configuration

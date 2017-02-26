@@ -2,6 +2,8 @@
 
 namespace AmosCalamida\Kzoreschedule\ViewHelpers;
 
+include_once("tam_connection.php");
+
 class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
@@ -14,43 +16,8 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 
     public function render($datetime,$category) {
 
-        function generateHeaders($username, $password, $prefix, $hashAlgorithm = 'sha1')
-
-        {
-            $rfc_1123_date = gmdate('D, d M Y H:i:s T', time());
-            $xgrdate = utf8_encode($rfc_1123_date);
-            $userPasswd = base64_encode(hash($hashAlgorithm, $password, true));
-            $signature = base64_encode(hash_hmac($hashAlgorithm, $userPasswd, $xgrdate));
-            $auth = $prefix . " " . base64_encode($username) . ":" . $signature;
-            $headers = array(
-                'X-gr-AuthDate' => $xgrdate,
-                'Authorization' => $auth
-            );
-            return $headers;
-        }
-
-
         $conditions = array('WHERE' => array(), 'ORDER' => 'Date');
-
-        $mod = base64_encode(json_encode($conditions));
-        $user       = 'rest-timetable';
-        $pwd        = 'a46vQJzsY9YwVhKCxjUD';
-        $controller = 'data/source/timetable';
-        $school     = 'kzo';
-
-
-        $headers = generateHeaders($user, $pwd, 'gr001');
-        $request = "https://api.tam.ch/$school/$controller?mod=$mod";
-
-
-        $api_result = exec("curl ".$request
-            .' -H "Accept:application/xml"'
-            .' -H "X-gr-AuthDate:'.$headers['X-gr-AuthDate'].'"'
-            .' -H "Authorization:'.$headers['Authorization'].'"'
-        );
-        //decode result body as php array
-        $json = json_decode($api_result)->body;
-
+        $json = makeRequest($conditions);
 
 
         $rooms = array();
@@ -83,8 +50,10 @@ class FindRoomViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             }
         }
 
-        $rooms = array("32","16","01","02","25","50","1G","1E","32", "C2", "Z5","Z4","THA","THJ","P3");
-        $course_count = count($rooms);
+
+        // DEBUG OUTPUT (Uncomment below)
+        //$rooms = array("16","01","02","25","50","1G","1E","32", "C2", "Z5","Z4","THA","THJ","P3");
+        //$course_count = count($rooms);
 
 
         /** if no course matches with the change time there are no lessons this day

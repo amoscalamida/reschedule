@@ -96,6 +96,7 @@
             <td colspan="8" style="text-align: right;">
                 <f:if condition="{project.progress} < 1">
                     <f:then>
+
                         <a href="#"data-toggle="modal" data-target="#assistantModal"><span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span class="label label-warning">Beta</span>
                         </a><span class="glyphicon glyphicon-option-vertical"></span>
                         <f:link.action action="new" controller="Change" arguments="{project : project}"><span
@@ -120,12 +121,15 @@
                     <div class="text-center">
                         <f:if condition="{project.progress} < 1">
                             <f:then>
+
                                 <f:link.action action="new" controller="Change" class="btn btn-success"
                                                arguments="{project : project}"><span
                                         class="glyphicon-plus glyphicon"></span> Neue Verschiebung erstellen
                                 </f:link.action>
                                 <a href="#"data-toggle="modal" data-target="#assistantModal" class="btn btn-info"><span class="glyphicon-flash glyphicon"></span> Verschiebungsassistent <span class="label label-warning">Beta</span>
-                                </a>                            </f:then>
+                                </a>
+
+                            </f:then>
                             <f:else><span class="text-muted" class="btn" disabled="disabled"><span
                                     class="glyphicon-plus glyphicon"></span> Neue Verschiebung</span></f:else>
                         </f:if>
