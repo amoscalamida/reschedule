@@ -97,8 +97,13 @@ ajaxCall {
 	additionalHeaders = Content-type:application/html
 	xhtml_cleaning = 0
 	admPanel = 0
-	10 = COA
-	10 < tt_content.list.20.kzoreschedule_secretary
+	10 = USER
+           10 {
+              userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+              pluginName = Secretary
+              extensionName = Kzoreschedule
+              vendorName = AmosCalamida
+              }
 	}
 
 ajaxCallStudent = PAGE
@@ -108,8 +113,13 @@ ajaxCallStudent {
 	additionalHeaders = Content-type:application/html
 	xhtml_cleaning = 0
 	admPanel = 0
-	10 = COA
-	10 < tt_content.list.20.kzoreschedule_student
+	10 = USER
+           10 {
+              userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+              pluginName = Student
+              extensionName = Kzoreschedule
+              vendorName = AmosCalamida
+              }
 }
 
 ajaxCallTeacher = PAGE
@@ -118,12 +128,15 @@ ajaxCallTeacher {
 	config.disableAllHeaderCode = 1
 	additionalHeaders = Content-type:application/html
 	xhtml_cleaning = 0
-	admPanel = 0
-	10 = COA
-	10 < tt_content.list.20.kzoreschedule_teacher
+	10 = USER
+       10 {
+          userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+          pluginName = Teacher
+          extensionName = Kzoreschedule
+          vendorName = AmosCalamida
+          }
 }
 
-//TODO: Herausnehmen für Fluid Exeption Handling.
 config.contentObjectExceptionHandler = 0
 
 # Module configuration

@@ -5,7 +5,7 @@
 <div class="">
 <f:form action="assistantSearch" pageType="998" method="post" class="assistant-form">
     <div class="form-group">
-        <f:alias map="{ class: '{vh:frontEndUser(attribute:\'zip\')}' }">
+        <f:alias map="{ class: '{vh:frontEndUser(attribute:\'class\')}' }">
             <f:form.select  prependOptionLabel="Schulfach (optional)" options="{vh:findCourses(class:class,onlyMovable:'false')}" optionValueField="Subject" optionLabelField="Label" class="form-control" name="subject"/>
             <br/>
         </f:alias>

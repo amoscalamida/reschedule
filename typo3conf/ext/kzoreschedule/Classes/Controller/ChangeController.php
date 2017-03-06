@@ -325,7 +325,10 @@ class ChangeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->changeRepository->update($change);
         $project = $this->projectRepository->findByChange($change->getUid());
         $projectController = new ProjectController();
-        $projectController->sendNotificationEmail($project[0], "updateproject");
+        $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+        if($extensionConfiguration['trigger.']['updateStudent'] == 1) {
+            $projectController->sendNotificationEmail($project[0], "updateproject");
+        }
         $this->redirect("teacherContainer", "Project");
 
     }

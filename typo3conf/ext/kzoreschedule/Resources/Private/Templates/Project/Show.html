@@ -119,16 +119,12 @@
         <f:else>
             <!-- disabled "Pseudo"-Button  -->
             <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
-                        <span class="glyphicon-flash glyphicon"></span> Neue Verschiebung (mit Assistent) <span
-                    class="label label-default">Beta</span>
-                    </span>
-            <span style="float:right" class="text-muted btn btn-default disabled hidden-sm hidden-md hidden-lg">
                         <span class="glyphicon-plus glyphicon"></span> Neue Verschiebung
                     </span>
         </f:else>
     </f:if>
     <!-- END Change List Block -->
-
+    <f:if condition="{project.progress} < 1">
     <style>
         @keyframes fadeIn {
             from {
@@ -339,4 +335,5 @@
         }
 
     </script>
+    </f:if>
 </f:section>

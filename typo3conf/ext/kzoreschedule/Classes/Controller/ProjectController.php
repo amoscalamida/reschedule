@@ -30,6 +30,7 @@ namespace AmosCalamida\Kzoreschedule\Controller;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 setlocale(LC_ALL, 'de_CH.UTF-8');
+$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
 
 
 /**
@@ -73,7 +74,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param DatabaseConnection $databaseConnection
      */
 
-    function __construct(DatabaseConnection $databaseConnection=null)
+    function __construct(DatabaseConnection $databaseConnection = null)
     {
 
         $this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
@@ -119,7 +120,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         ($disagree == 0) ? $teachersAgree = true : $teachersAgree = false;
         ($secretaryTouches == 0) ? $secretaryDidNotTouch = true : $secretaryDidNotTouch = false;
 
-        $project->setUserId($this->getUserInfo($project->getUserId(),"name"));
+        $project->setUserId($this->getUserInfo($project->getUserId(), "fullname"));
         $this->view->assign('allTeachersAgree', $teachersAgree);
         $this->view->assign('secretaryDidNotTouch', $secretaryDidNotTouch);
         $this->view->assign('project', $project);
@@ -135,7 +136,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function secretaryShowAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
-        $project->setUserId($this->getUserInfo($project->getUserId(),"name,zip"));
+        $project->setUserId($this->getUserInfo($project->getUserId(), "fullname, class"));
         $this->view->assign('project', $project);
     }
 
@@ -243,6 +244,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function secretaryChangeAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $modification)
     {
+        $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+
         if ($modification == "close") { //Close Project
             // Check if there are still unhandled changes
             $changes = $project->getChanges();
@@ -257,9 +260,13 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             } else {
                 $project->setProgress("3");
                 $this->projectRepository->update($project);
-                $this->sendNotificationEmail($project, "closeproject");
-                foreach ($project->getChanges() as $change) {
-                    $this->sendNotificationEmail($change, "closeproject");
+                if ($extensionConfiguration['trigger.']['closeStudent'] == 1) {
+                    $this->sendNotificationEmail($project, "closeproject");
+                }
+                if ($extensionConfiguration['trigger.']['closeTeacher'] == 1) {
+                    foreach ($project->getChanges() as $change) {
+                        $this->sendNotificationEmail($change, "closeproject");
+                    }
                 }
                 $this->addFlashMessage("Projekt erfolgreich geschlossen. Betroffene Personen wurden per Mail benachrichtigt");
             }
@@ -282,6 +289,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function projectStatusAdjustAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project, $level)
     {
+        $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+
         switch ($level) {
             case 'student':
                 $level = 0;
@@ -289,9 +298,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
             case 'teacher':
                 $level = 1;
-                foreach ($project->getChanges() as $change) {
-                    if ($change->getEmailsProgress() == 0) {
-                        $this->sendNotificationEmail($change, "releaseproject");
+                if ($extensionConfiguration['trigger.']['releaseTeacher'] == 1) {
+                    foreach ($project->getChanges() as $change) {
+                        if ($change->getEmailsProgress() == 0) {
+                            $this->sendNotificationEmail($change, "releaseproject");
+                        }
                     }
                 }
                 break;
@@ -389,7 +400,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $projects = $this->projectRepository->findAll();
         foreach ($projects as $project) {
-            $project->setUserId($this->getUserInfo($project->getUserId(),"name"));
+            $project->setUserId($this->getUserInfo($project->getUserId(), "fullname"));
         }
         $this->view->assign('projects', $projects);
     }
@@ -413,7 +424,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $divfilter = 0;
                 break;
         }
-        $this->view->assign("divfilter",$divfilter);
+        $this->view->assign("divfilter", $divfilter);
 
     }
 
@@ -427,7 +438,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function teacherListAction($filter = 0)
     {
-        $teachersCourses = getTeacherCourses($GLOBALS['TSFE']->fe_user->user['title']);
+        $id = $this->getUserInfo($GLOBALS['TSFE']->fe_user->user['uid'],"id","teacher",false,"loginname");
+
+        $teachersCourses = getTeacherCourses($id);
+
+
         $projects = $this->projectRepository->findByPublicAndCourses($teachersCourses);
         $allowed_changes = array();
         $allowed_changes_project = array();
@@ -435,7 +450,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         foreach ($projects as $project) {
             $changeCount += count($project->getChanges());
             if ($project->getProgress() > 0) {
-                $project->setUserId($this->getUserInfo($project->getUserId(),"name"));
+                $project->setUserId($this->getUserInfo($project->getUserId(), "fullname"));
                 foreach ($project->getChanges() as $change) {
                     array_push($allowed_changes, $change);
                     array_push($allowed_changes_project, $project);
@@ -465,11 +480,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     $divfilter = 0;
                     break;
             }
-            $count = $changeCount-count($allowed_changes);
+            $count = $changeCount - count($allowed_changes);
             $this->view->assign('changes', $allowed_changes);
             $this->view->assign('projects', $allowed_changes_project);
             $this->view->assign('divfilter', $divfilter);
-            $this->view->assign('filtercount',$count);
+            $this->view->assign('filtercount', $count);
 
 
         }
@@ -494,7 +509,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $secretaryAnswers = array();
         foreach ($projects as $project) {
-            $project->setUserId($this->getUserInfo($project->getUserId(),"name,zip"));
+            $project->setUserId($this->getUserInfo($project->getUserId(), "fullname,class"));
             array_push($secretaryAnswers, $this->getAnswerProgress($project, "secretary"));
 
         }
@@ -516,7 +531,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function secretaryPrintAction(\AmosCalamida\Kzoreschedule\Domain\Model\Project $project)
     {
-        $project->setUserId($this->getUserInfo($project->getUserId(),"name,zip"));
+        $project->setUserId($this->getUserInfo($project->getUserId(), "fullname,class"));
         $this->view->assign('project', $project);
     }
 
@@ -542,7 +557,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 switch ($template) {
 
                     case "closeproject":
-                    // teacher Info on closeproject
+                        // teacher Info on closeproject
 
                         switch ($object->getSecretaryAnswer()) {
 
@@ -557,14 +572,15 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                                 break;
 
                         }
-
-                        $preheader = "Die Verschiebung Ihrer Lektion wurde vom Sekretariat ".(($answer==0)?"nicht bewilligt":"bewilligt").".";
-                        $intro = "Die Stundenverschiebung Ihrer Lektion <b>". getCourseDetails($object->getCourseId(),"teacher","label") . "</b> wird <span style='color: $accentColor'>".(($answer==0)?'nicht durchgeführt':'durchgeführt')."</span>. Ihre Lektion findet ".(($answer==0)?'normal':'nun')." am <b>" . (($answer==0)?$object->getOriginalLesson()->format("d.m.Y H:i"):$object->getChangedLesson()->format("d.m.Y H:i")) . " Uhr</b> ".(($object->getRoom()=="")?"statt. ".(($answer==0)?'':'Das ev. geänderte Zimmer entnehmen Sie bitte dem Stundenplan.'):"im <b>Zimmer " . $object->getRoom() . "</b> statt.");
+                        $course_details = getCourseDetails($object->getCourseId(), "teacher", "complete");
+                        $preheader = "Die Verschiebung Ihrer Lektion wurde vom Sekretariat " . (($answer == 0) ? "nicht bewilligt" : "bewilligt") . ".";
+                        $intro = "Die Stundenverschiebung Ihrer Lektion <b>" . $course_details->Label . "</b> wird <span style='color: $accentColor'>" . (($answer == 0) ? 'nicht durchgeführt' : 'durchgeführt') . "</span>. Ihre Lektion findet " . (($answer == 0) ? 'normal' : 'nun') . " am <b>" . (($answer == 0) ? $object->getOriginalLesson()->format("d.m.Y H:i") : $object->getChangedLesson()->format("d.m.Y H:i")) . " Uhr</b> " . (($object->getRoom() == "") ? "statt. " . (($answer == 0) ? '' : 'Das ev. geänderte Zimmer entnehmen Sie bitte dem Stundenplan.') : "im <b>Zimmer " . $object->getRoom() . "</b> statt.");
                         $comment = $object->getSecretaryComment();
                         $outro = (($comment != "") ? "<b>Kommentar/Auflage des Sekretariats:</b><br><i>" . $comment . "</i><br><br>" : "<br>") . "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array("amos.calamida@me.com" => "Amos Calamida");
+                        $teacher = $this->getUserInfo($course_details->Teacher,"email,fullname","teacher",true,"kuerzel");
+                        $to = array($teacher["email"] => $teacher["fullname"]);
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
                         $subject = "Entscheid der Stundenverschiebung";
 
@@ -584,15 +600,16 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     case "releaseproject":
                         //Teacher Info on ReleaseProject
 
-                    $course_details = getCourseDetails($object->getCourseId(),"teacher","complete");
+                        $course_details = getCourseDetails($object->getCourseId(), "teacher", "complete");
 
                         $preheader = "Eine Verschiebungsanfrage für einer Ihrer Lektionen ist eingegangen.";
                         //$intro = "Die Klasse <b>". $course_details->Class . "</b> hat die Anfrage gestellt, Ihre Lektion <b>".$course_details->Label."</b> von <b>" . $object->getOriginalLesson()->format("d.m.Y H:i"). " Uhr</b> nach <b>".$object->getChangedLesson()->format("d.m.Y H:i")." Uhr</b> zu verschieben.";
-                        $intro = "";
-                        $outro = "Die Details der Verschiebung sowie die Möglichkeit diese zu beantworten finden Sie im Intranet.";
+                        $intro = "Eine neue Verschiebungsanfrage für eine Ihrer Lektionen ist eingegangen. Die Details der Verschiebung sowie die Möglichkeit diese zu beantworten finden Sie im Intranet.";
+                        $outro = "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array("amos.calamida@me.com" => "Amos Calamida");
+                        $teacher = $this->getUserInfo($course_details->Teacher,"email,fullname","teacher",true);
+                        $to = array($teacher["email"] => $teacher["fullname"]);
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
                         $subject = "Neue Verschiebungsanfrage der Klasse $course_details->Class";
 
@@ -629,13 +646,13 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                                 case 1: //change denied
                                     $accentColor = "#d9534f";
                                     $comment = $change->getSecretaryComment();
-                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >nicht bewilligt</span>".(($comment != "") ? "<br><br><b>Kommentar/Auflage des Sekretariats: </b><i>" . $comment . "</i><br><br>" : "")."</li>";
+                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(), "student", "label") . ": <span style='color: $accentColor' >nicht bewilligt</span>" . (($comment != "") ? "<br><br><b>Kommentar/Auflage des Sekretariats: </b><i>" . $comment . "</i><br><br>" : "") . "</li>";
                                     break;
 
                                 case 2: //change accepted
                                     $accentColor = "#5cb85c";
                                     $comment = $change->getSecretaryComment();
-                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >bewilligt</span>".(($comment != "") ? "<br><br><b>Kommentar/Auflage des Sekretariats: </b><i>" . $comment . "</i><br><br></b>" : "")."</li>";
+                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(), "student", "label") . ": <span style='color: $accentColor' >bewilligt</span>" . (($comment != "") ? "<br><br><b>Kommentar/Auflage des Sekretariats: </b><i>" . $comment . "</i><br><br></b>" : "") . "</li>";
                                     break;
 
                             }
@@ -645,11 +662,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                         $changeList .= "</ul>";
 
                         $preheader = "Das Projekt wurde vom Sekretariat abgeschlossen.";
-                        $intro = "Das eingereichte Projekt \"". $object->getTitle()."\" wurde vom Sekretariat geprüft. Folgender Entscheid wurde getroffen: <br><br> $changeList";
+                        $intro = "Das eingereichte Projekt \"" . $object->getTitle() . "\" wurde vom Sekretariat geprüft. Folgender Entscheid wurde getroffen: <br><br> $changeList";
                         $outro = "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array($this->getUserInfo($object->getUserId(),"email") => $this->getUserInfo($object->getUserId(),"name"));
+                        $to = array($this->getUserInfo($object->getUserId(), "email") => $this->getUserInfo($object->getUserId(), "fullname"));
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
                         $subject = $object->getTitle() . ": Entscheid des Sekretariats";
 
@@ -675,19 +692,19 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
                                 case 0: //change not answered
                                     $accentColor = "#f0ad4e";
-                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >Warte auf Antwort</span></li>";
+                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(), "student", "label") . ": <span style='color: $accentColor' >Warte auf Antwort</span></li>";
                                     break;
 
                                 case 1: //change denied
                                     $accentColor = "#d9534f";
                                     $comment = $change->getTeacherComment();
-                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >Nein</span>".(($comment != "") ? " | <i>" . $comment . "</i>" : "")."</li>";
+                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(), "student", "label") . ": <span style='color: $accentColor' >Nein</span>" . (($comment != "") ? " | <i>" . $comment . "</i>" : "") . "</li>";
                                     break;
 
                                 case 2: //change accepted
                                     $accentColor = "#5cb85c";
                                     $comment = $change->getTeacherComment();
-                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(),"student","label") . ": <span style='color: $accentColor' >Ja</span>".(($comment != "") ? " | <i>" . $comment . "</i>" : "")."</li>";
+                                    $changeList .= "<li>" . getCourseDetails($change->getCourseId(), "student", "label") . ": <span style='color: $accentColor' >Ja</span>" . (($comment != "") ? " | <i>" . $comment . "</i>" : "") . "</li>";
                                     break;
 
                             }
@@ -696,12 +713,12 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
                         $changeList .= "</ul>";
 
-                        $preheader = "Eine Lehrperson hat soeben ihre Verschiebung im Projekt ".$object->getTitle()." beantwortet.";
-                        $intro = "Eine Verschiebung im Projekt \"". $object->getTitle()."\" wurde soeben von der Lehrperson beantwortet. Die aktuelle Übersicht ist hier ersichtlich: <br><br> $changeList";
+                        $preheader = "Eine Lehrperson hat soeben ihre Verschiebung im Projekt " . $object->getTitle() . " beantwortet.";
+                        $intro = "Eine Verschiebung im Projekt \"" . $object->getTitle() . "\" wurde soeben von der Lehrperson beantwortet. Die aktuelle Übersicht ist hier ersichtlich: <br><br> $changeList";
                         $outro = "Freundliche Grüsse";
 
                         $from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
-                        $to = array($this->getUserInfo($object->getUserId(),"email") => $this->getUserInfo($object->getUserId(),"name"));
+                        $to = array($this->getUserInfo($object->getUserId(), "email") => $this->getUserInfo($object->getUserId(), "fullname"));
                         $body = self::getEmailDesign(array($preheader, $intro, $outro));
                         $subject = $object->getTitle() . ": Verschiebung beantwortet";
 
@@ -745,6 +762,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $preheader = $message[0];
         $intro = $message[1];
         $outro = $message[2];
+
+        $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
 
         $css = '<style>
         /* -------------------------------------
@@ -879,10 +898,10 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
           text-decoration: none;
            }
       .btn-primary table td {
-            background-color: #3498db; }
+            background-color: ' . $extensionConfiguration["button."]["color"] . '; }
       .btn-primary a {
-                background-color: #3498db;
-        border-color: #3498db;
+                background-color:  ' . $extensionConfiguration["button."]["color"] . ';
+        border-color:  ' . $extensionConfiguration["button."]["color"] . ';
         color: #ffffff; }
       /* -------------------------------------
           OTHER STYLES THAT MIGHT BE USEFUL
@@ -975,10 +994,10 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
           line-height: inherit !important;
           text-decoration: none !important; } 
         .btn-primary table td:hover {
-                        background-color: #34495e !important; }
+                            background-color:  ' . $extensionConfiguration["button."]["colorHover"] . ' !important; }
         .btn-primary a:hover {
-                            background-color: #34495e !important;
-          border-color: #34495e !important; } }
+                            background-color:  ' . $extensionConfiguration["button."]["colorHover"] . ' !important;
+                            border-color:  ' . $extensionConfiguration["button."]["colorHover"] . ' !important; } }
     </style>';
 
         $head = '<head>
@@ -1014,8 +1033,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                                 <table border="0" cellpadding="0" cellspacing="0">
                                   <tbody>
                                     <tr>
-                                        <!-- TODO: change URL for production environment -->
-                                      <td> <a href="http://webmast9.myhostpoint.ch/t/index.php?id=38" target="_blank">Auf dem Intranet öffnen</a> </td>
+                                      <td> <a href="' . $extensionConfiguration["button."]["link"] . '" target="_blank">' . $extensionConfiguration["button."]["text"] . '</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -1117,8 +1135,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         }
         if ($wait > 0) {
             $progress_summary = 0;
-        }
-        else {
+        } else {
             if ($allowed > 0 && $disallowed == 0) {
                 $progress_summary = 2;
             } elseif ($allowed > 0 && $disallowed > 0) {
@@ -1128,7 +1145,7 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
         }
 
-        return $result = array($progress_summary,$allowed,$disallowed,$wait);
+        return $result = array($progress_summary, $allowed, $disallowed, $wait);
     }
 
     /**
@@ -1144,30 +1161,97 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
 
     /**
+     * function makeKZORequest
+     *
+     * do KZO API request
+     *
+     * @param string $param
+     * @param string $list
+     * @param string $reference - name of table-column to check for $param
+     * @return string
+     * @throws \Exception
+     */
+
+    function makeKZORequest($param,$reference,$list) {
+
+        $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
+        $time = time();
+        $apiKey = hash("sha256",$extensionConfiguration['kzo_api.']['key'].$time);
+        $url = $extensionConfiguration['kzo_api.']['uri'];
+        $controller = $extensionConfiguration['kzo_api.']['controller'];
+
+        $request = "$url$controller?requestParam=$param&reference=$reference&apiKey=$apiKey&list=$list&tt=$time";
+        $cSession = curl_init();
+        curl_setopt($cSession,CURLOPT_URL,$request);
+        curl_setopt($cSession,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($cSession,CURLOPT_HEADER, false);
+        if(! $result = curl_exec($cSession))
+        {
+           $curl_error = curl_error($cSession);
+        }
+        $info = curl_getinfo($cSession,CURLINFO_TOTAL_TIME);
+        echo ("<p>Reaktionszeit KZO: ".(($info < 3)?($info < 1)?"<span class='bg-success'> $info </span>":"<span class='bg-warning'> $info </span>":"<span class='bg-danger'> $info </span>")."</p>");
+        curl_close($cSession);
+
+        $answer_code = json_decode($result)->code;
+        if ($answer_code != 200){
+            throw new \Exception("Fehler bei der Anfrage! \n Antwort KZO: ".((json_decode($result)->message != "")?json_decode($result)->message:$curl_error)."");
+        }
+
+        return json_decode($result)->body;
+
+    }
+
+    /**
      * function getUserInfo
      * Get all information about any FE User
      *
      *
      * @param int $id - id of FE_User
      * @param string $info - columns to get
-     *
+     * @param string $list - user group
+     * @param boolean $skipFELookup - skip loginname lookup (used to pass id directly)
+     * @param string $reference - name of table-column to check for param ($id)
      * @return string
      */
 
-    function getUserInfo($id,$info = "*") {
-        $data = $this->databaseConnection->fullQuoteStr($id, 'fe_users');
-        $res = $this->databaseConnection->exec_SELECTquery(
-            $info,
-            'fe_users',
-            '(uid=' . $data.')'
-        );
-        $row = $this->databaseConnection->sql_fetch_assoc($res);
-       if ($info!="*"){
-           $columns = explode(",",$info);
-           return ((count($columns)!=1)?$row:$row[$info]);
+    function getUserInfo($id,$info = "*", $list = "student",$skipFELookup = false,$reference = "loginname")
+    {
+        if (!$skipFELookup) {
+            $data = $this->databaseConnection->fullQuoteStr($id, 'fe_users');
+            $res = $this->databaseConnection->exec_SELECTquery(
+                "username",
+                'fe_users',
+                '(uid=' . $data . ')'
+            );
+            $row = $this->databaseConnection->sql_fetch_assoc($res);
+            $result = $this->makeKZORequest($row['username'],"loginname" , $list);
+        } else {
+            $result = $this->makeKZORequest($id,$reference,$list);
         }
-        else {
-            return $row;
+        if ($info != "*") {
+            $columns = explode(",", str_replace(' ', '', $info));
+            if(count($columns) != 1) {
+                $return = array();
+                foreach ($columns as $column) {
+                    if ($column == "fullname") {
+                        $return['fullname'] = $result->name." ".$result->lastname;
+                    }
+                    else {
+
+                        $return[$column] = $result->$column;
+                    }
+                }
+            } else {
+                if ($info == "fullname") {
+                    $return = $result->name." ".$result->lastname;
+                } else {
+                    $return = $result->$info;
+                }
+            }
+            return $return;
+        } else {
+            return $result;
         }
     }
 
@@ -1181,8 +1265,10 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
  *
  * @param string $conditions
  * @return string
+ * @throws \Exception
  */
-function makeRequest($conditions) {
+function makeRequest($conditions)
+{
     $mod = base64_encode(json_encode($conditions));
 
     $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['kzoreschedule']);
@@ -1196,26 +1282,25 @@ function makeRequest($conditions) {
 
     $request = "$uri/$school/$controller?mod=$mod";
 
-    $result = exec("curl " . $request
-
-
-        . ' -H "Accept:application/xml"'
-
-
-        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
-
-
-        . ' -H "Authorization:' . $headers['Authorization'] . '"'
-
-    );
-
+    $cSession = curl_init();
+    curl_setopt($cSession,CURLOPT_URL,$request);
+    curl_setopt($cSession,CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($cSession, CURLOPT_HTTPHEADER, array("Accept:application/xml","X-gr-AuthDate:".$headers['X-gr-AuthDate'], "Authorization:".$headers['Authorization']));
+    curl_setopt($cSession,CURLOPT_HEADER, false);
+    if(! $result = curl_exec($cSession)) {
+        $curl_error = curl_error($cSession);
+    }
+    $info = curl_getinfo($cSession,CURLINFO_TOTAL_TIME);
+    echo ("<p>Reaktionszeit TAM: ".(($info < 3)?($info < 1)?"<span class='bg-success'> $info </span>":"<span class='bg-warning'> $info </span>":"<span class='bg-danger'> $info </span>")."</p>");
+    curl_close($cSession);
     $answer_code = json_decode($result)->code;
-    if ($answer_code != 200){
-        exit("Fehler bei der Anfrage!<br>Antwort TAM: <code>".json_decode($result)->body)."</code>";
+    if ($answer_code != 200) {
+        throw new \Exception("Fehler bei der Anfrage! \n Antwort TAM: ".((json_decode($result)->body != "")?json_decode($result)->body:$curl_error)."");
     }
 
     return $result;
 }
+
 
 /**
  * function generateHeaders
@@ -1313,7 +1398,7 @@ function getCourseDetails($id, $mode, $req)
             break;
 
         case "student":
-            $course->Label = $subjects[$course->Subject]." (".$course->Teacher.")";
+            $course->Label = $subjects[$course->Subject] . " (" . $course->Teacher . ")";
             break;
     }
 
