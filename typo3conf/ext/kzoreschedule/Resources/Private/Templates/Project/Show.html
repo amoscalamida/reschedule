@@ -15,7 +15,7 @@
     <!-- Check if Project has Changes assigned to it-->
     <f:if condition="{project.changes}">
         <f:then>
-            <div class="btn-group" role="group">
+
                 <!-- If Project is in preparation phase (progress: 0) -->
                 <f:if condition="{project.progress} == 0">
                     <f:then>
@@ -88,7 +88,6 @@
                         </f:if>
                     </f:then>
                 </f:if>
-            </div>
         </f:then>
     </f:if>
     <!-- END Action Buttons Block -->

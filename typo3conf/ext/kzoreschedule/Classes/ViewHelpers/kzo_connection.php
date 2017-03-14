@@ -18,6 +18,11 @@ function makeKZORequest($param,$reference = "loginname",$list) {
     {
         $curl_error = curl_error($cSession);
     }
+    if ($extensionConfiguration['api_debug.']['showDebugRequestTime']) {
+        $info = curl_getinfo($cSession, CURLINFO_TOTAL_TIME);
+        echo("<span style='margin-right:10px;'>" . (($info < 4) ? ($info < 1) ? "<span class='label-success label'>Reaktionszeit KZO: $info s</span>" : "<span class='label label-warning'>Reaktionszeit KZO: $info s</span>" : "<span class='label-danger label'>Reaktionszeit KZO: $info s</span>") . "</span>");
+    }
+    curl_close($cSession);
     $answer_code = json_decode($result)->code;
     if ($answer_code != 200){
         throw new \Exception("Fehler bei der Anfrage! \n Antwort KZO: ".((json_decode($result)->message != "")?json_decode($result)->message:$curl_error)."");

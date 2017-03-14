@@ -17,7 +17,7 @@ class FrontEndUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 
         $value = $GLOBALS['TSFE']->fe_user->user['username'];
 
-        $result = makeKZORequest($value,"student");
+        $result = makeKZORequest($value,"loginname","student");
 
         if ($result->$attribute != "") {
             return $result->$attribute;

@@ -1,4 +1,5 @@
 <f:layout name="Default"/>
+{namespace vh=AmosCalamida\Kzoreschedule\ViewHelpers}
 
 <f:section name="content">
     <h1>Administrator reSchedule</h1>
@@ -9,7 +10,7 @@
         <f:then>
             <table class="tx_kzoreschedule table">
                 <tr>
-                    <th>
+                    <th colspan="2">
                         <f:translate key="tx_kzoreschedule_domain_model_project.user_id"/>
                     </th>
                     <th>
@@ -23,7 +24,7 @@
 
                 <f:for each="{projects}" as="project">
                     <tr>
-                        <td> {project.userId}</td>
+                        <td colspan="2">{project.userId}</td>
                         <td> {project.comment}
 
                         </td>
@@ -33,6 +34,31 @@
                             <f:link.action action="deleteAdmin" arguments="{project : project}">Löschen</f:link.action>
                         </td>
                     </tr>
+                    <f:if condition="{project.changes}">
+                        <f:then>
+                            <f:for each="{project.changes}" as="change">
+                                <tr>
+                                    <td class="bg-info"></td>
+                                    <td>
+                                        {vh:courseDetail(id:'{change.courseId}', mode:'secretary')}
+                                    </td>
+                                    <td>
+                                        {change.originalLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}
+                                    </td>
+                                    <td>
+                                        ➜ {change.changedLesson ->f:format.date(format: '%a %d.%m.%Y %H:%M')}
+                                    </td>
+
+                                        <f:render partial="Change/TeacherAnswerText"
+                                                  arguments="{change : change, role : 'teacher', project: project}"></f:render>
+
+                                </tr>
+                            </f:for>
+                        </f:then>
+                        <f:else>
+                            <tr><td colspan="4">Keine Verschiebungen enthalten</td></tr>
+                        </f:else>
+                    </f:if>
                 </f:for>
             </table>
             <button type="button" class="btn btn-danger" onclick="showModal();">

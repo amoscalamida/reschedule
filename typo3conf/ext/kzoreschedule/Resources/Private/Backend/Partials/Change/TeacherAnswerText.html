@@ -1,0 +1,46 @@
+<!-- Teacher Answer Text Partial
+ *
+ * defines text and color for teacher answer (used in student and teacher view)
+ -->
+
+<f:switch expression="{change.teacherAnswer}">
+    <f:case value="0">
+        <f:switch expression="{role}">
+            <f:case value="teacher">
+                <td class="bg-info text-info"></td>
+            </f:case>
+            <f:case value="student">
+                <!-- Teacher did not answer but Project still in preparation: show nothing -->
+                <f:if condition="{project.progress} == 0">
+                    <f:then>
+                        <td></td>
+                    </f:then>
+                    <f:else>
+                        <!-- Teacher did not answer and Project is past Teacher Approval (Should not happen) -->
+                        <f:if condition="{project.progress} >= 2">
+                            <f:then>
+                                <td class="bg-danger text-danger">Fehler: Lehrerantwort fehlt</td>
+                            </f:then>
+                            <f:else>
+                                <!-- Teacher did not answer and Project is in Teacher approval Phase -->
+                                <td class="bg-info text-info">Warte auf Antwort</td>
+                            </f:else>
+                        </f:if>
+                    </f:else>
+                </f:if>
+            </f:case>
+        </f:switch>
+    </f:case>
+    <f:case value="1">
+        <td class="bg-danger text-danger">Nein{f:if(condition: change.teacherComment, then: ' <span
+                data-toggle="tooltip" data-placement="right" title="{change.teacherComment}"
+                class="glyphicon glyphicon-comment"></span>')}
+        </td>
+    </f:case>
+    <f:case value="2">
+        <td class="bg-success text-success">Ja{f:if(condition: change.teacherComment, then: ' <span
+                data-toggle="tooltip" data-placement="right" title="{change.teacherComment}"
+                class="glyphicon glyphicon-comment"></span>')}
+        </td>
+    </f:case>
+</f:switch>

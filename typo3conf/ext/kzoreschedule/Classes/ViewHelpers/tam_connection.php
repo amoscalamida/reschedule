@@ -35,22 +35,22 @@ function makeRequest($conditions) {
 
     $request = "$uri/$school/$controller?mod=$mod";
 
-    $result = exec("curl " . $request
-
-
-        . ' -H "Accept:application/xml"'
-
-
-        . ' -H "X-gr-AuthDate:' . $headers['X-gr-AuthDate'] . '"'
-
-
-        . ' -H "Authorization:' . $headers['Authorization'] . '"'
-
-    );
-
+    $cSession = curl_init();
+    curl_setopt($cSession,CURLOPT_URL,$request);
+    curl_setopt($cSession,CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($cSession, CURLOPT_HTTPHEADER, array("Accept:application/xml","X-gr-AuthDate:".$headers['X-gr-AuthDate'], "Authorization:".$headers['Authorization']));
+    curl_setopt($cSession,CURLOPT_HEADER, false);
+    if(! $result = curl_exec($cSession)) {
+        $curl_error = curl_error($cSession);
+    }
+    if ($extensionConfiguration['api_debug.']['showDebugRequestTime']) {
+        $info = curl_getinfo($cSession, CURLINFO_TOTAL_TIME);
+        echo("<span style='margin-right:10px;'>" . (($info < 4) ? ($info < 1) ? "<span class='label-success label'>Reaktionszeit TAM: $info s</span>" : "<span class='label label-warning'>Reaktionszeit TAM: $info s</span>" : "<span class='label-danger label'>Reaktionszeit TAM: $info s</span>") . "</span>");
+    }
+    curl_close($cSession);
     $answer_code = json_decode($result)->code;
-    if ($answer_code != 200){
-        throw new \Exception("Fehler bei der Anfrage! \n Antwort TAM: ".json_decode($result)->body."");
+    if ($answer_code != 200) {
+        throw new \Exception("Fehler bei der Anfrage! \n Antwort TAM: ".((json_decode($result)->body != "")?json_decode($result)->body:$curl_error)."");
     }
 
     return json_decode($result)->body;

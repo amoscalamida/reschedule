@@ -1056,8 +1056,8 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Diese E-Mail wurde automatisch vom KZO Intranet aus versendet.</span>
-                    <br> Fragen können an das <a href="mailto:it-team@kzo.ch">IT-Team</a> gerichtet werden.
+                    <span class="apple-link">' . $extensionConfiguration["footer."]["text"] . '</span>
+                    <br> Fragen können an <a href="' . $extensionConfiguration["footer."]["contactLink"] . '">' . $extensionConfiguration["footer."]["contactText"] . '</a> gerichtet werden.
                   </td>
                 </tr>
               </table>
@@ -1189,10 +1189,11 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         {
            $curl_error = curl_error($cSession);
         }
-        $info = curl_getinfo($cSession,CURLINFO_TOTAL_TIME);
-        echo ("<p>Reaktionszeit KZO: ".(($info < 3)?($info < 1)?"<span class='bg-success'> $info </span>":"<span class='bg-warning'> $info </span>":"<span class='bg-danger'> $info </span>")."</p>");
+        if ($extensionConfiguration['api_debug.']['showDebugRequestTime']) {
+            $info = curl_getinfo($cSession, CURLINFO_TOTAL_TIME);
+            echo("<span style='margin-right:10px;'>" . (($info < 4) ? ($info < 1) ? "<span class='label-success label'>Reaktionszeit KZO: $info s</span>" : "<span class='label label-warning'>Reaktionszeit KZO: $info s</span>" : "<span class='label-danger label'>Reaktionszeit KZO: $info s</span>") . "</span>");
+        }
         curl_close($cSession);
-
         $answer_code = json_decode($result)->code;
         if ($answer_code != 200){
             throw new \Exception("Fehler bei der Anfrage! \n Antwort KZO: ".((json_decode($result)->message != "")?json_decode($result)->message:$curl_error)."");
@@ -1234,20 +1235,10 @@ class ProjectController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             if(count($columns) != 1) {
                 $return = array();
                 foreach ($columns as $column) {
-                    if ($column == "fullname") {
-                        $return['fullname'] = $result->name." ".$result->lastname;
-                    }
-                    else {
-
                         $return[$column] = $result->$column;
-                    }
                 }
             } else {
-                if ($info == "fullname") {
-                    $return = $result->name." ".$result->lastname;
-                } else {
                     $return = $result->$info;
-                }
             }
             return $return;
         } else {
@@ -1290,8 +1281,10 @@ function makeRequest($conditions)
     if(! $result = curl_exec($cSession)) {
         $curl_error = curl_error($cSession);
     }
-    $info = curl_getinfo($cSession,CURLINFO_TOTAL_TIME);
-    echo ("<p>Reaktionszeit TAM: ".(($info < 3)?($info < 1)?"<span class='bg-success'> $info </span>":"<span class='bg-warning'> $info </span>":"<span class='bg-danger'> $info </span>")."</p>");
+    if ($extensionConfiguration['api_debug.']['showDebugRequestTime']) {
+        $info = curl_getinfo($cSession, CURLINFO_TOTAL_TIME);
+        echo("<span style='margin-right:10px;'>" . (($info < 4) ? ($info < 1) ? "<span class='label-success label'>Reaktionszeit TAM: $info s</span>" : "<span class='label label-warning'>Reaktionszeit TAM: $info s</span>" : "<span class='label-danger label'>Reaktionszeit TAM: $info s</span>") . "</span>");
+    }
     curl_close($cSession);
     $answer_code = json_decode($result)->code;
     if ($answer_code != 200) {

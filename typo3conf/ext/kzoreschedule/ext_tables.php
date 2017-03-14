@@ -33,12 +33,12 @@ if (TYPO3_MODE === 'BE') {
 		'',						// Position
 		array(
 			'Project' => 'adminList, show, new, create, edit, update, deleteAdmin, deleteAll',
-			'Change' => 'list, show, new, create, edit, update',
+			'Change' => 'list, show, new, create, edit, update, courseDetails',
 			
 		),
 		array(
 			'access' => 'user,group',
-			'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+			'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon_white.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_admin.xlf',
 		)
 	);
